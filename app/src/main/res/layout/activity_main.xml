@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="utf-8"?>
+    <android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/white"
+        tools:context=".MainActivity">
+
+
+    <android.support.design.widget.AppBarLayout
+        android:visibility="gone"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:fitsSystemWindows="true">
+
+
+        <ImageView
+            android:src="@mipmap/ic_launcher"
+            android:layout_width="match_parent"
+            app:layout_scrollFlags="scroll|enterAlways"
+            android:layout_height="@dimen/dimen_100dp" />
+        <android.support.v7.widget.Toolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/colorPrimaryDark"
+            app:title="MMB记账"
+            android:theme="@style/ThemeOverlay.AppCompat.Dark"
+            android:popupTheme="@style/ThemeOverlay.AppCompat.Dark"
+            app:layout_scrollFlags="scroll|exitUntilCollapsed"
+            />
+
+
+
+
+        <android.support.design.widget.TabLayout
+            android:id="@+id/actTabLayout"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:background="@color/basicColor"
+            app:tabGravity="fill"
+            app:tabSelectedTextColor="#ff0"
+            app:tabTextColor="#ffffff"
+            app:tabIndicatorColor="#00DB00"
+            />
+    </android.support.design.widget.AppBarLayout>
+
+    <android.support.v7.widget.RecyclerView
+        android:visibility="gone"
+        android:id="@+id/mRv"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"/>
+
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+
+        <Button
+            android:layout_margin="@dimen/dimen_10dp"
+            android:padding="@dimen/dimen_5dp"
+            android:textStyle="bold"
+            android:background="@color/gray_cd"
+            android:textColor="@color/basicColor"
+            android:textSize="18sp"
+            android:id="@+id/mBtn_1"
+            android:text="去主页"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+        <Button
+            android:layout_margin="@dimen/dimen_10dp"
+            android:padding="@dimen/dimen_5dp"
+            android:textStyle="bold"
+            android:background="@color/gray_cd"
+            android:textColor="@color/basicColor"
+            android:textSize="18sp"
+            android:id="@+id/mBtn_2"
+            android:text="去登陆页面"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+        <Button
+            android:layout_margin="@dimen/dimen_10dp"
+            android:padding="@dimen/dimen_5dp"
+            android:textStyle="bold"
+            android:background="@color/gray_cd"
+            android:textColor="@color/basicColor"
+            android:textSize="18sp"
+            android:id="@+id/mBtn_3"
+            android:text="去搜索页面"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+        <Button
+            android:layout_margin="@dimen/dimen_10dp"
+            android:padding="@dimen/dimen_5dp"
+            android:textStyle="bold"
+            android:background="@color/gray_cd"
+            android:textColor="@color/basicColor"
+            android:textSize="18sp"
+            android:id="@+id/mBtn_4"
+            android:text="去分类页面"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+        <com.nex3z.flowlayout.FlowLayout
+            android:id="@+id/mFlow_dd"
+            android:background="@color/basicColor"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+
+        <com.dodo.marcket.wedget.MyAdViewGroup
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <ImageView
+                android:src="@mipmap/ic_launcher"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+        </com.dodo.marcket.wedget.MyAdViewGroup>
+    </LinearLayout>
+
+
+    <com.dodo.marcket.wedget.YhFlowLayout
+        android:id="@+id/flowlayout"
+        android:visibility="gone"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="10dp"/>
+
+
+</android.support.design.widget.CoordinatorLayout>

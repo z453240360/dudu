@@ -1,0 +1,137 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    android:orientation="vertical"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".business.HomeActivity">
+    <FrameLayout
+        android:id="@+id/container"
+        android:layout_weight="1"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"></FrameLayout>
+
+    <TextView
+        android:background="@color/lineColor"
+        android:layout_width="match_parent"
+        android:layout_height="0.5dp"/>
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="58dp">
+
+        <RadioGroup
+            android:id="@+id/group"
+            android:layout_width="match_parent"
+            android:layout_height="58dp"
+            android:background="@color/white"
+            android:orientation="horizontal">
+
+            <com.dodo.marcket.wedget.MyRadioButton
+                android:id="@+id/rb_home"
+                style="@style/menu_tab"
+                android:checked="true"
+                android:tag="0"
+                android:text="首页"
+                app:rbDrawableTop="@drawable/selector_home_bg" />
+
+
+            <com.dodo.marcket.wedget.MyRadioButton
+                android:id="@+id/rb_classify"
+                style="@style/menu_tab"
+                android:tag="1"
+                android:text="分类"
+                app:rbDrawableTop="@drawable/selector_fenlei_bg" />
+
+
+            <com.dodo.marcket.wedget.MyRadioButton
+                android:id="@+id/rb_buyCar"
+                style="@style/menu_tab"
+                android:tag="2"
+                android:text="购物车"
+                app:rbDrawableTop="@drawable/selector_gouwuche_bg" />
+
+            <com.dodo.marcket.wedget.MyRadioButton
+                android:id="@+id/rb_mime"
+                style="@style/menu_tab"
+                android:tag="3"
+                android:text="我的"
+                app:rbDrawableTop="@drawable/selector_wode_bg" />
+        </RadioGroup>
+
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <LinearLayout
+                android:layout_weight="1"
+                android:orientation="horizontal"
+                android:layout_width="0dp"
+                android:layout_height="match_parent">
+                <TextView
+                    android:visibility="invisible"
+                    android:gravity="right|top"
+                    android:text="99"
+                    android:layout_weight="1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_weight="1"
+                android:orientation="horizontal"
+                android:layout_width="0dp"
+                android:layout_height="match_parent">
+                <TextView
+                    android:visibility="invisible"
+                    android:gravity="right|top"
+                    android:text="99"
+                    android:layout_weight="1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:gravity="right|top"
+                android:layout_weight="1"
+                android:orientation="horizontal"
+                android:layout_width="0dp"
+                android:layout_height="match_parent">
+                <TextView
+                    android:elevation="@dimen/dimen_5dp"
+                    android:layout_marginTop="@dimen/dimen_2dp"
+                    android:layout_marginRight="@dimen/dimen_20sp"
+                    android:textSize="@dimen/dimen_10sp"
+                    android:id="@+id/mTxt_carNum"
+                    android:background="@drawable/shape_lunkuo_circlecar"
+                    android:textColor="@color/white"
+                    android:visibility="visible"
+                    android:gravity="center"
+                    tools:text="99"
+                    android:paddingLeft="@dimen/dimen_5dp"
+                    android:paddingRight="@dimen/dimen_5dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="15dp" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_weight="1"
+                android:orientation="horizontal"
+                android:layout_width="0dp"
+                android:layout_height="match_parent">
+                <TextView
+                    android:visibility="invisible"
+                    android:gravity="right|top"
+                    android:text="99"
+                    android:layout_weight="1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent" />
+            </LinearLayout>
+
+        </LinearLayout>
+    </FrameLayout>
+
+</LinearLayout>

@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    android:orientation="vertical"
+    android:gravity="bottom"
+    xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <View
+        android:layout_weight="1"
+        android:id="@+id/view_pop"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:background="@color/white"
+            android:gravity="center"
+            android:textStyle="bold"
+            android:textSize="@dimen/dimen_18sp"
+            android:textColor="@color/basicColor"
+            android:text="请选择区域"
+            android:layout_width="match_parent"
+            android:layout_height="50dp" />
+        <TextView
+            android:background="@color/lineColor"
+            android:layout_width="match_parent"
+            android:layout_height="0.5dp" />
+        <android.support.v7.widget.RecyclerView
+            android:background="@color/white"
+            android:layout_weight="1"
+            android:id="@+id/mRv_addAddress"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+    </LinearLayout>
+
+
+
+</LinearLayout>
