@@ -154,6 +154,7 @@ public class ProductDetailActivity extends BaseActivity<ProductDetailPresenter> 
             mBanner.start();
         }
 
+        mTxtNum.setText(productBean.getCartNumber()+"");
         mTxtProductPrice.setText(price+"");
         mTxtProductName.setText(name);
         mTxtProductMsg.setText(memo);
