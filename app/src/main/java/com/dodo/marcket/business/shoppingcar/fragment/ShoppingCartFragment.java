@@ -28,6 +28,7 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import butterknife.Unbinder;
 
 /**
  * 购物车Tab
@@ -41,8 +42,6 @@ public class ShoppingCartFragment extends BaseFragment<ShoppingCartFragmentPrese
     ImageView mImgHuishou;
     @BindView(R.id.ll_img)
     LinearLayout llImg;
-    @BindView(R.id.mTxt_price)
-    TextView mTxtPrice;
     @BindView(R.id.mTxt_pay)
     TextView mTxtHuishou;
     @BindView(R.id.mLL_bottomView)
@@ -53,6 +52,15 @@ public class ShoppingCartFragment extends BaseFragment<ShoppingCartFragmentPrese
     TextView mTxtSelectAll;
     @BindView(R.id.mLL_status)
     LinearLayout mLLStatus;
+    @BindView(R.id.mTxt_carTotalMoney)
+    TextView mTxtCarTotalMoney;
+    @BindView(R.id.mTxt_carBoxMoney)
+    TextView mTxtCarBoxMoney;
+    @BindView(R.id.mTxt_carPostMoney)
+    TextView mTxtCarPostMoney;
+    @BindView(R.id.mLL_carPost)
+    LinearLayout mLLCarPost;
+    Unbinder unbinder;
 
     private List<ShoppingCarBean.CartItemsBean> mDates = new ArrayList<>();
     private ShoppingCartAdapter adapter;
@@ -160,7 +168,6 @@ public class ShoppingCartFragment extends BaseFragment<ShoppingCartFragmentPrese
             case R.id.mTxt_pay:
 
 
-
                 startActivity(GoToPayActivity.class);
                 break;
         }
@@ -174,6 +181,18 @@ public class ShoppingCartFragment extends BaseFragment<ShoppingCartFragmentPrese
             mRvFirstList.setVisibility(View.GONE);
             return;
         }
+
+        double boxAmount = productBeans.getBoxAmount();//框的押金
+        double freeFreight = productBeans.getFreeFreight();//满多少减运费
+        double freight = productBeans.getFreight();//不满200收20运费
+        double minPrice = productBeans.getMinPrice();//minprice是订单最小金额，就是商品大于minprice才能下单，做批发的
+        double productAmount = productBeans.getProductAmount();//productamount是商品金额
+
+        mTxtCarTotalMoney.setText(productAmount + "");//合计
+        mTxtCarBoxMoney.setText(boxAmount+"");
+
+        mTxtCarPostMoney.setText(freight+"");
+
 
         List<ShoppingCarBean.CartItemsBean> cartItems = productBeans.getCartItems();
         if (cartItems == null || cartItems.size() == 0) {
@@ -201,4 +220,17 @@ public class ShoppingCartFragment extends BaseFragment<ShoppingCartFragmentPrese
         }
     }
 
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        // TODO: inflate a fragment view
+        View rootView = super.onCreateView(inflater, container, savedInstanceState);
+        unbinder = ButterKnife.bind(this, rootView);
+        return rootView;
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        unbinder.unbind();
+    }
 }

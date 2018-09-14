@@ -13,14 +13,14 @@ public class ShoppingCarBean {
      * productAmount : 0
      */
 
-    private int boxAmount;
-    private int freeFreight;
-    private int freight;
-    private int minPrice;
-    private int productAmount;
+    private double boxAmount;//boxamount是框金额
+    private double freeFreight; //freefrieght是满200免运费
+    private double freight;//第二个是不满200收20运费
+    private double minPrice;//minprice是订单最小金额，就是商品大于minprice才能下单，做批发的
+    private double productAmount;//productamount是商品金额
     private List<CartItemsBean> cartItems;
 
-    public int getBoxAmount() {
+    public double getBoxAmount() {
         return boxAmount;
     }
 
@@ -28,31 +28,31 @@ public class ShoppingCarBean {
         this.boxAmount = boxAmount;
     }
 
-    public int getFreeFreight() {
+    public double getFreeFreight() {
         return freeFreight;
     }
 
-    public void setFreeFreight(int freeFreight) {
+    public void setFreeFreight(double freeFreight) {
         this.freeFreight = freeFreight;
     }
 
-    public int getFreight() {
+    public double getFreight() {
         return freight;
     }
 
-    public void setFreight(int freight) {
+    public void setFreight(double freight) {
         this.freight = freight;
     }
 
-    public int getMinPrice() {
+    public double getMinPrice() {
         return minPrice;
     }
 
-    public void setMinPrice(int minPrice) {
+    public void setMinPrice(double minPrice) {
         this.minPrice = minPrice;
     }
 
-    public int getProductAmount() {
+    public double getProductAmount() {
         return productAmount;
     }
 

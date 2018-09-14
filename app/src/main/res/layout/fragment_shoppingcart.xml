@@ -4,55 +4,58 @@
     android:layout_height="match_parent"
     android:background="@color/mainbackground"
     android:orientation="vertical">
+
     <LinearLayout
-        android:elevation="@dimen/dimen_1dp"
-        android:background="@color/white"
-        android:orientation="vertical"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:background="@color/white"
+        android:elevation="@dimen/dimen_1dp"
+        android:orientation="vertical">
+
         <LinearLayout
-            android:orientation="vertical"
             android:id="@+id/mLL_status"
             android:layout_width="match_parent"
-            android:layout_height="10dp"/>
+            android:layout_height="10dp"
+            android:orientation="vertical" />
 
         <LinearLayout
-            android:orientation="vertical"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
 
             <TextView
-                android:gravity="center"
-                android:textSize="@dimen/dimen_18sp"
-                android:textStyle="bold"
-                android:textColor="@color/black_333333"
-                android:text="购物车"
                 android:layout_width="match_parent"
-                android:layout_height="44dp" />
+                android:layout_height="44dp"
+                android:gravity="center"
+                android:text="购物车"
+                android:textColor="@color/black_333333"
+                android:textSize="@dimen/dimen_18sp"
+                android:textStyle="bold" />
         </LinearLayout>
 
     </LinearLayout>
+
     <LinearLayout
-        android:visibility="gone"
-        android:orientation="vertical"
         android:id="@+id/mLL_noDate"
-        android:gravity="center"
-        android:layout_weight="1"
         android:layout_width="match_parent"
-        android:layout_height="0dp">
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:gravity="center"
+        android:orientation="vertical"
+        android:visibility="gone">
 
         <ImageView
-            android:src="@mipmap/no_date"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:src="@mipmap/no_date" />
 
         <TextView
-            android:layout_marginTop="@dimen/dimen_10dp"
-            android:textSize="@dimen/dimen_16sp"
-            android:textColor="@color/black_333333"
-            android:text="没有商品信息"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/dimen_10dp"
+            android:text="没有商品信息"
+            android:textColor="@color/black_333333"
+            android:textSize="@dimen/dimen_16sp" />
     </LinearLayout>
 
     <android.support.v7.widget.RecyclerView
@@ -63,11 +66,11 @@
 
 
     <LinearLayout
-        android:elevation="@dimen/dimen_5dp"
         android:id="@+id/mLL_bottomView"
         android:layout_width="match_parent"
         android:layout_height="50dp"
         android:background="@color/white"
+        android:elevation="@dimen/dimen_5dp"
         android:gravity="center_vertical"
         android:orientation="horizontal">
 
@@ -104,65 +107,97 @@
             </LinearLayout>
 
             <LinearLayout
-                android:layout_marginLeft="@dimen/dimen_5dp"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
+                android:layout_marginLeft="@dimen/dimen_5dp"
                 android:layout_weight="1"
                 android:orientation="vertical">
 
 
                 <LinearLayout
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="0dp"
                     android:layout_weight="1"
                     android:orientation="horizontal">
 
                     <TextView
+
                         android:layout_width="wrap_content"
                         android:layout_height="match_parent"
                         android:layout_marginLeft="@dimen/dimen_10dp"
                         android:gravity="center_vertical"
-                        android:text="合计"
-                        android:textColor="#333333"
-                        android:textSize="14sp" />
+                        android:text="合计¥ "
+                        android:textColor="@color/org_f39700"
+                        android:textSize="12sp" />
 
 
                     <TextView
+                        android:id="@+id/mTxt_carTotalMoney"
                         android:layout_width="wrap_content"
                         android:layout_height="match_parent"
                         android:layout_marginLeft="@dimen/dimen_10dp"
+                        android:layout_weight="1"
                         android:gravity="center_vertical"
-                        android:text="￥ 99.99"
-                        android:textColor="#333333"
-                        android:textSize="14sp" />
+                        android:text="99.99"
+                        android:textColor="@color/org_f39700"
+                        android:textSize="18sp" />
                 </LinearLayout>
 
 
                 <LinearLayout
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="0dp"
                     android:layout_weight="1"
+                    android:gravity="center_vertical"
                     android:orientation="horizontal">
 
-                    <TextView
+                    <LinearLayout
                         android:layout_width="wrap_content"
                         android:layout_height="match_parent"
-                        android:layout_marginLeft="5dp"
                         android:gravity="center_vertical"
-                        android:text="优惠"
-                        android:textColor="#f4333c"
-                        android:textSize="14sp" />
+                        android:orientation="horizontal">
 
-                    <TextView
-                        android:id="@+id/mTxt_price"
-                        android:layout_width="match_parent"
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="另需筐押金¥"
+                            android:textColor="@color/black_333333"
+                            android:textSize="@dimen/dimen_12sp" />
+
+                        <TextView
+                            android:id="@+id/mTxt_carBoxMoney"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="￥30"
+                            android:textColor="@color/black_333333"
+                            android:textSize="@dimen/dimen_12sp" />
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@+id/mLL_carPost"
+                        android:layout_marginLeft="@dimen/dimen_10dp"
+                        android:layout_width="wrap_content"
                         android:layout_height="match_parent"
-                        android:layout_marginLeft="5dp"
                         android:gravity="center_vertical"
-                        android:text="￥ 1000.0"
-                        android:textColor="#f4333c"
-                        android:textSize="18sp"
-                        android:textStyle="bold" />
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="配送费¥"
+                            android:textColor="@color/black_333333"
+                            android:textSize="@dimen/dimen_12sp" />
+
+                        <TextView
+                            android:id="@+id/mTxt_carPostMoney"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="¥10"
+                            android:textColor="@color/black_333333"
+                            android:textSize="@dimen/dimen_12sp" />
+
+                    </LinearLayout>
                 </LinearLayout>
 
 
