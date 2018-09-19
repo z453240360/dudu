@@ -25,6 +25,15 @@ public class DisCountBean {
     private double lowLimit;//最低下单金额，即满x减y中的x
     private String no; 	//
     private String startDate;//开始日期
+    private boolean isSelected;
+
+    public boolean isSelected() {
+        return isSelected;
+    }
+
+    public void setSelected(boolean selected) {
+        isSelected = selected;
+    }
 
     public double getAmount() {
         return amount;

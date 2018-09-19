@@ -6,14 +6,17 @@ import com.dodo.marcket.bean.BannerBean;
 import com.dodo.marcket.bean.ChildAddressBean;
 import com.dodo.marcket.bean.DisCountBean;
 import com.dodo.marcket.bean.FirstClassfyBean;
+import com.dodo.marcket.bean.GoToPayBean;
 import com.dodo.marcket.bean.HomePageActivityBean;
 import com.dodo.marcket.bean.HotBean;
 import com.dodo.marcket.bean.LoginBean;
 import com.dodo.marcket.bean.MyAddressBean;
 import com.dodo.marcket.bean.MyBackBoxBean;
+import com.dodo.marcket.bean.PayMethodBean;
 import com.dodo.marcket.bean.ProducHeadBean;
 import com.dodo.marcket.bean.ProductBean;
 import com.dodo.marcket.bean.SalesMan;
+import com.dodo.marcket.bean.SelectPostTimeBean;
 import com.dodo.marcket.bean.ShoppingCarBean;
 import com.dodo.marcket.bean.basebean.UserInfoBean;
 import com.dodo.marcket.http.utils.BResponse;
@@ -151,9 +154,9 @@ public interface ApiService {
     @POST(Api.url)
     Observable<BResponse<ShoppingCarBean>> getProducts(@Body RequestBody verifyCode);
 
-    //购物车---获取购物车商品
+    //购物车---获取支付账单信息
     @POST(Api.url)
-    Observable<BResponse<Boolean>> payProducts(@Body RequestBody verifyCode);
+    Observable<BResponse<GoToPayBean>> payProducts(@Body RequestBody verifyCode);
 
     //购物车---商品详情
     @POST(Api.url)
@@ -175,5 +178,14 @@ public interface ApiService {
     //热销商品活动
     @POST(Api.url)
     Observable<BResponse<HotBean>> getPromotionDetail(@Body RequestBody verifyCode);
+
+    //结算----列出送达时间
+    @POST(Api.url)
+    Observable<BResponse<List<SelectPostTimeBean>>> deliverytimes(@Body RequestBody verifyCode);
+
+    //结算----列出支付方式
+    @POST(Api.url)
+    Observable<BResponse<List<PayMethodBean>>> payfunctions(@Body RequestBody verifyCode);
+
 
 }

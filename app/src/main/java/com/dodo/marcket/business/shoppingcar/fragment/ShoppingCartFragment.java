@@ -15,13 +15,17 @@ import android.widget.TextView;
 import com.dodo.marcket.R;
 import com.dodo.marcket.base.BaseFragment;
 import com.dodo.marcket.bean.ShoppingCarBean;
+import com.dodo.marcket.bean.params.PayParamsFatherBean;
 import com.dodo.marcket.business.homepage.activity.ProductDetailActivity;
 import com.dodo.marcket.business.shoppingcar.activity.GoToPayActivity;
 import com.dodo.marcket.business.shoppingcar.adapter.ShoppingCartAdapter;
 import com.dodo.marcket.business.shoppingcar.constrant.ShoppingCartFragmentContract;
 import com.dodo.marcket.business.shoppingcar.presenter.ShoppingCartFragmentPresenter;
+import com.dodo.marcket.utils.ToastUtils;
 import com.dodo.marcket.utils.statusbar.StatusBarUtils;
+import com.google.gson.Gson;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -60,7 +64,6 @@ public class ShoppingCartFragment extends BaseFragment<ShoppingCartFragmentPrese
     TextView mTxtCarPostMoney;
     @BindView(R.id.mLL_carPost)
     LinearLayout mLLCarPost;
-    Unbinder unbinder;
 
     private List<ShoppingCarBean.CartItemsBean> mDates = new ArrayList<>();
     private ShoppingCartAdapter adapter;
@@ -154,7 +157,7 @@ public class ShoppingCartFragment extends BaseFragment<ShoppingCartFragmentPrese
     @OnClick({R.id.ll_img, R.id.mTxt_pay})
     public void onViewClicked(View view) {
         switch (view.getId()) {
-            case R.id.ll_img:
+            case R.id.ll_img://全选
                 if (adapter.isSelectAll()) {
                     mImgHuishou.setImageResource(R.mipmap.xuanzhong2);
                     adapter.setSelectAll(false);
@@ -165,10 +168,15 @@ public class ShoppingCartFragment extends BaseFragment<ShoppingCartFragmentPrese
 
 
                 break;
-            case R.id.mTxt_pay:
+            case R.id.mTxt_pay://去支付
+                List<PayParamsFatherBean> payList = adapter.getPayList();
+                if (payList.size()==0){
+                    showErrorMsg("您没有选择结算的商品","");
+                }
 
-
-                startActivity(GoToPayActivity.class);
+                Intent intent = new Intent(mActivity,GoToPayActivity.class);
+                intent.putExtra("payList",(Serializable) payList);
+                startActivity(intent);
                 break;
         }
     }

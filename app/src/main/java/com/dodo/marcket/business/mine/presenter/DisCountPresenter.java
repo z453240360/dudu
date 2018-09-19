@@ -22,7 +22,7 @@ public class DisCountPresenter extends BasePresenter<DisCountActivity> implement
     @Override
     public void getDisCount(int status) {
         PhoneBean phoneBean = new PhoneBean();
-        phoneBean.setStatus(0);
+        phoneBean.setStatus(status);
         String name = "member.getAnhao";
         addSubscription(apiModel.getVerCode(ParamsUtils.getParams(phoneBean,name,mToken)), new ResponseSubscriber<List<DisCountBean>>(mContext) {
 

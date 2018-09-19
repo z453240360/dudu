@@ -14,6 +14,8 @@ import com.dodo.marcket.bean.ProducHeadBean;
 import com.dodo.marcket.bean.ProductBean;
 import com.dodo.marcket.bean.ProductParmsBean;
 import com.dodo.marcket.bean.ShoppingCarBean;
+import com.dodo.marcket.bean.params.PayParamsBean;
+import com.dodo.marcket.bean.params.PayParamsFatherBean;
 import com.dodo.marcket.utils.ImageLoaders;
 import com.dodo.marcket.wedget.CircleImageView;
 
@@ -263,17 +265,27 @@ public class ShoppingCartAdapter extends RecyclerView.Adapter<ShoppingCartAdapte
     }
 
     //获取选中商品去结算
-    public void getPayList(){
+    public List<PayParamsFatherBean> getPayList(){
         if (mDatas.size()==0){
-            return;
+            return new ArrayList<PayParamsFatherBean>();
         }
 
-        List<ShoppingCarBean.CartItemsBean>  payList = new ArrayList<>();
+        List<PayParamsFatherBean>  payList = new ArrayList<>();
+
         for (int i = 0; i < mDatas.size(); i++) {
             if (mDatas.get(i).getProductInfo().isSelect()){
-                long id = mDatas.get(i).getProductInfo().getId();
-                int quantity = mDatas.get(i).getQuantity();
+                long id = mDatas.get(i).getProductInfo().getId();//产品ID
+                int quantity = mDatas.get(i).getQuantity();//数量
+                PayParamsBean payParamsBean = new PayParamsBean();
+                payParamsBean.setId(id);
+
+                PayParamsFatherBean payParamsFatherBean = new PayParamsFatherBean();
+                payParamsFatherBean.setProductParam(payParamsBean);
+                payParamsFatherBean.setQuantity(quantity);
+                payList.add(payParamsFatherBean);
             }
         }
+
+        return payList;
     }
 }

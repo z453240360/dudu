@@ -1,13 +1,16 @@
 package com.dodo.marcket;
 
+import android.content.ComponentName;
 import android.content.Intent;
 import android.graphics.drawable.GradientDrawable;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -21,6 +24,7 @@ import com.dodo.marcket.business.clasify.activity.ClasifyActivity;
 import com.dodo.marcket.business.clasify.activity.SearchActivity;
 import com.dodo.marcket.business.mine.activity.LoginActivity;
 import com.dodo.marcket.business.mine.adapter.MineAdapter;
+import com.dodo.marcket.huizlogin.HuiLoginUtil;
 import com.dodo.marcket.utils.ScreenUtil;
 import com.dodo.marcket.utils.ToastUtils;
 import com.dodo.marcket.wedget.YhFlowLayout;
@@ -142,7 +146,7 @@ public class MainActivity extends AppCompatActivity {
             EventBus.getDefault().unregister(this);
     }
 
-    @OnClick({R.id.mBtn_1, R.id.mBtn_2, R.id.mBtn_3, R.id.mBtn_4})
+    @OnClick({R.id.mBtn_1, R.id.mBtn_2, R.id.mBtn_3, R.id.mBtn_4,R.id.mBtn_5})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.mBtn_1:
@@ -156,6 +160,22 @@ public class MainActivity extends AppCompatActivity {
                 break;
             case R.id.mBtn_4:
                 startActivity(new Intent(this, ClasifyActivity.class));
+                break;
+
+            case R.id.mBtn_5:
+                //  需要使用Intent类的第2个参数指定Uri
+//                Intent intent = new  Intent();
+//                intent.setComponent(new ComponentName("io.dcloud.general","io.dcloud.general.activity.HuiZActivity"));
+//
+//                //  设置value属性值
+//                intent.putExtra("appId" , "D3JBF6E2UXZBPRCSSV72LZG56BR52AK7NVTMNCUKBWNHMCWHPC2EJ2VH4DUCXTFMFKEKU3YL53TOM7IOYMTUHOWTSIBRQMZUDWHEMRWM5YXWSMDOKLV52IAQ7HRCZTGOBCF3WCD4VUYAFH5H4DS7XXBN72UPXXE55H52V64TFAU5QMACLP64LOTUMC6ZPQ5EQQBKKC7I4FL26QDXFCJDHUBJ6DKQCYVJ7LZSJVRWAIYOZCMZFUGUDFC4SLSZP53DQ3RAPGYKCAR2T5ANQNT2BXWXWW2SNXFVY7F5LEZNG66UZRMTGRNQ" );
+//
+//                startActivityForResult(intent,2000);
+
+                //调用市民版登陆
+                HuiLoginUtil.HZLogin(MainActivity.this,"AS1TG2MUT3WLVJYNPAOHYHM4TUJMC3S3GW7LW3VCTZWF6SGCJCFTQYQ7PTHUTRG7FF6IREQMRV7HZFUOQ6CTPUCSHBE7RVQNSHENNNDRE2TQ32YFQVMIJ7YDS5Z7PPLABXMUTDYNZELQNYC2JMZEC6L33TF2R2LIONLZUKLN36IMYXDK5YWURMEJBKFVV4B2UEEPYMMKLXJFTWVVE5YYBYKY7DX4L4LRBC6FXSMGHR6I3BBG32RAS6PCXSZY6JJ7VFCZHJ6XKHKTHD3HWX2BN6DSWG6FDOAZEDQNTEBVVRHWXAQ6FQZQ");
+
+
                 break;
 
         }
@@ -199,6 +219,20 @@ public class MainActivity extends AppCompatActivity {
                 }
             });
             flowlayout.addView(tv);
+        }
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == HuiLoginUtil.REQUESTCODE) {
+            switch (resultCode) {
+                case 2000:
+                    String result = data.getStringExtra("value");
+                    mBtn1.setText(result);
+                    Log.i("hz", "onActivityResult: 获取到返回值"+result);
+                    break;
+            }
         }
     }
 }

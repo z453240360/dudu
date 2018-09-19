@@ -92,23 +92,6 @@ public class RequestParams {
         return param;
     }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
     //按字母排序后加密，返回sign
     public static String buildSign(Map<String, ?> paramsMap, String secret) {
         Set<String> keySet = paramsMap.keySet();

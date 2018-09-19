@@ -190,4 +190,14 @@ public class ApiModel {
     public Observable<BResponse> getPromotionDetail(RequestBody body) {
         return RetroUtils.getApi().getPromotionDetail(body).flatMap(FlatProvider.<BResponse>flat());
     }
+
+    //结算页面----列出送达时间
+    public Observable<BResponse> deliverytimes(RequestBody body) {
+        return RetroUtils.getApi().deliverytimes(body).flatMap(FlatProvider.<BResponse>flat());
+    }
+
+    //结算页面----列出支付方式
+    public Observable<BResponse> payfunctions(RequestBody body) {
+        return RetroUtils.getApi().payfunctions(body).flatMap(FlatProvider.<BResponse>flat());
+    }
 }

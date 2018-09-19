@@ -31,7 +31,7 @@ android {
 }
 
 dependencies {
-    implementation fileTree(dir: 'libs', include: ['*.jar'])
+    implementation fileTree(include: ['*.jar'], dir: 'libs')
     implementation 'com.android.support:appcompat-v7:27.1.1'
     implementation 'com.android.support.constraint:constraint-layout:1.1.2'
     testImplementation 'junit:junit:4.12'
@@ -77,28 +77,25 @@ dependencies {
     implementation 'com.squareup.retrofit2:adapter-rxjava:2.1.0'
     implementation 'io.reactivex:rxjava:1.1.9'
     implementation 'io.reactivex:rxandroid:1.2.1'
-
-
-
-
     implementation 'net.grandcentrix.tray:tray:0.12.0'
-//    compile 'com.androidkun:XTabLayout:1.1.3'
 
-
+    //    compile 'com.androidkun:XTabLayout:1.1.3'
     implementation 'com.scwang.smartrefresh:SmartRefreshLayout:1.0.4-5'
 
     //二维码扫描
     implementation 'cn.bingoogolapple:bga-qrcode-zxing:1.2.1'
+
     //拍照
     implementation 'com.github.LuckSiege.PictureSelector:picture_library:v2.2.0'
-    implementation 'com.contrarywind:Android-PickerView:4.1.0'
+//    implementation 'com.contrarywind:Android-PickerView:4.1.0'
+    implementation 'com.contrarywind:Android-PickerView:4.1.6'
 
     //加载动画
     implementation 'com.wang.avi:library:1.0.0'
     implementation 'com.nineoldandroids:library:2.4.0'
 
     // 高德地图定位
-//    implementation 'com.amap.api:location:latest.integration'
+    //    implementation 'com.amap.api:location:latest.integration'
 
     //APP在线检查更新
     implementation 'com.teprinciple:updateapputils:1.4'
@@ -114,4 +111,5 @@ dependencies {
 
     //流式布局
     implementation 'com.nex3z:flow-layout:1.2.2'
+    implementation files('libs/HzCitySDK.jar')
 }

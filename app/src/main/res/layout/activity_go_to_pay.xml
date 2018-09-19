@@ -8,7 +8,11 @@
     android:background="@color/mainbackground"
     tools:context=".business.shoppingcar.activity.GoToPayActivity">
 
-    <ScrollView
+    <include
+        android:id="@+id/toolbar"
+        layout="@layout/layout_toolbar" />
+
+    <android.support.v4.widget.NestedScrollView
         android:scrollbars="none"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -23,26 +27,30 @@
             <LinearLayout
                 android:id="@+id/mLL_address"
                 android:layout_width="match_parent"
-                android:layout_height="100dp"
+                android:layout_height="80dp"
                 android:background="@color/white"
                 android:orientation="horizontal">
 
 
                 <LinearLayout
+
                     android:id="@+id/mLL_showAddress1"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
                     android:gravity="center"
-                    android:orientation="vertical"
-                    android:visibility="visible">
+                    android:orientation="horizontal"
+                    android:visibility="gone">
 
 
                     <TextView
-                        android:layout_width="match_parent"
+                        android:textSize="18sp"
+                        android:textColor="@color/black_333333"
+                        android:layout_weight="1"
+                        android:layout_width="0dp"
                         android:layout_height="match_parent"
                         android:gravity="center"
-                        android:text="添加收货地址" />
+                        android:text="添加收获地址" />
 
                     <ImageView
                         android:src="@mipmap/rightbutton"
@@ -51,6 +59,8 @@
                 </LinearLayout>
 
                 <LinearLayout
+                    android:paddingRight="@dimen/dimen_10dp"
+                    android:paddingLeft="@dimen/dimen_10dp"
                     android:id="@+id/mLL_showAddress2"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
@@ -58,13 +68,10 @@
                     android:gravity="center"
                     android:orientation="horizontal">
 
-                    <ImageView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:src="@mipmap/ic_launcher" />
 
                     <LinearLayout
-                        android:layout_width="match_parent"
+                        android:layout_weight="1"
+                        android:layout_width="wrap_content"
                         android:layout_height="match_parent"
                         android:orientation="vertical">
 
@@ -76,38 +83,47 @@
                             android:orientation="horizontal">
 
                             <TextView
-                                android:layout_width="match_parent"
+                                android:textSize="14sp"
+                                android:textColor="@color/black_333333"
+                                android:id="@+id/mTxt_goToPayAddressName"
+                                android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:layout_weight="1"
-                                android:gravity="center"
+                                android:gravity="center_vertical"
                                 android:text="名字" />
 
                             <TextView
-                                android:layout_width="match_parent"
+                                android:textSize="14sp"
+                                android:textColor="@color/black_333333"
+                                android:id="@+id/mTxt_goToPayAddressPhone"
+                                android:layout_marginLeft="@dimen/dimen_10dp"
+                                android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_weight="1"
-                                android:gravity="center"
+                                android:gravity="center_vertical"
                                 android:text="18912367774" />
 
                         </LinearLayout>
 
 
                         <TextView
+                            android:textSize="14sp"
+                            android:textColor="@color/black_333333"
+                            android:id="@+id/mTxt_goToPayAddress"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
-                            android:gravity="center"
+                            android:gravity="center_vertical"
                             android:text="我是收货地址" />
                     </LinearLayout>
-
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:src="@mipmap/rightbutton" />
 
                 </LinearLayout>
 
 
-                <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:src="@mipmap/ic_launcher" />
+
             </LinearLayout>
 
             <ImageView
@@ -127,6 +143,7 @@
                 android:paddingRight="@dimen/dimen_10dp">
 
                 <LinearLayout
+                    android:id="@+id/mLL_postTime"
                     android:layout_width="match_parent"
                     android:layout_height="45dp"
                     android:gravity="center_vertical"
@@ -141,6 +158,7 @@
                         android:textSize="16sp" />
 
                     <TextView
+                        android:gravity="right|center_vertical"
                         android:id="@+id/mTxt_arriveTime"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -178,6 +196,7 @@
                         android:textSize="16sp" />
 
                     <TextView
+                        android:gravity="right|center_vertical"
                         android:id="@+id/mTxt_payMethed"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -199,13 +218,17 @@
 
             <!--商品列表-->
             <LinearLayout
+                android:descendantFocusability="blocksDescendants"
+                android:gravity="top"
+                android:layout_weight="1"
+                android:id="@+id/mLL_proList"
                 android:paddingRight="@dimen/dimen_10dp"
                 android:paddingLeft="@dimen/dimen_10dp"
                 android:paddingBottom="@dimen/dimen_10dp"
                 android:layout_marginTop="@dimen/dimen_10dp"
                 android:background="@color/white"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="0dp"
                 android:orientation="vertical">
 
 
@@ -213,16 +236,16 @@
                     android:layout_marginTop="@dimen/dimen_10dp"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1"
                     android:text="商品列表"
                     android:textColor="#333333"
                     android:textSize="16sp" />
 
                 <android.support.v7.widget.RecyclerView
                     android:layout_marginTop="@dimen/dimen_10dp"
+                    android:layout_weight="1"
                     android:id="@+id/mRv_product"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"/>
+                    android:layout_height="0dp"/>
 
             </LinearLayout>
 
@@ -246,6 +269,7 @@
                     android:textSize="16sp" />
 
                 <TextView
+                    android:gravity="right|center_vertical"
                     android:id="@+id/mTxt_give"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -288,6 +312,7 @@
                         android:textSize="16sp" />
 
                     <TextView
+                        android:gravity="right|center_vertical"
                         android:id="@+id/mTxt_coupon"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -325,6 +350,7 @@
                         android:textSize="16sp" />
 
                     <TextView
+                        android:gravity="right|center_vertical"
                         android:id="@+id/mTxt_point"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -369,6 +395,7 @@
                         android:textSize="16sp" />
 
                     <TextView
+                        android:gravity="right|center_vertical"
                         android:id="@+id/mTxt_realPay"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -398,6 +425,7 @@
                         android:textSize="16sp" />
 
                     <TextView
+                        android:gravity="right|center_vertical"
                         android:id="@+id/mTxt_postMoney"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -409,7 +437,7 @@
             </LinearLayout>
         </LinearLayout>
 
-    </ScrollView>
+    </android.support.v4.widget.NestedScrollView>
 
     <LinearLayout
         android:id="@+id/mLL_sendPrice"

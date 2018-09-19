@@ -1,11 +1,8 @@
 package com.dodo.marcket.business;
 
 
-import android.graphics.Color;
-import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
-import android.view.Gravity;
 import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.RadioButton;
@@ -24,7 +21,6 @@ import com.dodo.marcket.business.mine.fragment.MineFragment;
 import com.dodo.marcket.business.shoppingcar.fragment.ShoppingCartFragment;
 import com.dodo.marcket.utils.statusbar.StatusBarUtils;
 import com.dodo.marcket.wedget.MyRadioButton;
-import com.dodo.marcket.wedget.toasty.Toasty;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -34,7 +30,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
-import butterknife.ButterKnife;
 import q.rorbin.badgeview.QBadgeView;
 
 public class HomeActivity extends BaseActivity<HomePresenter> implements HomeContract.View {

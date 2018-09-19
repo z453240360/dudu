@@ -33,7 +33,6 @@ public class PhoneBean {
     private String productId;
     private String specParam;
 
-
     public void setProductId(String productId) {
         this.productId = productId;
     }
