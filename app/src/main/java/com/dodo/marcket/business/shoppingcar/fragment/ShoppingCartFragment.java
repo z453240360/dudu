@@ -14,6 +14,7 @@ import android.widget.TextView;
 
 import com.dodo.marcket.R;
 import com.dodo.marcket.base.BaseFragment;
+import com.dodo.marcket.bean.CartItemsBean;
 import com.dodo.marcket.bean.ShoppingCarBean;
 import com.dodo.marcket.bean.params.PayParamsFatherBean;
 import com.dodo.marcket.business.homepage.activity.ProductDetailActivity;
@@ -65,7 +66,7 @@ public class ShoppingCartFragment extends BaseFragment<ShoppingCartFragmentPrese
     @BindView(R.id.mLL_carPost)
     LinearLayout mLLCarPost;
 
-    private List<ShoppingCarBean.CartItemsBean> mDates = new ArrayList<>();
+    private List<CartItemsBean> mDates = new ArrayList<>();
     private ShoppingCartAdapter adapter;
     private LinearLayoutManager manager;
 
@@ -202,7 +203,7 @@ public class ShoppingCartFragment extends BaseFragment<ShoppingCartFragmentPrese
         mTxtCarPostMoney.setText(freight+"");
 
 
-        List<ShoppingCarBean.CartItemsBean> cartItems = productBeans.getCartItems();
+        List<CartItemsBean> cartItems = productBeans.getCartItems();
         if (cartItems == null || cartItems.size() == 0) {
             mLLNoDate.setVisibility(View.VISIBLE);
             mRvFirstList.setVisibility(View.GONE);

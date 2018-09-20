@@ -87,7 +87,7 @@ public class PayPopAdapter extends RecyclerView.Adapter<PayPopAdapter.MyViewHold
     }
 
     public interface OnItemClickListener {
-        void onItemClick(int pos, int id);
+        void onItemClick(int pos, long id);
     }
 
     private OnItemClickListener mListener;

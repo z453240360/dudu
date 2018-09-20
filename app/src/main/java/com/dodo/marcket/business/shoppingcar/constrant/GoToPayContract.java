@@ -2,11 +2,14 @@ package com.dodo.marcket.business.shoppingcar.constrant;
 
 
 import com.dodo.marcket.base.BaseView;
+import com.dodo.marcket.bean.AliPayBean;
 import com.dodo.marcket.bean.DisCountBean;
 import com.dodo.marcket.bean.GoToPayBean;
+import com.dodo.marcket.bean.MakeOrderBean;
 import com.dodo.marcket.bean.MyAddressBean;
 import com.dodo.marcket.bean.PayMethodBean;
 import com.dodo.marcket.bean.SelectPostTimeBean;
+import com.dodo.marcket.bean.params.GoToPayParamsBean;
 import com.dodo.marcket.bean.params.PayBean;
 import com.dodo.marcket.bean.params.PayParamsFatherBean;
 
@@ -28,6 +31,10 @@ public class GoToPayContract {
         void getPayMethod(List<PayMethodBean> s);
 
         void getDisCount(List<DisCountBean> s);
+
+        void makeOrderId(MakeOrderBean s);
+
+        void payOrder(AliPayBean s);
     }
 
     public interface Presenter {
@@ -40,5 +47,9 @@ public class GoToPayContract {
         void getPayMethod();
 
         void getDisCount(int status);
+
+        void makeOrderId(GoToPayParamsBean goToPayParamsBean);
+
+        void payOrder(String sn);
     }
 }

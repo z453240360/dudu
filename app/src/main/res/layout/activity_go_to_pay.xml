@@ -4,8 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
     android:background="@color/mainbackground"
+    android:orientation="vertical"
     tools:context=".business.shoppingcar.activity.GoToPayActivity">
 
     <include
@@ -13,10 +13,10 @@
         layout="@layout/layout_toolbar" />
 
     <android.support.v4.widget.NestedScrollView
-        android:scrollbars="none"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_weight="1">
+        android:layout_weight="1"
+        android:scrollbars="none">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -44,35 +44,35 @@
 
 
                     <TextView
-                        android:textSize="18sp"
-                        android:textColor="@color/black_333333"
-                        android:layout_weight="1"
                         android:layout_width="0dp"
                         android:layout_height="match_parent"
+                        android:layout_weight="1"
                         android:gravity="center"
-                        android:text="添加收获地址" />
+                        android:text="添加收获地址"
+                        android:textColor="@color/black_333333"
+                        android:textSize="18sp" />
 
                     <ImageView
-                        android:src="@mipmap/rightbutton"
                         android:layout_width="wrap_content"
-                        android:layout_height="match_parent" />
+                        android:layout_height="match_parent"
+                        android:src="@mipmap/rightbutton" />
                 </LinearLayout>
 
                 <LinearLayout
-                    android:paddingRight="@dimen/dimen_10dp"
-                    android:paddingLeft="@dimen/dimen_10dp"
                     android:id="@+id/mLL_showAddress2"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
                     android:gravity="center"
-                    android:orientation="horizontal">
+                    android:orientation="horizontal"
+                    android:paddingLeft="@dimen/dimen_10dp"
+                    android:paddingRight="@dimen/dimen_10dp">
 
 
                     <LinearLayout
-                        android:layout_weight="1"
                         android:layout_width="wrap_content"
                         android:layout_height="match_parent"
+                        android:layout_weight="1"
                         android:orientation="vertical">
 
                         <LinearLayout
@@ -83,45 +83,45 @@
                             android:orientation="horizontal">
 
                             <TextView
-                                android:textSize="14sp"
-                                android:textColor="@color/black_333333"
                                 android:id="@+id/mTxt_goToPayAddressName"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:gravity="center_vertical"
-                                android:text="名字" />
+                                android:text="名字"
+                                android:textColor="@color/black_333333"
+                                android:textSize="14sp" />
 
                             <TextView
-                                android:textSize="14sp"
-                                android:textColor="@color/black_333333"
                                 android:id="@+id/mTxt_goToPayAddressPhone"
-                                android:layout_marginLeft="@dimen/dimen_10dp"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
+                                android:layout_marginLeft="@dimen/dimen_10dp"
                                 android:layout_weight="1"
                                 android:gravity="center_vertical"
-                                android:text="18912367774" />
+                                android:text="18912367774"
+                                android:textColor="@color/black_333333"
+                                android:textSize="14sp" />
 
                         </LinearLayout>
 
 
                         <TextView
-                            android:textSize="14sp"
-                            android:textColor="@color/black_333333"
                             android:id="@+id/mTxt_goToPayAddress"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
                             android:gravity="center_vertical"
-                            android:text="我是收货地址" />
+                            android:text="我是收货地址"
+                            android:textColor="@color/black_333333"
+                            android:textSize="14sp" />
                     </LinearLayout>
+
                     <ImageView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:src="@mipmap/rightbutton" />
 
                 </LinearLayout>
-
 
 
             </LinearLayout>
@@ -158,10 +158,10 @@
                         android:textSize="16sp" />
 
                     <TextView
-                        android:gravity="right|center_vertical"
                         android:id="@+id/mTxt_arriveTime"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:gravity="right|center_vertical"
                         android:paddingRight="@dimen/dimen_10dp"
                         android:text="四大四大大道阿斯顿456789"
                         android:textColor="#888888"
@@ -196,11 +196,11 @@
                         android:textSize="16sp" />
 
                     <TextView
-                        android:gravity="right|center_vertical"
                         android:id="@+id/mTxt_payMethed"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginRight="@dimen/dimen_5dp"
+                        android:gravity="right|center_vertical"
                         android:hint="请选择支付方式"
                         android:textColor="#888888"
                         android:textSize="16sp" />
@@ -218,34 +218,34 @@
 
             <!--商品列表-->
             <LinearLayout
-                android:descendantFocusability="blocksDescendants"
-                android:gravity="top"
-                android:layout_weight="1"
                 android:id="@+id/mLL_proList"
-                android:paddingRight="@dimen/dimen_10dp"
-                android:paddingLeft="@dimen/dimen_10dp"
-                android:paddingBottom="@dimen/dimen_10dp"
-                android:layout_marginTop="@dimen/dimen_10dp"
-                android:background="@color/white"
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
-                android:orientation="vertical">
+                android:layout_marginTop="@dimen/dimen_10dp"
+                android:layout_weight="1"
+                android:background="@color/white"
+                android:descendantFocusability="blocksDescendants"
+                android:gravity="top"
+                android:orientation="vertical"
+                android:paddingBottom="@dimen/dimen_10dp"
+                android:paddingLeft="@dimen/dimen_10dp"
+                android:paddingRight="@dimen/dimen_10dp">
 
 
                 <TextView
-                    android:layout_marginTop="@dimen/dimen_10dp"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/dimen_10dp"
                     android:text="商品列表"
                     android:textColor="#333333"
                     android:textSize="16sp" />
 
                 <android.support.v7.widget.RecyclerView
-                    android:layout_marginTop="@dimen/dimen_10dp"
-                    android:layout_weight="1"
                     android:id="@+id/mRv_product"
                     android:layout_width="match_parent"
-                    android:layout_height="0dp"/>
+                    android:layout_height="0dp"
+                    android:layout_marginTop="@dimen/dimen_10dp"
+                    android:layout_weight="1" />
 
             </LinearLayout>
 
@@ -269,10 +269,10 @@
                     android:textSize="16sp" />
 
                 <TextView
-                    android:gravity="right|center_vertical"
                     android:id="@+id/mTxt_give"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:gravity="right|center_vertical"
                     android:paddingRight="@dimen/dimen_10dp"
                     android:text="土豆一箱"
                     android:textColor="@color/black_333333"
@@ -312,10 +312,10 @@
                         android:textSize="16sp" />
 
                     <TextView
-                        android:gravity="right|center_vertical"
                         android:id="@+id/mTxt_coupon"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:gravity="right|center_vertical"
                         android:paddingRight="@dimen/dimen_10dp"
                         android:text="满100见面100元"
                         android:textColor="#888888"
@@ -350,11 +350,11 @@
                         android:textSize="16sp" />
 
                     <TextView
-                        android:gravity="right|center_vertical"
                         android:id="@+id/mTxt_point"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginRight="@dimen/dimen_5dp"
+                        android:gravity="right|center_vertical"
                         android:hint="无可用"
                         android:textColor="#888888"
                         android:textSize="16sp" />
@@ -390,18 +390,18 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:text="商品实付金额"
+                        android:text="商品应付金额"
                         android:textColor="#333333"
                         android:textSize="16sp" />
 
                     <TextView
-                        android:gravity="right|center_vertical"
                         android:id="@+id/mTxt_realPay"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:gravity="right|center_vertical"
                         android:paddingRight="@dimen/dimen_10dp"
                         android:text="￥100元"
-                        android:textColor="#888888"
+                        android:textColor="#333333"
                         android:textSize="16sp" />
                 </LinearLayout>
 
@@ -425,15 +425,170 @@
                         android:textSize="16sp" />
 
                     <TextView
-                        android:gravity="right|center_vertical"
                         android:id="@+id/mTxt_postMoney"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginRight="@dimen/dimen_5dp"
-                        android:hint="无可用"
-                        android:textColor="#888888"
+                        android:gravity="right|center_vertical"
+                        android:hint="0"
+                        android:textColor="@color/org_f39700"
                         android:textSize="16sp" />
                 </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="0.2dp"
+                    android:background="#dddddd" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="45dp"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="筐押金"
+                        android:textColor="#333333"
+                        android:textSize="16sp" />
+
+                    <TextView
+                        android:id="@+id/mTxt_boxMoney"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginRight="@dimen/dimen_5dp"
+                        android:gravity="right|center_vertical"
+                        android:hint="0"
+                        android:textColor="@color/org_f39700"
+                        android:textSize="16sp" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="0.2dp"
+                    android:background="#dddddd" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="45dp"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="优惠券"
+                        android:textColor="#333333"
+                        android:textSize="16sp" />
+
+                    <TextView
+                        android:id="@+id/mTxt_discountMoney"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginRight="@dimen/dimen_5dp"
+                        android:gravity="right|center_vertical"
+                        android:hint="0"
+                        android:textColor="@color/org_f39700"
+                        android:textSize="16sp" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="0.2dp"
+                    android:background="#dddddd" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="45dp"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="积分抵扣"
+                        android:textColor="#333333"
+                        android:textSize="16sp" />
+
+                    <TextView
+                        android:id="@+id/mTxt_pointMoney"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginRight="@dimen/dimen_5dp"
+                        android:gravity="right|center_vertical"
+                        android:hint="0"
+                        android:textColor="@color/org_f39700"
+                        android:textSize="16sp" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="0.2dp"
+                    android:background="#dddddd" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="45dp"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="在线支付"
+                        android:textColor="#333333"
+                        android:textSize="16sp" />
+
+                    <TextView
+                        android:id="@+id/mTxt_payOnlineMoney"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginRight="@dimen/dimen_5dp"
+                        android:gravity="right|center_vertical"
+                        android:hint="0"
+                        android:textColor="@color/org_f39700"
+                        android:textSize="16sp" />
+                </LinearLayout>
+            </LinearLayout>
+
+            <LinearLayout
+                android:padding="@dimen/dimen_10dp"
+                android:layout_marginBottom="@dimen/dimen_10dp"
+                android:id="@+id/mLL_say"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/dimen_10dp"
+                android:background="@color/white"
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                >
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:text="商家留言"
+                    android:textColor="#333333"
+                    android:textSize="16sp" />
+
+                <EditText
+                    android:layout_marginLeft="@dimen/dimen_10dp"
+                    android:background="@color/white"
+                    android:layout_weight="1"
+                    android:id="@+id/mEd_say"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:gravity="left|center_vertical"
+                    android:paddingRight="@dimen/dimen_10dp"
+                    android:hint="请输入您的留言"
+                    android:textColor="@color/black_333333"
+                    android:textSize="16sp" />
+
+
             </LinearLayout>
         </LinearLayout>
 
@@ -499,6 +654,7 @@
                         android:textSize="12sp" />
 
                     <TextView
+                        android:id="@+id/mTxt_finalMony"
                         android:layout_width="wrap_content"
                         android:layout_height="match_parent"
                         android:layout_marginLeft="@dimen/dimen_10dp"

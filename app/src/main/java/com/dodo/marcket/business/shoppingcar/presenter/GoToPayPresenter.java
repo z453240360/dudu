@@ -3,13 +3,17 @@ package com.dodo.marcket.business.shoppingcar.presenter;
 
 
 import com.dodo.marcket.base.BasePresenter;
+import com.dodo.marcket.bean.AliPayBean;
 import com.dodo.marcket.bean.DisCountBean;
 import com.dodo.marcket.bean.GoToPayBean;
+import com.dodo.marcket.bean.MakeOrderBean;
 import com.dodo.marcket.bean.MyAddressBean;
 import com.dodo.marcket.bean.PayMethodBean;
 import com.dodo.marcket.bean.SelectPostTimeBean;
 import com.dodo.marcket.bean.basebean.PhoneBean;
+import com.dodo.marcket.bean.params.GoToPayParamsBean;
 import com.dodo.marcket.bean.params.PayBean;
+import com.dodo.marcket.bean.params.PayOrderParamsBean;
 import com.dodo.marcket.bean.params.PayParamsFatherBean;
 import com.dodo.marcket.business.shoppingcar.activity.GoToPayActivity;
 import com.dodo.marcket.business.shoppingcar.constrant.GoToPayContract;
@@ -34,9 +38,6 @@ public class GoToPayPresenter extends BasePresenter<GoToPayActivity> implements 
         String name = "cart.payProducts";
 
         phoneBean.setCartItemParamList(payList);
-
-
-
         addSubscription(apiModel.payProducts(ParamsUtils.getParams(new Gson().toJson(phoneBean),name,mToken)), new ResponseSubscriber<GoToPayBean>(mContext) {
 
             @Override
@@ -120,6 +121,43 @@ public class GoToPayPresenter extends BasePresenter<GoToPayActivity> implements 
             @Override
             public void apiSuccess(List<DisCountBean> s) {
                 mView.getDisCount(s);
+            }
+
+            @Override
+            public void apiError(APIException e) {
+                mView.showErrorMsg(e.getMessage(),e.code);
+            }
+        });
+    }
+
+    //传递参数生成订单信息
+    @Override
+    public void makeOrderId(GoToPayParamsBean goToPayParamsBean) {
+        String name = "order.save";
+        addSubscription(apiModel.makeOrderId(ParamsUtils.getParams(new Gson().toJson(goToPayParamsBean),name,mToken)), new ResponseSubscriber<MakeOrderBean>(mContext) {
+
+            @Override
+            public void apiSuccess(MakeOrderBean s) {
+                mView.makeOrderId(s);
+            }
+
+            @Override
+            public void apiError(APIException e) {
+                mView.showErrorMsg(e.getMessage(),e.code);
+            }
+        });
+    }
+
+    @Override
+    public void payOrder(String sn) {
+        PayOrderParamsBean payOrderParamsBean = new PayOrderParamsBean();
+        payOrderParamsBean.setOrderSN(sn);
+        String name = "order.pay";
+        addSubscription(apiModel.payOrder(ParamsUtils.getParams(new Gson().toJson(payOrderParamsBean),name,mToken)), new ResponseSubscriber<AliPayBean>(mContext) {
+
+            @Override
+            public void apiSuccess(AliPayBean s) {
+                mView.payOrder(s);
             }
 
             @Override

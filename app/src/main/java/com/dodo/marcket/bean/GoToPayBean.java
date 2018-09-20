@@ -18,13 +18,13 @@ public class GoToPayBean {
      */
 
     private double boxAmount;
-    private int freight;
+    private double freight;
     private double onlineDiscount;
     private double productAmount;
-    private Object receiverInfo;
-    private int userPoint;
-    private List<?> anHaos;
-    private List<CartsBean> carts;
+    private MyAddressBean receiverInfo;
+    private double userPoint;
+    private List<DisCountBean> anHaos;
+    private List<CartItemsBean> carts;
     private List<GiftItemInfosBean> giftItemInfos;
     private List<PaymentMethodsBean> paymentMethods;
 
@@ -36,11 +36,11 @@ public class GoToPayBean {
         this.boxAmount = boxAmount;
     }
 
-    public int getFreight() {
+    public double getFreight() {
         return freight;
     }
 
-    public void setFreight(int freight) {
+    public void setFreight(double freight) {
         this.freight = freight;
     }
 
@@ -60,35 +60,35 @@ public class GoToPayBean {
         this.productAmount = productAmount;
     }
 
-    public Object getReceiverInfo() {
+    public MyAddressBean getReceiverInfo() {
         return receiverInfo;
     }
 
-    public void setReceiverInfo(Object receiverInfo) {
+    public void setReceiverInfo(MyAddressBean receiverInfo) {
         this.receiverInfo = receiverInfo;
     }
 
-    public int getUserPoint() {
+    public double getUserPoint() {
         return userPoint;
     }
 
-    public void setUserPoint(int userPoint) {
+    public void setUserPoint(double userPoint) {
         this.userPoint = userPoint;
     }
 
-    public List<?> getAnHaos() {
+    public List<DisCountBean> getAnHaos() {
         return anHaos;
     }
 
-    public void setAnHaos(List<?> anHaos) {
+    public void setAnHaos(List<DisCountBean> anHaos) {
         this.anHaos = anHaos;
     }
 
-    public List<CartsBean> getCarts() {
+    public List<CartItemsBean> getCarts() {
         return carts;
     }
 
-    public void setCarts(List<CartsBean> carts) {
+    public void setCarts(List<CartItemsBean> carts) {
         this.carts = carts;
     }
 
@@ -108,197 +108,197 @@ public class GoToPayBean {
         this.paymentMethods = paymentMethods;
     }
 
-    public static class CartsBean {
-        /**
-         * productInfo : {"boxCode":"","boxPrice":null,"cartNumber":0,"id":13,"image":"http://s1.12chu.com/default/512-512.png","isGift":false,"memo":"","name":"test","packaging":"纸盒","price":111,"specificationNumber":0,"stock":32,"tag":"","unit":"","unitPrice":0.091585,"weight":1212}
-         * quantity : 2
-         */
-
-        private ProductInfoBean productInfo;
-        private int quantity;
-
-        public ProductInfoBean getProductInfo() {
-            return productInfo;
-        }
-
-        public void setProductInfo(ProductInfoBean productInfo) {
-            this.productInfo = productInfo;
-        }
-
-        public int getQuantity() {
-            return quantity;
-        }
-
-        public void setQuantity(int quantity) {
-            this.quantity = quantity;
-        }
-
-        public static class ProductInfoBean {
-            /**
-             * boxCode :
-             * boxPrice : null
-             * cartNumber : 0
-             * id : 13
-             * image : http://s1.12chu.com/default/512-512.png
-             * isGift : false
-             * memo :
-             * name : test
-             * packaging : 纸盒
-             * price : 111.0
-             * specificationNumber : 0
-             * stock : 32
-             * tag :
-             * unit :
-             * unitPrice : 0.091585
-             * weight : 1212
-             */
-
-            private String boxCode;
-            private Object boxPrice;
-            private int cartNumber;
-            private int id;
-            private String image;
-            private boolean isGift;
-            private String memo;
-            private String name;
-            private String packaging;
-            private double price;
-            private int specificationNumber;
-            private int stock;
-            private String tag;
-            private String unit;
-            private double unitPrice;
-            private int weight;
-
-            public String getBoxCode() {
-                return boxCode;
-            }
-
-            public void setBoxCode(String boxCode) {
-                this.boxCode = boxCode;
-            }
-
-            public Object getBoxPrice() {
-                return boxPrice;
-            }
-
-            public void setBoxPrice(Object boxPrice) {
-                this.boxPrice = boxPrice;
-            }
-
-            public int getCartNumber() {
-                return cartNumber;
-            }
-
-            public void setCartNumber(int cartNumber) {
-                this.cartNumber = cartNumber;
-            }
-
-            public int getId() {
-                return id;
-            }
-
-            public void setId(int id) {
-                this.id = id;
-            }
-
-            public String getImage() {
-                return image;
-            }
-
-            public void setImage(String image) {
-                this.image = image;
-            }
-
-            public boolean isIsGift() {
-                return isGift;
-            }
-
-            public void setIsGift(boolean isGift) {
-                this.isGift = isGift;
-            }
-
-            public String getMemo() {
-                return memo;
-            }
-
-            public void setMemo(String memo) {
-                this.memo = memo;
-            }
-
-            public String getName() {
-                return name;
-            }
-
-            public void setName(String name) {
-                this.name = name;
-            }
-
-            public String getPackaging() {
-                return packaging;
-            }
-
-            public void setPackaging(String packaging) {
-                this.packaging = packaging;
-            }
-
-            public double getPrice() {
-                return price;
-            }
-
-            public void setPrice(double price) {
-                this.price = price;
-            }
-
-            public int getSpecificationNumber() {
-                return specificationNumber;
-            }
-
-            public void setSpecificationNumber(int specificationNumber) {
-                this.specificationNumber = specificationNumber;
-            }
-
-            public int getStock() {
-                return stock;
-            }
-
-            public void setStock(int stock) {
-                this.stock = stock;
-            }
-
-            public String getTag() {
-                return tag;
-            }
-
-            public void setTag(String tag) {
-                this.tag = tag;
-            }
-
-            public String getUnit() {
-                return unit;
-            }
-
-            public void setUnit(String unit) {
-                this.unit = unit;
-            }
-
-            public double getUnitPrice() {
-                return unitPrice;
-            }
-
-            public void setUnitPrice(double unitPrice) {
-                this.unitPrice = unitPrice;
-            }
-
-            public int getWeight() {
-                return weight;
-            }
-
-            public void setWeight(int weight) {
-                this.weight = weight;
-            }
-        }
-    }
+//    public static class CartsBean {
+//        /**
+//         * productInfo : {"boxCode":"","boxPrice":null,"cartNumber":0,"id":13,"image":"http://s1.12chu.com/default/512-512.png","isGift":false,"memo":"","name":"test","packaging":"纸盒","price":111,"specificationNumber":0,"stock":32,"tag":"","unit":"","unitPrice":0.091585,"weight":1212}
+//         * quantity : 2
+//         */
+//
+//        private ProductInfoBean productInfo;
+//        private int quantity;
+//
+//        public ProductInfoBean getProductInfo() {
+//            return productInfo;
+//        }
+//
+//        public void setProductInfo(ProductInfoBean productInfo) {
+//            this.productInfo = productInfo;
+//        }
+//
+//        public int getQuantity() {
+//            return quantity;
+//        }
+//
+//        public void setQuantity(int quantity) {
+//            this.quantity = quantity;
+//        }
+//
+//        public static class ProductInfoBean {
+//            /**
+//             * boxCode :
+//             * boxPrice : null
+//             * cartNumber : 0
+//             * id : 13
+//             * image : http://s1.12chu.com/default/512-512.png
+//             * isGift : false
+//             * memo :
+//             * name : test
+//             * packaging : 纸盒
+//             * price : 111.0
+//             * specificationNumber : 0
+//             * stock : 32
+//             * tag :
+//             * unit :
+//             * unitPrice : 0.091585
+//             * weight : 1212
+//             */
+//
+//            private String boxCode;
+//            private Object boxPrice;
+//            private int cartNumber;
+//            private int id;
+//            private String image;
+//            private boolean isGift;
+//            private String memo;
+//            private String name;
+//            private String packaging;
+//            private double price;
+//            private int specificationNumber;
+//            private int stock;
+//            private String tag;
+//            private String unit;
+//            private double unitPrice;
+//            private int weight;
+//
+//            public String getBoxCode() {
+//                return boxCode;
+//            }
+//
+//            public void setBoxCode(String boxCode) {
+//                this.boxCode = boxCode;
+//            }
+//
+//            public Object getBoxPrice() {
+//                return boxPrice;
+//            }
+//
+//            public void setBoxPrice(Object boxPrice) {
+//                this.boxPrice = boxPrice;
+//            }
+//
+//            public int getCartNumber() {
+//                return cartNumber;
+//            }
+//
+//            public void setCartNumber(int cartNumber) {
+//                this.cartNumber = cartNumber;
+//            }
+//
+//            public int getId() {
+//                return id;
+//            }
+//
+//            public void setId(int id) {
+//                this.id = id;
+//            }
+//
+//            public String getImage() {
+//                return image;
+//            }
+//
+//            public void setImage(String image) {
+//                this.image = image;
+//            }
+//
+//            public boolean isIsGift() {
+//                return isGift;
+//            }
+//
+//            public void setIsGift(boolean isGift) {
+//                this.isGift = isGift;
+//            }
+//
+//            public String getMemo() {
+//                return memo;
+//            }
+//
+//            public void setMemo(String memo) {
+//                this.memo = memo;
+//            }
+//
+//            public String getName() {
+//                return name;
+//            }
+//
+//            public void setName(String name) {
+//                this.name = name;
+//            }
+//
+//            public String getPackaging() {
+//                return packaging;
+//            }
+//
+//            public void setPackaging(String packaging) {
+//                this.packaging = packaging;
+//            }
+//
+//            public double getPrice() {
+//                return price;
+//            }
+//
+//            public void setPrice(double price) {
+//                this.price = price;
+//            }
+//
+//            public int getSpecificationNumber() {
+//                return specificationNumber;
+//            }
+//
+//            public void setSpecificationNumber(int specificationNumber) {
+//                this.specificationNumber = specificationNumber;
+//            }
+//
+//            public int getStock() {
+//                return stock;
+//            }
+//
+//            public void setStock(int stock) {
+//                this.stock = stock;
+//            }
+//
+//            public String getTag() {
+//                return tag;
+//            }
+//
+//            public void setTag(String tag) {
+//                this.tag = tag;
+//            }
+//
+//            public String getUnit() {
+//                return unit;
+//            }
+//
+//            public void setUnit(String unit) {
+//                this.unit = unit;
+//            }
+//
+//            public double getUnitPrice() {
+//                return unitPrice;
+//            }
+//
+//            public void setUnitPrice(double unitPrice) {
+//                this.unitPrice = unitPrice;
+//            }
+//
+//            public int getWeight() {
+//                return weight;
+//            }
+//
+//            public void setWeight(int weight) {
+//                this.weight = weight;
+//            }
+//        }
+//    }
 
     public static class GiftItemInfosBean {
         /**

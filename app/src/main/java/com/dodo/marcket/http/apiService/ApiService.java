@@ -1,6 +1,7 @@
 package com.dodo.marcket.http.apiService;
 
 
+import com.dodo.marcket.bean.AliPayBean;
 import com.dodo.marcket.bean.BackBoxBean;
 import com.dodo.marcket.bean.BannerBean;
 import com.dodo.marcket.bean.ChildAddressBean;
@@ -10,6 +11,7 @@ import com.dodo.marcket.bean.GoToPayBean;
 import com.dodo.marcket.bean.HomePageActivityBean;
 import com.dodo.marcket.bean.HotBean;
 import com.dodo.marcket.bean.LoginBean;
+import com.dodo.marcket.bean.MakeOrderBean;
 import com.dodo.marcket.bean.MyAddressBean;
 import com.dodo.marcket.bean.MyBackBoxBean;
 import com.dodo.marcket.bean.PayMethodBean;
@@ -187,5 +189,12 @@ public interface ApiService {
     @POST(Api.url)
     Observable<BResponse<List<PayMethodBean>>> payfunctions(@Body RequestBody verifyCode);
 
+    //结算----生成订单编号
+    @POST(Api.url)
+    Observable<BResponse<MakeOrderBean>> makeOrderId(@Body RequestBody verifyCode);
+
+    //结算----吊起支付信息
+    @POST(Api.url)
+    Observable<BResponse<AliPayBean>> payOrder(@Body RequestBody verifyCode);
 
 }

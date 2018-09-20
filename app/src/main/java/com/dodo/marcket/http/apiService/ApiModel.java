@@ -200,4 +200,15 @@ public class ApiModel {
     public Observable<BResponse> payfunctions(RequestBody body) {
         return RetroUtils.getApi().payfunctions(body).flatMap(FlatProvider.<BResponse>flat());
     }
+
+    //结算页面----生成订单编号
+    public Observable<BResponse> makeOrderId(RequestBody body) {
+        return RetroUtils.getApi().makeOrderId(body).flatMap(FlatProvider.<BResponse>flat());
+    }
+
+    //结算页面----吊起支付
+    public Observable<BResponse> payOrder(RequestBody body) {
+        return RetroUtils.getApi().payOrder(body).flatMap(FlatProvider.<BResponse>flat());
+    }
+
 }

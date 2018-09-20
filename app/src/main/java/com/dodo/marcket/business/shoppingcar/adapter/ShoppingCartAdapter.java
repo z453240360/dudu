@@ -10,6 +10,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.dodo.marcket.R;
+import com.dodo.marcket.bean.CartItemsBean;
 import com.dodo.marcket.bean.ProducHeadBean;
 import com.dodo.marcket.bean.ProductBean;
 import com.dodo.marcket.bean.ProductParmsBean;
@@ -34,9 +35,9 @@ public class ShoppingCartAdapter extends RecyclerView.Adapter<ShoppingCartAdapte
 
     private Context mContext;
     private LayoutInflater mInflater;
-    private List<ShoppingCarBean.CartItemsBean> mDatas = new ArrayList<>();
+    private List<CartItemsBean> mDatas = new ArrayList<>();
 
-    public ShoppingCartAdapter(Context context, List<ShoppingCarBean.CartItemsBean> datas) {
+    public ShoppingCartAdapter(Context context, List<CartItemsBean> datas) {
         this.mInflater = LayoutInflater.from(context);
         mDatas = datas;
         this.mContext = context;
@@ -58,8 +59,8 @@ public class ShoppingCartAdapter extends RecyclerView.Adapter<ShoppingCartAdapte
     public void onBindViewHolder(final MyViewHolder holder, final int position) {
 
 //        final ProductBean productBean = mDatas.get(position).getProductInfo();
-        ShoppingCarBean.CartItemsBean cartItemsBean = mDatas.get(position);
-        final ShoppingCarBean.CartItemsBean.ProductInfoBean productBean = cartItemsBean.getProductInfo();
+        CartItemsBean cartItemsBean = mDatas.get(position);
+        final CartItemsBean.ProductInfoBean productBean = cartItemsBean.getProductInfo();
         boolean isCanBuy = false;
         if (productBean.getStock() == null) {
             isCanBuy = true;

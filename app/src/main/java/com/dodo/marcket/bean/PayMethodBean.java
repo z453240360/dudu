@@ -11,10 +11,10 @@ public class PayMethodBean {
      */
 
     private String code;
-    private int id;
-    private int methons;
+    private long id;
+    private long methons;
     private String name;
-    private int orders;
+    private long orders;
     private boolean isSelected = false;
 
 
@@ -34,19 +34,19 @@ public class PayMethodBean {
         this.code = code;
     }
 
-    public int getId() {
+    public long getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(long id) {
         this.id = id;
     }
 
-    public int getMethons() {
+    public long getMethons() {
         return methons;
     }
 
-    public void setMethons(int methons) {
+    public void setMethons(long methons) {
         this.methons = methons;
     }
 
@@ -58,11 +58,11 @@ public class PayMethodBean {
         this.name = name;
     }
 
-    public int getOrders() {
+    public long getOrders() {
         return orders;
     }
 
-    public void setOrders(int orders) {
+    public void setOrders(long orders) {
         this.orders = orders;
     }
 }

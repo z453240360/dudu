@@ -10,6 +10,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.dodo.marcket.R;
+import com.dodo.marcket.bean.CartItemsBean;
 import com.dodo.marcket.bean.GoToPayBean;
 import com.dodo.marcket.utils.ImageLoaders;
 import com.dodo.marcket.wedget.CircleImageView;
@@ -30,9 +31,9 @@ public class PayAdapter extends RecyclerView.Adapter<PayAdapter.MyViewHolder> {
 
     private Context mContext;
     private LayoutInflater mInflater;
-    private List<GoToPayBean.CartsBean> mDatas = new ArrayList<>();
+    private List<CartItemsBean> mDatas = new ArrayList<>();
 
-    public PayAdapter(Context context, List<GoToPayBean.CartsBean> datas) {
+    public PayAdapter(Context context, List<CartItemsBean> datas) {
         this.mInflater = LayoutInflater.from(context);
         mDatas = datas;
         this.mContext = context;
@@ -52,8 +53,8 @@ public class PayAdapter extends RecyclerView.Adapter<PayAdapter.MyViewHolder> {
 
     @Override
     public void onBindViewHolder(final MyViewHolder holder, final int position) {
-        GoToPayBean.CartsBean cartsBean = mDatas.get(position);
-        GoToPayBean.CartsBean.ProductInfoBean productBean = cartsBean.getProductInfo();
+        CartItemsBean cartsBean = mDatas.get(position);
+        CartItemsBean.ProductInfoBean productBean = cartsBean.getProductInfo();
         int quantity = cartsBean.getQuantity();
         boolean isCanBuy = true;
 //        if (productBean.getStock() == null) {
