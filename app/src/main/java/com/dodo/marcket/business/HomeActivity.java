@@ -1,10 +1,13 @@
 package com.dodo.marcket.business;
 
 
+import android.content.Intent;
+import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.view.View;
 import android.widget.FrameLayout;
+import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
@@ -13,6 +16,7 @@ import com.dodo.marcket.R;
 import com.dodo.marcket.base.BaseActivity;
 import com.dodo.marcket.bean.BannerBean;
 import com.dodo.marcket.bean.basebean.MyMessageEvent;
+import com.dodo.marcket.business.clasify.activity.ClasifyActivity;
 import com.dodo.marcket.business.clasify.fragment.ClassifyFragment;
 import com.dodo.marcket.business.homepage.constrant.HomeContract;
 import com.dodo.marcket.business.homepage.fragment.HomePageFragment;
@@ -30,6 +34,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
+import butterknife.ButterKnife;
+import butterknife.OnClick;
 import q.rorbin.badgeview.QBadgeView;
 
 public class HomeActivity extends BaseActivity<HomePresenter> implements HomeContract.View {
@@ -41,8 +47,8 @@ public class HomeActivity extends BaseActivity<HomePresenter> implements HomeCon
     RadioGroup group;
     @BindView(R.id.rb_home)
     MyRadioButton rbHome;
-    @BindView(R.id.rb_classify)
-    MyRadioButton rbClassify;
+    @BindView(R.id.LL_classify)
+    LinearLayout rbClassify;
     @BindView(R.id.rb_buyCar)
     MyRadioButton rbBuyCar;
     @BindView(R.id.rb_mime)
@@ -58,6 +64,7 @@ public class HomeActivity extends BaseActivity<HomePresenter> implements HomeCon
     private ShoppingCartFragment shoppingCartFragment;
     private HomePageFragment homePageFragment;
     private QBadgeView badgeView;
+    private int fromWhere = 0;
 
     @Override
     public int getLayoutId() {
@@ -73,7 +80,6 @@ public class HomeActivity extends BaseActivity<HomePresenter> implements HomeCon
     public void loadData() {
         EventBus.getDefault().register(this);
         initFragment();
-
         mPresenter.getBanner(2);
     }
 
@@ -107,7 +113,7 @@ public class HomeActivity extends BaseActivity<HomePresenter> implements HomeCon
         classifyFragment = new ClassifyFragment();
         shoppingCartFragment = new ShoppingCartFragment();
         fragmentsList.add(homePageFragment);
-        fragmentsList.add(classifyFragment);
+//        fragmentsList.add(classifyFragment);
         fragmentsList.add(shoppingCartFragment);
         fragmentsList.add(mineFragment);
 
@@ -133,29 +139,46 @@ public class HomeActivity extends BaseActivity<HomePresenter> implements HomeCon
     @Override
     protected void onResume() {
         super.onResume();
+
+//        selectRg(fromWhere);
+
         updateCarNum();
+    }
+
+    @Override
+    protected void onNewIntent(Intent intent) {
+        super.onNewIntent(intent);
+        if(intent!=null){
+            Bundle extras = intent.getExtras();
+            if (extras!=null) {
+                fromWhere = extras.getInt("fromWhere", 0);
+                selectRg(fromWhere);
+            }
+        }
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void getCarMessage(MyMessageEvent event) {
 //        Toasty.error(mContext,"购物车数量："+event.getCarNum()+"").show();
+
+//        selectRg(event.getFromWhere());
     }
 
     //获取购物车数量
-    public void updateCarNum(){
+    public void updateCarNum() {
         mPresenter.getCarNum();
     }
 
     @Override
     public void getCarNum(int num) {
-        if (num<=0){
+        if (num <= 0) {
             mTxtCarNum.setVisibility(View.GONE);
-        }else if (num>99){
+        } else if (num > 99) {
             mTxtCarNum.setVisibility(View.VISIBLE);
             mTxtCarNum.setText("99+");
-        }else {
+        } else {
             mTxtCarNum.setVisibility(View.VISIBLE);
-            mTxtCarNum.setText(num+"");
+            mTxtCarNum.setText(num + "");
         }
 
         EventBus.getDefault().post(new MyMessageEvent(num));
@@ -166,4 +189,35 @@ public class HomeActivity extends BaseActivity<HomePresenter> implements HomeCon
 
     }
 
+    @OnClick({R.id.rb_home, R.id.LL_classify, R.id.rb_buyCar, R.id.rb_mime})
+    public void onViewClicked(View view) {
+        switch (view.getId()) {
+            case R.id.rb_home:
+                break;
+            case R.id.LL_classify:
+                startActivity(ClasifyActivity.class);
+                break;
+            case R.id.rb_buyCar:
+
+                break;
+            case R.id.rb_mime:
+
+                break;
+        }
+    }
+
+    //选中底部便签
+    public void selectRg(int pos){
+        switch (pos){
+            case 0:
+                rbHome.setChecked(true);
+                break;
+            case 1:
+                rbBuyCar.setChecked(true);
+                break;
+            case 2:
+                rbMime.setChecked(true);
+                break;
+        }
+    }
 }

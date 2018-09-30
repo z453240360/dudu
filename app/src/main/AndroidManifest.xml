@@ -7,6 +7,9 @@
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.CAMERA" />
+    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
 
     <application
         android:name=".base.App"
@@ -34,7 +37,9 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".business.HomeActivity" />
+        <activity
+            android:name=".business.HomeActivity"
+            android:launchMode="singleTask" />
         <activity android:name=".business.mine.activity.LoginActivity" />
         <activity android:name=".business.shoppingcar.activity.GoToPayActivity" />
         <activity android:name=".business.mine.activity.SalesManActivity" />
@@ -58,14 +63,22 @@
             android:configChanges="orientation|keyboardHidden|navigation|screenSize"
             android:exported="false"
             android:screenOrientation="behind"
-            android:windowSoftInputMode="adjustResize|stateHidden"></activity>
+            android:windowSoftInputMode="adjustResize|stateHidden" />
         <activity
             android:name="com.alipay.sdk.app.H5AuthActivity"
             android:configChanges="orientation|keyboardHidden|navigation"
             android:exported="false"
             android:screenOrientation="behind"
-            android:windowSoftInputMode="adjustResize|stateHidden"></activity>
-        <activity android:name="net.sourceforge.simcpux.wxapi.WXPayEntryActivity"></activity>
+            android:windowSoftInputMode="adjustResize|stateHidden" />
+
+        <!-- 微信支付 -->
+        <activity
+            android:name=".wxapi.WXPayEntryActivity"
+            android:exported="true"
+            android:launchMode="singleTop" />
+
+
+        <activity android:name=".business.mine.activity.CommentOrderActivity"></activity>
     </application>
 
 </manifest>

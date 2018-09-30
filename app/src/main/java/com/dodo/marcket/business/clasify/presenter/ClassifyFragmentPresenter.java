@@ -5,6 +5,7 @@ package com.dodo.marcket.business.clasify.presenter;
 import com.dodo.marcket.base.BasePresenter;
 import com.dodo.marcket.bean.FirstClassfyBean;
 import com.dodo.marcket.bean.LoginBean;
+import com.dodo.marcket.bean.ShoppingCarBean;
 import com.dodo.marcket.bean.basebean.PhoneBean;
 import com.dodo.marcket.business.clasify.constrant.ClassifyFragmentContract;
 import com.dodo.marcket.business.clasify.fragment.ClassifyFragment;
@@ -34,6 +35,27 @@ public class ClassifyFragmentPresenter extends BasePresenter<ClassifyFragment> i
             @Override
             public void apiSuccess(List<FirstClassfyBean> s) {
                 mView.getFirstKind(s);
+            }
+
+            @Override
+            public void apiError(APIException e) {
+                mView.showErrorMsg(e.getMessage(),e.code);
+            }
+        });
+    }
+
+    /**
+     * 获取购物车商品
+     */
+    @Override
+    public void getProducts() {
+        PhoneBean phoneBean = new PhoneBean();
+        String name = "cart.getProducts";
+        addSubscription(apiModel.getProducts(ParamsUtils.getParams(phoneBean,name,mToken)), new ResponseSubscriber<ShoppingCarBean>(mContext) {
+
+            @Override
+            public void apiSuccess(ShoppingCarBean s) {
+                mView.getProducts(s);
             }
 
             @Override

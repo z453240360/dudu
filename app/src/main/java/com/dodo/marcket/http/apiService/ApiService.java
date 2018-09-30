@@ -4,6 +4,7 @@ package com.dodo.marcket.http.apiService;
 import com.dodo.marcket.bean.AliPayBean;
 import com.dodo.marcket.bean.BackBoxBean;
 import com.dodo.marcket.bean.BannerBean;
+import com.dodo.marcket.bean.CancelOrderBean;
 import com.dodo.marcket.bean.ChildAddressBean;
 import com.dodo.marcket.bean.DisCountBean;
 import com.dodo.marcket.bean.FirstClassfyBean;
@@ -14,6 +15,7 @@ import com.dodo.marcket.bean.LoginBean;
 import com.dodo.marcket.bean.MakeOrderBean;
 import com.dodo.marcket.bean.MyAddressBean;
 import com.dodo.marcket.bean.MyBackBoxBean;
+import com.dodo.marcket.bean.OrderList;
 import com.dodo.marcket.bean.PayMethodBean;
 import com.dodo.marcket.bean.ProducHeadBean;
 import com.dodo.marcket.bean.ProductBean;
@@ -166,7 +168,7 @@ public interface ApiService {
 
     //购物车---修改数量
     @POST(Api.url)
-    Observable<BResponse<ProductBean>> mergeQty(@Body RequestBody verifyCode);
+    Observable<BResponse<Boolean>> mergeQty(@Body RequestBody verifyCode);
 
     //分类---搜索商品
     @POST(Api.url)
@@ -197,4 +199,20 @@ public interface ApiService {
     @POST(Api.url)
     Observable<BResponse<AliPayBean>> payOrder(@Body RequestBody verifyCode);
 
+
+    //订单----获取订单列表
+    @POST(Api.url)
+    Observable<BResponse<List<OrderList>>> getOrderList(@Body RequestBody verifyCode);
+
+    //订单----取消订单
+    @POST(Api.url)
+    Observable<BResponse<CancelOrderBean>> cancelOrder(@Body RequestBody verifyCode);
+
+    //订单----评价订单
+    @POST(Api.url)
+    Observable<BResponse<List<OrderList>>> getComment(@Body RequestBody verifyCode);
+
+    //订单----再次购买（批量添加购物车）
+    @POST(Api.url)
+    Observable<BResponse<List<OrderList>>> againOrder(@Body RequestBody verifyCode);
 }

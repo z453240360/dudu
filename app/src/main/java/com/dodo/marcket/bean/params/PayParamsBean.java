@@ -15,4 +15,12 @@ public class PayParamsBean implements Serializable {
     public void setCategoryId(long categoryId) {
         this.categoryId = categoryId;
     }
+
+    public long getId() {
+        return id;
+    }
+
+    public long getCategoryId() {
+        return categoryId;
+    }
 }

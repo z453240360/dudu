@@ -22,6 +22,12 @@ import java.util.List;
 public class BuyListFragmentPresenter extends BasePresenter<BuyListFragment> implements BuyListFragmentContract.Presenter{
 
 
+    /**
+     * 获取商品列表
+     * @param id
+     * @param page
+     * @param pageSize
+     */
     @Override
     public void getProductList(long id, int page, int pageSize) {
         PhoneBean phoneBean = new PhoneBean();
@@ -29,7 +35,7 @@ public class BuyListFragmentPresenter extends BasePresenter<BuyListFragment> imp
         phoneBean.setPageNumber(page);
         phoneBean.setPageSize(pageSize);
         String name = "product.getProductByCategoryId";
-        addSubscription(apiModel.getProductByCategoryId(ParamsUtils.getParams(phoneBean,name)), new ResponseSubscriber<List<ProductBean>>(mContext) {
+        addSubscription(apiModel.getProductByCategoryId(ParamsUtils.getParams(phoneBean,name)), new ResponseSubscriber<List<ProductBean>>(mContext,"获取商品") {
 
             @Override
             public void apiSuccess(List<ProductBean> s) {
@@ -54,7 +60,7 @@ public class BuyListFragmentPresenter extends BasePresenter<BuyListFragment> imp
         phoneBean.setQuantity(quantity);
         phoneBean.setProductParmsBean(productParmsBean);
         String name = "cart.addProduct";
-        addSubscription(apiModel.addProduct(ParamsUtils.getParams(phoneBean,name,mToken)), new ResponseSubscriber<Boolean>(mContext) {
+        addSubscription(apiModel.addProduct(ParamsUtils.getParams(phoneBean,name,mToken)), new ResponseSubscriber<Boolean>(mContext,"asdasd") {
 
             @Override
             public void apiSuccess(Boolean s) {
@@ -68,12 +74,13 @@ public class BuyListFragmentPresenter extends BasePresenter<BuyListFragment> imp
         });
     }
 
+    //获取商品详情
     @Override
     public void getProductDetailById(long id) {
         PhoneBean phoneBean = new PhoneBean();
         phoneBean.setId(id);
         String name = "product.getProductDetailById";
-        addSubscription(apiModel.getProductDetailById(ParamsUtils.getParams(phoneBean,name)), new ResponseSubscriber<ProductBean>(mContext) {
+        addSubscription(apiModel.getProductDetailById(ParamsUtils.getParams(phoneBean,name)), new ResponseSubscriber<ProductBean>(mContext,"获取商品详情") {
 
             @Override
             public void apiSuccess(ProductBean s) {

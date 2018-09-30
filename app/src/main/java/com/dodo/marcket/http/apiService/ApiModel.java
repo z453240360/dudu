@@ -211,4 +211,24 @@ public class ApiModel {
         return RetroUtils.getApi().payOrder(body).flatMap(FlatProvider.<BResponse>flat());
     }
 
+    //订单----获取订单列表
+    public Observable<BResponse> getOrderList(RequestBody body) {
+        return RetroUtils.getApi().getOrderList(body).flatMap(FlatProvider.<BResponse>flat());
+    }
+
+    //订单----取消订单
+    public Observable<BResponse> cancelOrder(RequestBody body) {
+        return RetroUtils.getApi().cancelOrder(body).flatMap(FlatProvider.<BResponse>flat());
+    }
+
+    //订单----评价订单
+    public Observable<BResponse> getComment(RequestBody body) {
+        return RetroUtils.getApi().getComment(body).flatMap(FlatProvider.<BResponse>flat());
+    }
+
+    //订单----再次购买（批量添加购物车）
+    public Observable<BResponse> againOrder(RequestBody body) {
+        return RetroUtils.getApi().againOrder(body).flatMap(FlatProvider.<BResponse>flat());
+    }
+
 }

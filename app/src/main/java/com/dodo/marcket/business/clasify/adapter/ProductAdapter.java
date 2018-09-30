@@ -55,6 +55,7 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.MyViewHo
         final ProductBean productBean = mDatas.get(position);
 
 
+
         boolean isCanBuy = false;
         if (productBean.getStock() == null) {
             isCanBuy = true;
@@ -63,6 +64,8 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.MyViewHo
         } else if (productBean.getStock() > 0){
             isCanBuy = true;
         }
+
+
 
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -113,13 +116,14 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.MyViewHo
             }
         });
 
+
         //添加购物车图标被点击
         holder.mImgAdd.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
                 int specificationNumber = productBean.getSpecificationNumber();
-                if (specificationNumber>=2){//多规格
+                if (specificationNumber>=1){//多规格
                     if (mListener != null) {
                         mListener.onMutiSizeClicked(position);
                     }
@@ -150,15 +154,24 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.MyViewHo
 
         holder.mTxtProductName.setText(productBean.getName());//名字
         holder.mTxtPrice.setText("¥"+productBean.getUnitPrice()+"/"+productBean.getUnit());//单价
-        holder.mTxtProductMsg.setText(productBean.getMemo());//描述
-        holder.mTxtProductPrice.setText(productBean.getUnitPrice()+"");//销售价格
+
+        if (productBean.getMemo().equals("")) {
+            holder.mTxtProductMsg.setVisibility(View.GONE);//描述
+        }else {
+            holder.mTxtProductMsg.setVisibility(View.VISIBLE);
+            holder.mTxtProductMsg.setText(productBean.getMemo());//描述
+        }
+
+        holder.mTxtProductPrice.setText(productBean.getPrice()+"");//销售价格
         holder.mTxtPackage.setText(productBean.getPackaging());//包装
         ImageLoaders.displayImage(holder.mImgProductImg,productBean.getImage());
 
         //是否显示已经售完
         if (isCanBuy){
+            holder.mImgAdd.setVisibility(View.VISIBLE);
             holder.mImgSalesOut.setVisibility(View.GONE);
         }else {
+            holder.mImgAdd.setVisibility(View.GONE);
             holder.mImgSalesOut.setVisibility(View.VISIBLE);
         }
 

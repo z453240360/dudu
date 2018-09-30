@@ -9,6 +9,7 @@ import android.view.View;
 import com.dodo.marcket.R;
 import com.dodo.marcket.base.BaseActivity;
 import com.dodo.marcket.business.mine.adapter.ViewPagerFragmentAdapter;
+import com.dodo.marcket.business.mine.adapter.ViewTestAdapter;
 import com.dodo.marcket.business.mine.constrant.MyOrderContract;
 import com.dodo.marcket.business.mine.fragment.OrderFragment;
 import com.dodo.marcket.business.mine.presenter.MyOrderPresenter;
@@ -28,7 +29,7 @@ public class MyOrderActivity extends BaseActivity<MyOrderPresenter> implements M
     ViewPager mViewPage;
     private List<Fragment> fragments = new ArrayList<>();
     private String[] titles = null;
-    private ViewPagerFragmentAdapter myPagerAdapter;
+    private ViewTestAdapter myPagerAdapter;
 
 
     @Override
@@ -43,7 +44,7 @@ public class MyOrderActivity extends BaseActivity<MyOrderPresenter> implements M
 
     @Override
     public void loadData() {
-        titles = new String[]{"全部","待处理","代发货","已发货","已完成"};
+        titles = new String[]{"全部","待付款","待发货","配送中","已完成","已取消"};
         setViewPagerAdapter();
         setTabBindViewPager();
     }
@@ -110,11 +111,11 @@ public class MyOrderActivity extends BaseActivity<MyOrderPresenter> implements M
     private void setViewPagerAdapter() {
         fragments.clear();
         for (int i = 0; i < titles.length; i++) {
-            fragments.add(new OrderFragment());
+            fragments.add(new OrderFragment(i));
         }
 
 
-        myPagerAdapter = new ViewPagerFragmentAdapter(getSupportFragmentManager(), titles, fragments);
+        myPagerAdapter = new ViewTestAdapter(getSupportFragmentManager(),fragments,titles);
         mViewPage.setAdapter(myPagerAdapter);
     }
 }

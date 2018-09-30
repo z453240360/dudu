@@ -20,7 +20,6 @@ import com.dodo.marcket.business.mine.activity.MyOrderActivity;
 import com.dodo.marcket.business.mine.activity.SalesManActivity;
 import com.dodo.marcket.business.mine.constrant.MineFragmentContract;
 import com.dodo.marcket.business.mine.presenter.MineFragmentPresenter;
-import com.dodo.marcket.utils.ScreenUtil;
 import com.dodo.marcket.utils.statusbar.StatusBarUtils;
 import com.dodo.marcket.wedget.CircleImageView;
 
@@ -75,6 +74,17 @@ public class MineFragment extends BaseFragment<MineFragmentPresenter> implements
     TextView mTxtMemberRank;
     @BindView(R.id.mTxt_point)
     TextView mTxtPoint;
+    @BindView(R.id.mTxt_waitPay)
+    TextView mTxtWaitPay;
+    @BindView(R.id.mTxt_waitSend)
+    TextView mTxtWaitSend;
+    @BindView(R.id.mTxt_waitPost)
+    TextView mTxtWaitPost;
+    @BindView(R.id.mTxt_waitFinish)
+    TextView mTxtWaitFinish;
+    @BindView(R.id.mTxt_waitCancel)
+    TextView mTxtWaitCancel;
+    Unbinder unbinder1;
 
 
     public static MineFragment getInstance() {
@@ -173,34 +183,55 @@ public class MineFragment extends BaseFragment<MineFragmentPresenter> implements
         String memberRank = userInfoBean.getMemberRank();
         boolean isHasSalesman = userInfoBean.isIsHasSalesman();
 
-        int noPayOrderNumber = userInfoBean.getNoPayOrderNumber();
-        int voucherNumber = userInfoBean.getVoucherNumber();
-        int noRecevedOrder = userInfoBean.getNoRecevedOrder();
+        int noPayOrderNumber = userInfoBean.getNoPayOrderNumber();//待付款订单数量
+        int voucherNumber = userInfoBean.getVoucherNumber();//优惠券数量
+        int noRecevedOrder = userInfoBean.getNoRecevedOrder();//待收货订单数量
+        int hasPayOrder = userInfoBean.getHasPayOrder();//已完成订单数量
+
+        if (noPayOrderNumber==0){//待付款订单数量
+            mTxtWaitPay.setVisibility(View.GONE);
+        }else {
+            mTxtWaitPay.setVisibility(View.GONE);
+            mTxtWaitPay.setText(noPayOrderNumber+"");
+        }
+
+        if (noRecevedOrder==0){//待收货订单数量
+            mTxtWaitPost.setVisibility(View.GONE);
+        }else {
+            mTxtWaitPost.setVisibility(View.GONE);
+            mTxtWaitPost.setText(noPayOrderNumber+"");
+        }
+
+        if (hasPayOrder==0){//已完成订单数量
+            mTxtWaitFinish.setVisibility(View.GONE);
+        }else {
+            mTxtWaitFinish.setVisibility(View.GONE);
+            mTxtWaitFinish.setText(noPayOrderNumber+"");
+        }
+
+        mTxtWaitCancel.setVisibility(View.GONE);
+        mTxtWaitSend.setVisibility(View.GONE);
 
 
         //用户名
         mTxtUserName.setText(username);
 
         //会员等级
-        if (TextUtils.isEmpty(memberRank)){
+        if (TextUtils.isEmpty(memberRank)) {
             mTxtMemberRank.setVisibility(View.GONE);
-        }else {
+        } else {
             mTxtMemberRank.setVisibility(View.VISIBLE);
             mTxtMemberRank.setText(memberRank);
         }
 
         //是否绑定业务员
-        if (isHasSalesman){
+        if (isHasSalesman) {
             mTxtSalesMan.setText(userInfoBean.getSalesmanName());
-        }else {
+        } else {
             mTxtSalesMan.setText("去绑定业务员");
         }
 
 
-
     }
-
-
-
 
 }

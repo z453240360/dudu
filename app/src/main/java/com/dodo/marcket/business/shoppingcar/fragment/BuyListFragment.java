@@ -69,6 +69,7 @@ public class BuyListFragment extends BaseFragment<BuyListFragmentPresenter> impl
     private ImageView mImg_jian;
     private ImageView mImg_jia;
     private TextView mTxt_num;
+    private ProductDetailAdapter productDetailAdapter;
 
     public BuyListFragment(int id) {
         super();
@@ -154,11 +155,8 @@ public class BuyListFragment extends BaseFragment<BuyListFragmentPresenter> impl
 
             @Override
             public void onMutiSizeClicked(int pos) {//多规格的添加购物车
-                ToastUtils.show(mContext, "多规格");
-
+//                ToastUtils.show(mContext, "多规格");
                 mPresenter.getProductDetailById(mDates.get(pos).getId());
-
-
             }
         });
     }
@@ -203,6 +201,8 @@ public class BuyListFragment extends BaseFragment<BuyListFragmentPresenter> impl
     //获取商品详情（用于多重规格的商品的展示）
     @Override
     public void getProductDetailById(ProductBean productBean) {
+        List<SpecificationsBean> specifications = productBean.getSpecifications();
+
         shoePOP();
     }
 
@@ -261,7 +261,7 @@ public class BuyListFragment extends BaseFragment<BuyListFragmentPresenter> impl
         for (int i = 0; i < 5; i++) {
             specificationsBeanList.add(new SpecificationsBean());
         }
-        ProductDetailAdapter productDetailAdapter = new ProductDetailAdapter(mContext, specificationsBeanList);
+        productDetailAdapter = new ProductDetailAdapter(mContext, specificationsBeanList);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(mContext);
         mRv_mutle.setAdapter(productDetailAdapter);
         mRv_mutle.setLayoutManager(linearLayoutManager);

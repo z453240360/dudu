@@ -12,6 +12,7 @@ public interface Constant {
     String token="token";
     String RMB = "¥";
 
-
+    public static final String APP_ID="wx50dd81792e10ae50";//微信APPID
+    public static final String MCH_ID="1514263511";//商户号
 
 }

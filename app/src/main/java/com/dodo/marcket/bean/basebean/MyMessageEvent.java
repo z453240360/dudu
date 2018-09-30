@@ -7,11 +7,23 @@ public class MyMessageEvent {
 
     private int carNum;
 
+    private int fromWhere;
+
+
+
     public MyMessageEvent() {
     }
 
     public MyMessageEvent(int carNum) {
         this.carNum = carNum;
+    }
+
+    public int getFromWhere() {
+        return fromWhere;
+    }
+
+    public void setFromWhere(int fromWhere) {
+        this.fromWhere = fromWhere;
     }
 
     public int getCarNum() {

@@ -8,6 +8,8 @@ public class ProductParmsBean {
     private long id;//产品ID
     private long categoryId;//分类ID
 
+
+
     public ProductParmsBean(long id) {
         this.id = id;
     }

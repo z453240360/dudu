@@ -5,9 +5,12 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.dodo.marcket.R;
+import com.dodo.marcket.bean.OrderList;
+import com.dodo.marcket.utils.ImageLoaders;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -20,9 +23,9 @@ import java.util.List;
 public class ImgAdapter extends RecyclerView.Adapter<ImgAdapter.MyViewHolder> {
     private Context mContext;
     private LayoutInflater mInflater;
-    private List<String> mDatas = new ArrayList<>();
+    private List<OrderList.OrderItemsBean> mDatas = new ArrayList<>();
 
-    public ImgAdapter(Context context, List<String> datas) {
+    public ImgAdapter(Context context, List<OrderList.OrderItemsBean> datas) {
         this.mInflater = LayoutInflater.from(context);
         mDatas = datas;
         this.mContext = context;
@@ -43,15 +46,16 @@ public class ImgAdapter extends RecyclerView.Adapter<ImgAdapter.MyViewHolder> {
     @Override
     public void onBindViewHolder(final MyViewHolder holder, final int position) {
 //            holder.mTxt_mineName.setText(position+"嘟嘟生鲜");
+        ImageLoaders.displayImage(holder.mImg_orderImg,mDatas.get(position).getProductInfo().getImage());
     }
 
 
     public class MyViewHolder extends RecyclerView.ViewHolder {
-        private TextView mTxt_mineName;
+        private ImageView mImg_orderImg;
 
         public MyViewHolder(View itemView) {
             super(itemView);
-//            mTxt_mineName = itemView.findViewById(R.id.mTxt_mineName);
+            mImg_orderImg = itemView.findViewById(R.id.mImg_orderImg);
         }
     }
 

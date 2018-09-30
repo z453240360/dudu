@@ -7,12 +7,17 @@
     android:layout_width="match_parent"
     android:background="@color/white"
     android:layout_height="match_parent"
-    tools:context="net.sourceforge.simcpux.wxapi.WXPayEntryActivity">
+    tools:context=".wxapi.WXPayEntryActivity">
 
     <TextView
         android:id="@+id/mTxt_wxPay"
         android:textSize="18sp"
         android:hint="显示微信支付结果"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_height="wrap_content" />
+
+    <TextView
+        android:text="支付结果页面"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
 </LinearLayout>

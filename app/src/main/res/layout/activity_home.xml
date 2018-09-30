@@ -38,25 +38,45 @@
                 app:rbDrawableTop="@drawable/selector_home_bg" />
 
 
-            <com.dodo.marcket.wedget.MyRadioButton
-                android:id="@+id/rb_classify"
-                style="@style/menu_tab"
-                android:tag="1"
-                android:text="分类"
-                app:rbDrawableTop="@drawable/selector_fenlei_bg" />
+            <!--<com.dodo.marcket.wedget.MyRadioButton-->
+                <!--android:id="@+id/rb_classify"-->
+                <!--style="@style/menu_tab"-->
+                <!--android:tag="1"-->
+                <!--android:text="分类"-->
+                <!--app:rbDrawableTop="@drawable/selector_fenlei_bg" />-->
 
+            <LinearLayout
+                android:id="@+id/LL_classify"
+                android:gravity="center"
+                android:layout_weight="1"
+                android:orientation="vertical"
+                android:visibility="visible"
+                android:layout_width="0dp"
+                android:layout_height="match_parent">
+                <ImageView
+                    android:src="@mipmap/fenlei2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+                <TextView
+                    android:layout_marginTop="@dimen/dimen_3dp"
+                    android:text="分类"
+                    android:textSize="@dimen/dimen_10sp"
+                    android:textColor="@color/black_333333"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+            </LinearLayout>
 
             <com.dodo.marcket.wedget.MyRadioButton
                 android:id="@+id/rb_buyCar"
                 style="@style/menu_tab"
-                android:tag="2"
+                android:tag="1"
                 android:text="购物车"
                 app:rbDrawableTop="@drawable/selector_gouwuche_bg" />
 
             <com.dodo.marcket.wedget.MyRadioButton
                 android:id="@+id/rb_mime"
                 style="@style/menu_tab"
-                android:tag="3"
+                android:tag="2"
                 android:text="我的"
                 app:rbDrawableTop="@drawable/selector_wode_bg" />
         </RadioGroup>
@@ -108,7 +128,7 @@
                     android:id="@+id/mTxt_carNum"
                     android:background="@drawable/shape_lunkuo_circlecar"
                     android:textColor="@color/white"
-                    android:visibility="visible"
+                    android:visibility="invisible"
                     android:gravity="center"
                     tools:text="99"
                     android:paddingLeft="@dimen/dimen_5dp"

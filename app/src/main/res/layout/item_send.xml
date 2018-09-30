@@ -97,6 +97,7 @@
             android:layout_weight="1" />
 
         <TextView
+            android:paddingLeft="@dimen/dimen_5dp"
             android:id="@+id/mTxt_orderSum"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
@@ -161,7 +162,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="实付："
+                    android:text="实收："
                     android:textColor="#666666"
                     android:textSize="@dimen/dimen_14sp" />
 

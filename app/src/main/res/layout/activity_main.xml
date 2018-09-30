@@ -119,6 +119,18 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
 
+        <Button
+            android:layout_margin="@dimen/dimen_10dp"
+            android:padding="@dimen/dimen_5dp"
+            android:textStyle="bold"
+            android:background="@color/gray_cd"
+            android:textColor="@color/basicColor"
+            android:textSize="18sp"
+            android:id="@+id/mBtn_6"
+            android:text="测试微信支付"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
         <com.nex3z.flowlayout.FlowLayout
             android:id="@+id/mFlow_dd"
             android:background="@color/basicColor"

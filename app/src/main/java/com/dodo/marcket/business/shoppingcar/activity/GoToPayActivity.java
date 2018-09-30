@@ -763,7 +763,6 @@ public class GoToPayActivity extends BaseActivity<GoToPayPresenter> implements G
 
     public void aliPayres(final String orderInfo) {
         Runnable payRunnable = new Runnable() {
-
             @Override
             public void run() {
                 PayTask alipay = new PayTask(mActivity);

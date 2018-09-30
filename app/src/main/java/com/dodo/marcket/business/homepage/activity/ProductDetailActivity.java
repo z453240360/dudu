@@ -13,14 +13,20 @@ import com.dodo.marcket.R;
 import com.dodo.marcket.base.BaseActivity;
 import com.dodo.marcket.base.CustomLinearLayoutManager;
 import com.dodo.marcket.bean.ProductBean;
+import com.dodo.marcket.bean.ProductParmsBean;
 import com.dodo.marcket.bean.SpecificationsBean;
+import com.dodo.marcket.bean.basebean.MyMessageEvent;
+import com.dodo.marcket.business.HomeActivity;
 import com.dodo.marcket.business.homepage.adapter.ProductDetailAdapter;
 import com.dodo.marcket.business.homepage.constrant.ProductDetailContract;
 import com.dodo.marcket.business.homepage.presenter.ProductDetailPresenter;
 import com.dodo.marcket.utils.GlideImageLoader;
+import com.dodo.marcket.utils.ToastUtils;
 import com.youth.banner.Banner;
 import com.youth.banner.BannerConfig;
 import com.youth.banner.Transformer;
+
+import org.greenrobot.eventbus.EventBus;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -44,6 +50,9 @@ public class ProductDetailActivity extends BaseActivity<ProductDetailPresenter> 
     TextView mTxtProductPrice;
     @BindView(R.id.mTxt_desc)
     TextView mTxtDesc;
+
+    @BindView(R.id.mTxt_carNum)
+    TextView mTxtCarNum;
     @BindView(R.id.mLL_desc)
     LinearLayout mLLDesc;
     @BindView(R.id.mRv_size)
@@ -69,6 +78,8 @@ public class ProductDetailActivity extends BaseActivity<ProductDetailPresenter> 
     private CustomLinearLayoutManager manager;
     private long mId;//传过来的值
     private long carId = -1;//最终加入购物车的值
+    private int cartNumber = 1;
+    private boolean isCanBuy = true;
 
     @Override
     public int getLayoutId() {
@@ -86,9 +97,10 @@ public class ProductDetailActivity extends BaseActivity<ProductDetailPresenter> 
         mId = intent.getLongExtra("productId", 0L);
         initBanner();
         initRv();
-        mPresenter.getProductDetailById(mId);
+        mTxtNum.setText(cartNumber + "");
+        mPresenter.getProductDetailById(mId);//获取商品详情
+        mPresenter.getCarNum();//获取购物车数量
     }
-
 
     @Override
     public void showLoading(String content) {
@@ -108,7 +120,6 @@ public class ProductDetailActivity extends BaseActivity<ProductDetailPresenter> 
     private void initRv() {
 
         CustomLinearLayoutManager manager = new CustomLinearLayoutManager(mContext);
-//        manager.setScrollEnabled(false);
         adapter = new ProductDetailAdapter(mContext, specificationsList);
         mRvSize.setAdapter(adapter);
         mRvSize.setLayoutManager(manager);
@@ -131,11 +142,65 @@ public class ProductDetailActivity extends BaseActivity<ProductDetailPresenter> 
         mBanner.setDelayTime(5000);
     }
 
+    @OnClick({R.id.mImg_jian, R.id.mImg_jia, R.id.mTxt_pay, R.id.ll_img})
+    public void onViewClicked(View view) {
+        switch (view.getId()) {
+            case R.id.mImg_jia://点击减号
+                if (!isCanBuy){
+                    return;
+                }
+                cartNumber++;
+                mTxtNum.setText(cartNumber + "");
+                break;
+            case R.id.mImg_jian://点击加号
+                if (!isCanBuy){
+                    return;
+                }
+                if (cartNumber <= 1) {
+                    return;
+                }
+                cartNumber--;
+                mTxtNum.setText(cartNumber + "");
+                break;
+            case R.id.mTxt_pay://点击加入购物车
+                if (!isCanBuy){
+                    return;
+                }
+                mPresenter.updateNum(cartNumber, new ProductParmsBean(mId), 1);
+                break;
+
+            case R.id.ll_img://点击购物车图标
+                Bundle bundle = new Bundle();
+                bundle.putInt("fromWhere",1);
+                startActivity(HomeActivity.class,bundle);
+                break;
+
+        }
+    }
+
     //获取商品详情
     @Override
     public void getProductDetailById(ProductBean productBean) {
         if (productBean == null) {
             return;
+        }
+
+        isCanBuy = false;
+        if (productBean.getStock() == null) {//不限制库存
+            isCanBuy = true;
+        } else if (productBean.getStock() == 0) {
+            isCanBuy = false;
+        } else if (productBean.getStock() > 0){
+            isCanBuy = true;
+        }
+
+        //是否可以购买
+        if (isCanBuy){
+            mTxtPay.setClickable(true);
+            mTxtPay.setBackgroundResource(R.color.basicColor);
+        }else {
+            mTxtPay.setClickable(false);
+            mTxtPay.setBackgroundResource(R.color.defalute);
         }
 
         List<SpecificationsBean> specifications = productBean.getSpecifications();//商品规格
@@ -145,17 +210,23 @@ public class ProductDetailActivity extends BaseActivity<ProductDetailPresenter> 
         String memo = productBean.getMemo();//备注
         double price = productBean.getPrice();//价格
         String unit = productBean.getUnit();//单位
+        cartNumber = 1;//购物车此种商品
+        String image = productBean.getImage();
         long id = productBean.getId();
         mId = id;
         if (productImages == null || productImages.size() == 0) {
-
+            if (!image.equals("")) {
+                productImages.add(image);
+                mBanner.setImages(productImages);
+                mBanner.start();
+            }
         } else {
             mBanner.setImages(productImages);
             mBanner.start();
         }
 
-        mTxtNum.setText(productBean.getCartNumber()+"");
-        mTxtProductPrice.setText(price+"");
+        mTxtNum.setText(cartNumber + "");
+        mTxtProductPrice.setText(price + "");
         mTxtProductName.setText(name);
         mTxtProductMsg.setText(memo);
 
@@ -180,14 +251,30 @@ public class ProductDetailActivity extends BaseActivity<ProductDetailPresenter> 
 
     }
 
-
-    @OnClick({R.id.mImg_jian, R.id.mImg_jia})
-    public void onViewClicked(View view) {
-        switch (view.getId()) {
-            case R.id.mImg_jian:
-                break;
-            case R.id.mImg_jia:
-                break;
+    //加入购物车
+    @Override
+    public void updateNum(int qty, boolean b, int pos) {
+        if (b) {
+            ToastUtils.show(mContext, "加入购物车成功");
+            mPresenter.getCarNum();
+        } else {
+            ToastUtils.show(mContext, "加入购物车失败");
         }
     }
+
+    //获取购物车数量
+    @Override
+    public void getCarNum(int num) {
+        if (num <= 0) {
+            mTxtCarNum.setVisibility(View.GONE);
+        } else if (num > 99) {
+            mTxtCarNum.setVisibility(View.VISIBLE);
+            mTxtCarNum.setText("99+");
+        } else {
+            mTxtCarNum.setVisibility(View.VISIBLE);
+            mTxtCarNum.setText(num + "");
+        }
+    }
+
+
 }

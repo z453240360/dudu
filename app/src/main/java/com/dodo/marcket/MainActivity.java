@@ -18,17 +18,26 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
+import com.dodo.marcket.base.BaseActivity;
+import com.dodo.marcket.base.BaseView;
+import com.dodo.marcket.bean.AliPayBean;
 import com.dodo.marcket.bean.SpecificationValuesBean;
 import com.dodo.marcket.business.HomeActivity;
 import com.dodo.marcket.business.clasify.activity.ClasifyActivity;
 import com.dodo.marcket.business.clasify.activity.SearchActivity;
 import com.dodo.marcket.business.mine.activity.LoginActivity;
 import com.dodo.marcket.business.mine.adapter.MineAdapter;
+import com.dodo.marcket.http.constant.Constant;
 import com.dodo.marcket.huizlogin.HuiLoginUtil;
+import com.dodo.marcket.iCallback.PermissionsListener;
 import com.dodo.marcket.utils.ScreenUtil;
 import com.dodo.marcket.utils.ToastUtils;
 import com.dodo.marcket.wedget.YhFlowLayout;
+import com.google.gson.Gson;
 import com.nex3z.flowlayout.FlowLayout;
+import com.tencent.mm.opensdk.modelpay.PayReq;
+import com.tencent.mm.opensdk.openapi.IWXAPI;
+import com.tencent.mm.opensdk.openapi.WXAPIFactory;
 
 import org.greenrobot.eventbus.EventBus;
 
@@ -40,7 +49,7 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import io.reactivex.internal.operators.flowable.FlowableFromIterable;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends BaseActivity implements BaseView,PermissionsListener {
 
 
     @BindView(R.id.toolbar)
@@ -62,14 +71,21 @@ public class MainActivity extends AppCompatActivity {
     @BindView(R.id.mFlow_dd)
     FlowLayout mFlowDd;
 
+
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
-        ButterKnife.bind(this);
+    public int getLayoutId() {
+        return R.layout.activity_main;
+    }
 
-//        showDemoList();
+    @Override
+    public void initPresenter() {
+//        mPresenter.init(this);
+    }
 
+    @Override
+    public void loadData() {
+
+        requestPermissions(permissions,this);
         showShopCarActivity();
         displayUI();
 
@@ -146,7 +162,7 @@ public class MainActivity extends AppCompatActivity {
             EventBus.getDefault().unregister(this);
     }
 
-    @OnClick({R.id.mBtn_1, R.id.mBtn_2, R.id.mBtn_3, R.id.mBtn_4,R.id.mBtn_5})
+    @OnClick({R.id.mBtn_1, R.id.mBtn_2, R.id.mBtn_3, R.id.mBtn_4,R.id.mBtn_5,R.id.mBtn_6})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.mBtn_1:
@@ -176,6 +192,9 @@ public class MainActivity extends AppCompatActivity {
                 HuiLoginUtil.HZLogin(MainActivity.this,"AS1TG2MUT3WLVJYNPAOHYHM4TUJMC3S3GW7LW3VCTZWF6SGCJCFTQYQ7PTHUTRG7FF6IREQMRV7HZFUOQ6CTPUCSHBE7RVQNSHENNNDRE2TQ32YFQVMIJ7YDS5Z7PPLABXMUTDYNZELQNYC2JMZEC6L33TF2R2LIONLZUKLN36IMYXDK5YWURMEJBKFVV4B2UEEPYMMKLXJFTWVVE5YYBYKY7DX4L4LRBC6FXSMGHR6I3BBG32RAS6PCXSZY6JJ7VFCZHJ6XKHKTHD3HWX2BN6DSWG6FDOAZEDQNTEBVVRHWXAQ6FQZQ");
 
 
+                break;
+            case R.id.mBtn_6:
+                wxPay(testWxPay(ap));
                 break;
 
         }
@@ -234,5 +253,54 @@ public class MainActivity extends AppCompatActivity {
                     break;
             }
         }
+    }
+
+    public String ap = "{\"aliPayResult\":null,\"paymentMethonCode\":\"wxpay\",\"paymentMethonName\":\"微信支付\",\"wxPayResult\":{\"appId\":\"wx50dd81792e10ae50\",\"nonceStr\":\"ltopq8unc0cxh7j5p1llyz24zsg18sal\",\"packageValue\":\"Sign=WXPay\",\"partnerId\":\"1514263511\",\"prepayId\":\"wx201717492428540a89ddc55d0098382847\",\"sign\":\"0804C647536E9BE1DF737FD993182C76\",\"timeStamp\":\"1538103138\"}}";
+
+    public AliPayBean testWxPay(String s){
+        AliPayBean aliPayBean = new Gson().fromJson(ap, AliPayBean.class);
+
+        return aliPayBean;
+    }
+    public void wxPay(AliPayBean aliPayBean){
+        AliPayBean.WxPayResult wxPayResult = aliPayBean.getWxPayResult();
+        String appId = wxPayResult.getAppId();
+        final IWXAPI msgApi = WXAPIFactory.createWXAPI(this, appId,false);
+        msgApi.registerApp(appId);
+
+        PayReq request = new PayReq();
+        request.appId = appId;
+        request.partnerId = wxPayResult.getPartnerId();
+        request.prepayId= wxPayResult.getPrepayId();
+        request.packageValue =  wxPayResult.getPackageValue();
+        request.nonceStr= wxPayResult.getNonceStr();
+        request.timeStamp=wxPayResult.getTimeStamp();
+        request.sign= wxPayResult.getSign();
+        msgApi.sendReq(request);
+    }
+
+    @Override
+    public void showLoading(String content) {
+
+    }
+
+    @Override
+    public void stopLoading() {
+
+    }
+
+    @Override
+    public void showErrorMsg(String msg, String type) {
+
+    }
+
+    @Override
+    public void onGranted() {
+
+    }
+
+    @Override
+    public void onDenied(List<String> deniedPermissions, boolean isNeverAsk) {
+
     }
 }

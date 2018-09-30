@@ -24,6 +24,7 @@
                 android:layout_height="200dp"/>
 
             <LinearLayout
+                android:paddingBottom="@dimen/dimen_10dp"
                 android:layout_marginTop="@dimen/dimen_10dp"
                 android:background="@color/white"
                 android:orientation="vertical"
@@ -31,7 +32,7 @@
                 android:layout_height="wrap_content">
                 <TextView
                     android:id="@+id/mTxt_productName"
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="@dimen/dimen_10dp"
                     android:layout_marginTop="@dimen/dimen_10dp"
@@ -65,8 +66,9 @@
                     <TextView
                         android:id="@+id/mTxt_productPriceName"
                         android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
+                        android:layout_height="match_parent"
                         android:ellipsize="end"
+                        android:gravity="bottom"
                         android:lines="1"
                         android:text="价格 ¥"
                         android:textColor="#f39700"
@@ -75,6 +77,9 @@
 
 
                     <TextView
+                        android:layout_weight="1"
+                        android:gravity="bottom"
+                        android:layout_marginLeft="@dimen/dimen_5dp"
                         android:id="@+id/mTxt_productPrice"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -131,7 +136,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_margin="@dimen/dimen_5dp"
-                        android:text="100" />
+                        android:text="1" />
 
                     <ImageView
                         android:id="@+id/mImg_jia"
@@ -216,15 +221,16 @@
         android:gravity="center_vertical"
         android:orientation="horizontal">
 
-        <LinearLayout
+        <FrameLayout
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:gravity="center"
             android:orientation="horizontal">
+
             <LinearLayout
                 android:id="@+id/ll_img"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:gravity="center"
                 android:paddingLeft="@dimen/dimen_5dp"
@@ -238,7 +244,31 @@
 
 
             </LinearLayout>
-        </LinearLayout>
+
+            <LinearLayout
+                android:gravity="right|top"
+                android:layout_weight="1"
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+                <TextView
+
+                    android:elevation="@dimen/dimen_5dp"
+                    android:layout_marginTop="@dimen/dimen_5dp"
+                    android:layout_marginRight="@dimen/dimen_20sp"
+                    android:textSize="@dimen/dimen_10sp"
+                    android:id="@+id/mTxt_carNum"
+                    android:background="@drawable/shape_lunkuo_circlecar2"
+                    android:textColor="@color/white"
+                    android:visibility="invisible"
+                    android:gravity="center"
+                    tools:text="99"
+                    android:paddingLeft="@dimen/dimen_5dp"
+                    android:paddingRight="@dimen/dimen_5dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="15dp" />
+            </LinearLayout>
+        </FrameLayout>
 
         <TextView
             android:id="@+id/mTxt_pay"

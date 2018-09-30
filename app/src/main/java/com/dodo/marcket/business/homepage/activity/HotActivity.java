@@ -1,6 +1,7 @@
 package com.dodo.marcket.business.homepage.activity;
 
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -12,11 +13,13 @@ import com.dodo.marcket.R;
 import com.dodo.marcket.base.BaseActivity;
 import com.dodo.marcket.bean.HotBean;
 import com.dodo.marcket.bean.ProductBean;
+import com.dodo.marcket.bean.ProductParmsBean;
 import com.dodo.marcket.business.clasify.adapter.ProductAdapter;
 import com.dodo.marcket.business.homepage.constrant.HotContract;
 import com.dodo.marcket.business.homepage.presenter.HotPresenter;
 import com.dodo.marcket.utils.ImageLoaders;
 import com.dodo.marcket.utils.ScreenUtil;
+import com.dodo.marcket.utils.ToastUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -76,6 +79,41 @@ public class HotActivity extends BaseActivity<HotPresenter> implements HotContra
         adapter = new ProductAdapter(mContext, mDates);
         mRvHot.setLayoutManager(manager);
         mRvHot.setAdapter(adapter);
+        adapter.setOnItemClickListener(new ProductAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClick(int parentPos) {
+                Intent intent = new Intent(mActivity, ProductDetailActivity.class);
+                intent.putExtra("productId", mDates.get(parentPos).getId());
+                startActivity(intent);
+            }
+
+            @Override
+            public void onSelectedClick(int pos, boolean isSelectAll) {
+
+            }
+
+            @Override
+            public void onJianClicked(int pos) {
+
+            }
+
+            @Override
+            public void onJiaClicked(int pos) {
+
+            }
+
+            @Override
+            public void onAddClicked(int pos) {
+                ProductBean productBean = mDates.get(pos);
+                long id = productBean.getId();
+                mPresenter.addProduct(1, new ProductParmsBean(id));
+            }
+
+            @Override
+            public void onMutiSizeClicked(int pos) {
+                mPresenter.getProductDetailById(mDates.get(pos).getId());
+            }
+        });
     }
 
     //获取商品列表
@@ -122,6 +160,20 @@ public class HotActivity extends BaseActivity<HotPresenter> implements HotContra
         mDates.clear();
         mDates.addAll(productList);
         adapter.notifyDataSetChanged();
+    }
+
+    @Override
+    public void addProduct(boolean isAdd) {
+        if (isAdd) {
+            ToastUtils.show(mContext, "加入购物车成功");
+        } else {
+            ToastUtils.show(mContext, "加入购物车失败");
+        }
+    }
+
+    @Override
+    public void getProductDetailById(ProductBean productBean) {
+
     }
 
 }

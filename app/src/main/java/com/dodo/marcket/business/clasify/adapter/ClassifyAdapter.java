@@ -82,7 +82,7 @@ public class ClassifyAdapter extends RecyclerView.Adapter<ClassifyAdapter.MyView
             @Override
             public void onChildItemClick(int parentPos, int id) {
                 if (mListener != null) {
-                    mListener.onChildClick(position, id);
+                    mListener.onChildClick(parentPos, id);
                 }
 
                 initSelect(position, parentPos);

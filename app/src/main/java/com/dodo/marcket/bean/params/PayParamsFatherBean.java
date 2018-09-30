@@ -13,4 +13,13 @@ public class PayParamsFatherBean implements Serializable{
     public void setProductParam(PayParamsBean productParam) {
         this.productParam = productParam;
     }
+
+
+    public int getQuantity() {
+        return quantity;
+    }
+
+    public PayParamsBean getProductParam() {
+        return productParam;
+    }
 }

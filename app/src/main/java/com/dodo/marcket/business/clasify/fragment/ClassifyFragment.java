@@ -18,8 +18,11 @@ import android.widget.TextView;
 
 import com.dodo.marcket.R;
 import com.dodo.marcket.base.BaseFragment;
+import com.dodo.marcket.bean.CartItemsBean;
 import com.dodo.marcket.bean.FirstClassfyBean;
+import com.dodo.marcket.bean.ShoppingCarBean;
 import com.dodo.marcket.business.clasify.activity.SearchActivity;
+import com.dodo.marcket.business.clasify.adapter.CarPopAdapter;
 import com.dodo.marcket.business.clasify.adapter.ClassifyAdapter;
 import com.dodo.marcket.business.clasify.constrant.ClassifyFragmentContract;
 import com.dodo.marcket.business.clasify.presenter.ClassifyFragmentPresenter;
@@ -68,12 +71,15 @@ public class ClassifyFragment extends BaseFragment<ClassifyFragmentPresenter> im
 
     private List<FirstClassfyBean> mDates = new ArrayList<>();
     private List<Fragment> fragmentList = new ArrayList<>();
+    private List<CartItemsBean> carList = new ArrayList<>();
     private FragmentManager fragmentManager;
     private Fragment lastFragment;
     private LinearLayoutManager firstManager;
     private ClassifyAdapter firstAdapter;
     private View pickVIew;
     private PopupWindow popupWindow;
+    private RecyclerView mRv_carPop;
+    private CarPopAdapter carPopAdapter;
 
     public static ClassifyFragment getInstance() {
         if (classifyFragment == null)
@@ -114,27 +120,7 @@ public class ClassifyFragment extends BaseFragment<ClassifyFragmentPresenter> im
         showErrorToast(msg);
     }
 
-
-    @Override
-    public void getFirstKind(List<FirstClassfyBean> firstClassfyBeanList) {
-        if (firstClassfyBeanList == null || firstClassfyBeanList.size() == 0) {
-            return;
-        }
-
-        mDates.clear();
-        mDates.addAll(firstClassfyBeanList);
-        mDates.get(0).setFirstSelected(true);
-        mDates.get(0).setShowList(false);
-        List<FirstClassfyBean.SubProductCategoryBean> subProductCategory = mDates.get(0).getSubProductCategory();
-        if (subProductCategory.size() > 0) {
-            subProductCategory.get(0).setSelected(true);
-        }
-        firstAdapter.notifyDataSetChanged();
-        initSecondClassfy(mDates);
-    }
-
-
-    //一级列表
+    //初始化一级列表
     private void initRvFirst() {
         firstManager = new LinearLayoutManager(mContext);
         firstAdapter = new ClassifyAdapter(mContext, mDates);
@@ -165,7 +151,41 @@ public class ClassifyFragment extends BaseFragment<ClassifyFragmentPresenter> im
         });
     }
 
-    //二级商品列表
+
+    //一级分类标签数据
+    @Override
+    public void getFirstKind(List<FirstClassfyBean> firstClassfyBeanList) {
+        if (firstClassfyBeanList == null || firstClassfyBeanList.size() == 0) {
+            return;
+        }
+
+        mDates.clear();
+        mDates.addAll(firstClassfyBeanList);
+        mDates.get(0).setFirstSelected(true);
+        mDates.get(0).setShowList(false);
+        List<FirstClassfyBean.SubProductCategoryBean> subProductCategory = mDates.get(0).getSubProductCategory();
+        if (subProductCategory.size() > 0) {
+            subProductCategory.get(0).setSelected(true);
+        }
+        firstAdapter.notifyDataSetChanged();
+        initSecondClassfy(mDates);
+    }
+
+    //获取购物车商品
+    @Override
+    public void getProducts(ShoppingCarBean productBeans) {
+        if (productBeans==null){
+            return;
+        }
+        List<CartItemsBean> cartItems = productBeans.getCartItems();
+        if (cartItems==null||cartItems.size()==0){
+            return;
+        }
+
+    }
+
+
+    //初始化二级商品列表
     public void initSecondClassfy(List<FirstClassfyBean> firstClassfyList) {
         for (int i = 0; i < firstClassfyList.size(); i++) {
 
@@ -202,11 +222,18 @@ public class ClassifyFragment extends BaseFragment<ClassifyFragmentPresenter> im
     }
 
 
-    //查看已经选择的商品
+    //查看已经选择的商品(显示购物车商品)
     private void initPickView() {
         pickVIew = LayoutInflater.from(mActivity).inflate(R.layout.layout_popup_car_goods, null, false);
 
         View view_pop = pickVIew.findViewById(R.id.view_pop);
+
+        mRv_carPop = pickVIew.findViewById(R.id.mRv_carPop);
+        LinearLayoutManager carManager = new LinearLayoutManager(mContext);
+        carPopAdapter = new CarPopAdapter(mContext,mDates);
+        mRv_carPop.setLayoutManager(carManager);
+        mRv_carPop.setAdapter(carPopAdapter);
+
 
 
         popupWindow = PopupWindowHelper.createPopupWindow(pickVIew, ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
