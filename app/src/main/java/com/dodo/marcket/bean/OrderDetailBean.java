@@ -2,21 +2,20 @@ package com.dodo.marcket.bean;
 
 import java.util.List;
 
-/**
- *订单列表
- */
-public class  OrderList {
+public class OrderDetailBean {
+
     /**
-     * amount : 22.71
-     * createDate : 2018-09-26 15:51:32
-     * id : 59
+     * amount : 2.71
+     * createDate : 2018-10-03 16:52:04
+     * id : 66
      * msg :
      * offsetAmount : 0
-     * orderItems : [{"orderPrice":null,"orderWeight":null,"productInfo":{"boxCode":"","boxPrice":null,"cartNumber":0,"id":1,"image":"https://ss0.bdstatic.com/70cFuHSh_Q1YnxGkpoWK1HF6hhy/it/u=780835599,1196854585&fm=26&gp=0.jpg","isGift":false,"memo":"","name":"土豆","packaging":"纸盒","price":4,"specificationNumber":0,"stock":100,"tag":"","unit":"","unitPrice":4,"weight":1},"qty":1,"realPrice":null,"realWeight":null},{"orderPrice":null,"orderWeight":null,"productInfo":{"boxCode":"","boxPrice":null,"cartNumber":0,"id":14,"image":"https://ss0.bdstatic.com/70cFuHSh_Q1YnxGkpoWK1HF6hhy/it/u=780835599,1196854585&fm=26&gp=0.jpg","isGift":true,"memo":"","name":"正品4[毛重20斤（允许1斤误差）]","packaging":"塑料箱","price":0.01,"specificationNumber":1,"stock":100,"tag":"","unit":"","unitPrice":0.01,"weight":1},"qty":1,"realPrice":null,"realWeight":null}]
+     * orderItems : [{"orderPrice":4,"orderWeight":1,"productInfo":{"boxCode":"","boxPrice":null,"cartNumber":0,"id":1,"image":"https://ss0.bdstatic.com/70cFuHSh_Q1YnxGkpoWK1HF6hhy/it/u=780835599,1196854585&fm=26&gp=0.jpg","isGift":false,"memo":"","name":"土豆","packaging":"纸盒","price":4,"specificationNumber":0,"stock":100,"tag":"","unit":"","unitPrice":4,"weight":1},"qty":1,"realPrice":0,"realWeight":0}]
      * orderStatus : 待付款
      * payAmount : 0
+     * paymentStatus : 未支付
      * retCode : 0
-     * sn : SO20180926162730
+     * sn : SO20181003192437
      */
 
     private double amount;
@@ -25,7 +24,8 @@ public class  OrderList {
     private String msg;
     private double offsetAmount;
     private String orderStatus;
-    private double payAmount;
+    private int payAmount;
+    private String paymentStatus;
     private int retCode;
     private String sn;
     private List<OrderItemsBean> orderItems;
@@ -78,12 +78,20 @@ public class  OrderList {
         this.orderStatus = orderStatus;
     }
 
-    public double getPayAmount() {
+    public int getPayAmount() {
         return payAmount;
     }
 
-    public void setPayAmount(double payAmount) {
+    public void setPayAmount(int payAmount) {
         this.payAmount = payAmount;
+    }
+
+    public String getPaymentStatus() {
+        return paymentStatus;
+    }
+
+    public void setPaymentStatus(String paymentStatus) {
+        this.paymentStatus = paymentStatus;
     }
 
     public int getRetCode() {
@@ -112,34 +120,34 @@ public class  OrderList {
 
     public static class OrderItemsBean {
         /**
-         * orderPrice : null
-         * orderWeight : null
+         * orderPrice : 4
+         * orderWeight : 1
          * productInfo : {"boxCode":"","boxPrice":null,"cartNumber":0,"id":1,"image":"https://ss0.bdstatic.com/70cFuHSh_Q1YnxGkpoWK1HF6hhy/it/u=780835599,1196854585&fm=26&gp=0.jpg","isGift":false,"memo":"","name":"土豆","packaging":"纸盒","price":4,"specificationNumber":0,"stock":100,"tag":"","unit":"","unitPrice":4,"weight":1}
          * qty : 1
-         * realPrice : null
-         * realWeight : null
+         * realPrice : 0
+         * realWeight : 0
          */
 
-        private Double orderPrice;
-        private Double orderWeight;
+        private int orderPrice;
+        private int orderWeight;
         private ProductInfoBean productInfo;
         private int qty;
-        private Double realPrice;
-        private Double realWeight;
+        private int realPrice;
+        private int realWeight;
 
-        public Double getOrderPrice() {
+        public int getOrderPrice() {
             return orderPrice;
         }
 
-        public void setOrderPrice(Double orderPrice) {
+        public void setOrderPrice(int orderPrice) {
             this.orderPrice = orderPrice;
         }
 
-        public Double getOrderWeight() {
+        public int getOrderWeight() {
             return orderWeight;
         }
 
-        public void setOrderWeight(Double orderWeight) {
+        public void setOrderWeight(int orderWeight) {
             this.orderWeight = orderWeight;
         }
 
@@ -159,19 +167,19 @@ public class  OrderList {
             this.qty = qty;
         }
 
-        public Double getRealPrice() {
+        public int getRealPrice() {
             return realPrice;
         }
 
-        public void setRealPrice(Double realPrice) {
+        public void setRealPrice(int realPrice) {
             this.realPrice = realPrice;
         }
 
-        public Double getRealWeight() {
+        public int getRealWeight() {
             return realWeight;
         }
 
-        public void setRealWeight(Double realWeight) {
+        public void setRealWeight(int realWeight) {
             this.realWeight = realWeight;
         }
 
@@ -196,7 +204,7 @@ public class  OrderList {
              */
 
             private String boxCode;
-            private Double boxPrice;
+            private Object boxPrice;
             private int cartNumber;
             private int id;
             private String image;
@@ -204,13 +212,13 @@ public class  OrderList {
             private String memo;
             private String name;
             private String packaging;
-            private double price;
+            private int price;
             private int specificationNumber;
             private int stock;
             private String tag;
             private String unit;
-            private double unitPrice;
-            private double weight;
+            private int unitPrice;
+            private int weight;
 
             public String getBoxCode() {
                 return boxCode;
@@ -220,11 +228,11 @@ public class  OrderList {
                 this.boxCode = boxCode;
             }
 
-            public Double getBoxPrice() {
+            public Object getBoxPrice() {
                 return boxPrice;
             }
 
-            public void setBoxPrice(Double boxPrice) {
+            public void setBoxPrice(Object boxPrice) {
                 this.boxPrice = boxPrice;
             }
 
@@ -284,11 +292,11 @@ public class  OrderList {
                 this.packaging = packaging;
             }
 
-            public double getPrice() {
+            public int getPrice() {
                 return price;
             }
 
-            public void setPrice(double price) {
+            public void setPrice(int price) {
                 this.price = price;
             }
 
@@ -324,25 +332,21 @@ public class  OrderList {
                 this.unit = unit;
             }
 
-            public double getUnitPrice() {
+            public int getUnitPrice() {
                 return unitPrice;
             }
 
-            public void setUnitPrice(double unitPrice) {
+            public void setUnitPrice(int unitPrice) {
                 this.unitPrice = unitPrice;
             }
 
-            public double getWeight() {
+            public int getWeight() {
                 return weight;
             }
 
-            public void setWeight(double weight) {
+            public void setWeight(int weight) {
                 this.weight = weight;
             }
         }
     }
-
-
-
-
 }

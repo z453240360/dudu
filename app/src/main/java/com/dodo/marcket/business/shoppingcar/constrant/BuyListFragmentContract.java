@@ -24,5 +24,6 @@ public class BuyListFragmentContract {
         void getProductList(long id,int page,int pageSize);
         void addProduct(int quantity, ProductParmsBean productParmsBean);
         void getProductDetailById(long id);
+        void getProductBySize(long productId,String specParam);
     }
 }

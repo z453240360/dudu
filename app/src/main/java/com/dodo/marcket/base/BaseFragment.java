@@ -9,7 +9,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-
+import com.dodo.marcket.business.mine.activity.LoginActivity;
+import com.dodo.marcket.http.constant.Constant;
+import com.dodo.marcket.utils.SharedPreferencesUtil;
 import com.dodo.marcket.utils.TUtil;
 import com.dodo.marcket.wedget.toasty.Toasty;
 
@@ -27,6 +29,8 @@ public abstract class BaseFragment<T extends BasePresenter> extends Fragment {
     public String token;
     public String dumpcartId;
     public String disctCode;
+    private String needToken;
+    public static boolean hastoken;
 
     @Nullable
     @Override
@@ -54,6 +58,10 @@ public abstract class BaseFragment<T extends BasePresenter> extends Fragment {
         return mView;
     }
 
+    public void goToLogin(){
+        startActivity(LoginActivity.class);
+    }
+
     public View getParentView() {
         return mView;
     }
@@ -70,6 +78,18 @@ public abstract class BaseFragment<T extends BasePresenter> extends Fragment {
     //加载View、设置数据
     public abstract void loadData();
 
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        needToken = (String) SharedPreferencesUtil.get(mContext, Constant.token, "");
+        if (needToken.equals("")){
+            hastoken = false;
+        }else {
+            hastoken = true;
+        }
+
+    }
 
     /**
      * 通过Class跳转界面

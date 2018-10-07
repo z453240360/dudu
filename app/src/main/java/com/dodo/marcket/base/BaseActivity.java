@@ -21,9 +21,12 @@ import android.widget.EditText;
 import com.bigkoo.pickerview.view.TimePickerView;
 import com.dodo.marcket.R;
 import com.dodo.marcket.bean.basebean.UserInfoBean;
+import com.dodo.marcket.business.mine.activity.LoginActivity;
+import com.dodo.marcket.http.constant.Constant;
 import com.dodo.marcket.http.utils.APIException;
 import com.dodo.marcket.iCallback.PermissionsListener;
 import com.dodo.marcket.utils.ColorState;
+import com.dodo.marcket.utils.SharedPreferencesUtil;
 import com.dodo.marcket.utils.TUtil;
 import com.dodo.marcket.utils.TitleUtil;
 import com.dodo.marcket.utils.statusbar.StatusBarUtils;
@@ -54,7 +57,7 @@ public abstract class BaseActivity<T extends BasePresenter> extends AppCompatAct
     public boolean showId=true;
     public String dumpcartId;
     public String disctCode;
-
+    public static boolean hastoken = false;
     public String[] permissions = {
             Manifest.permission.WRITE_EXTERNAL_STORAGE,
             Manifest.permission.ACCESS_NOTIFICATION_POLICY,
@@ -68,6 +71,7 @@ public abstract class BaseActivity<T extends BasePresenter> extends AppCompatAct
     public String token;
     private TimePickerView pvTime;
     public boolean isCheckToken = true;
+    private String needToken;
 
 
     @Override
@@ -87,6 +91,14 @@ public abstract class BaseActivity<T extends BasePresenter> extends AppCompatAct
 //            EventBus.getDefault().register(this);
 //        }
 
+
+        needToken = (String) SharedPreferencesUtil.get(this, Constant.token, "");
+
+        if (needToken.equals("")){
+            hastoken = false;
+        }else {
+            hastoken = true;
+        }
 
         if (userInfoBean == null) {
             userInfoBean = new UserInfoBean();
@@ -194,6 +206,13 @@ public abstract class BaseActivity<T extends BasePresenter> extends AppCompatAct
     @Override
     protected void onResume() {
         super.onResume();
+
+        needToken = (String) SharedPreferencesUtil.get(mContext, Constant.token, "");
+        if (needToken.equals("")){
+            hastoken = false;
+        }else {
+            hastoken = true;
+        }
     }
 
 
@@ -313,6 +332,10 @@ public abstract class BaseActivity<T extends BasePresenter> extends AppCompatAct
 
     public void showErrorToast(String e){
         Toasty.error(mContext,e,3,false).show();
+    }
+
+    public void goToLogin(){
+        startActivity(LoginActivity.class);
     }
 }
 

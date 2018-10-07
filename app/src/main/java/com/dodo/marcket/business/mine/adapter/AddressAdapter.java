@@ -14,9 +14,6 @@ import com.dodo.marcket.bean.MyAddressBean;
 import java.util.ArrayList;
 import java.util.List;
 
-import butterknife.BindView;
-import butterknife.ButterKnife;
-
 /**
  * 我的地址列表
  */
@@ -74,11 +71,9 @@ public class AddressAdapter extends RecyclerView.Adapter<AddressAdapter.MyViewHo
             holder.mCheckBox.setChecked(true);
             holder.mCheckBox.setVisibility(View.GONE);
         } else {
-            holder.mCheckBox.setVisibility(View.VISIBLE);
+            holder.mCheckBox.setVisibility(View.GONE);
             holder.mCheckBox.setChecked(false);
         }
-
-
     }
 
     public class MyViewHolder extends RecyclerView.ViewHolder {

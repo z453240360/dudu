@@ -1,7 +1,6 @@
 package com.dodo.marcket.business.shoppingcar.activity;
 
 import android.annotation.SuppressLint;
-import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.support.v7.widget.LinearLayoutManager;
@@ -43,6 +42,7 @@ import com.dodo.marcket.business.mine.activity.MyAddressActivity;
 import com.dodo.marcket.business.shoppingcar.adapter.PayAdapter;
 import com.dodo.marcket.business.shoppingcar.constrant.GoToPayContract;
 import com.dodo.marcket.business.shoppingcar.presenter.GoToPayPresenter;
+import com.dodo.marcket.http.constant.Constant;
 import com.dodo.marcket.utils.photo.PopupWindowHelper;
 import com.tencent.mm.opensdk.modelpay.PayReq;
 import com.tencent.mm.opensdk.openapi.IWXAPI;
@@ -53,7 +53,6 @@ import java.util.List;
 import java.util.Map;
 
 import butterknife.BindView;
-import butterknife.ButterKnife;
 import butterknife.OnClick;
 
 /**
@@ -554,6 +553,9 @@ public class GoToPayActivity extends BaseActivity<GoToPayPresenter> implements G
             wxPay(s);
         } else if (paymentMethonCode.equals("alipay")) {//支付宝支付
             aliPayres(s.getAliPayResult().getOrderInfo());
+        }else {
+            showErrorToast("货到付款");
+            finish();
         }
     }
 
@@ -595,6 +597,11 @@ public class GoToPayActivity extends BaseActivity<GoToPayPresenter> implements G
             @Override
             public void onItemClick(int parentPos, int id) {
                 discountPopAdapter.selectItem(parentPos);
+                DisCountBean disCountBean = disCountBeanList.get(parentPos);
+                List<DisCountBean> disCountBeans = new ArrayList<>();
+                disCountBeans.add(disCountBean);
+                goToPayParamsBean.setAnHaos(disCountBeans);//设置优惠券
+                discountPopWindow.dismiss();
             }
         });
 
@@ -726,6 +733,7 @@ public class GoToPayActivity extends BaseActivity<GoToPayPresenter> implements G
                     if (TextUtils.equals(resultStatus, "9000")) {
                         // 该笔订单是否真实支付成功，需要依赖服务端的异步通知。
                         Toast.makeText(mActivity, "支付成功", Toast.LENGTH_SHORT).show();
+                        finish();
                     } else {
                         // 该笔订单真实的支付结果，需要依赖服务端的异步通知。
                         Toast.makeText(mActivity, "支付失败", Toast.LENGTH_SHORT).show();
@@ -783,7 +791,7 @@ public class GoToPayActivity extends BaseActivity<GoToPayPresenter> implements G
     public void wxPay(AliPayBean aliPayBean){
         AliPayBean.WxPayResult wxPayResult = aliPayBean.getWxPayResult();
         String appId = wxPayResult.getAppId();
-        final IWXAPI msgApi = WXAPIFactory.createWXAPI(mContext, null);
+        final IWXAPI msgApi = WXAPIFactory.createWXAPI(mContext, Constant.APP_ID,false);
         msgApi.registerApp(appId);
         PayReq request = new PayReq();
         request.appId = appId;

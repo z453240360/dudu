@@ -231,4 +231,8 @@ public class ApiModel {
         return RetroUtils.getApi().againOrder(body).flatMap(FlatProvider.<BResponse>flat());
     }
 
+    //订单----订单详情
+    public Observable<BResponse> getOrderDitail(RequestBody body) {
+        return RetroUtils.getApi().getOrderDitail(body).flatMap(FlatProvider.<BResponse>flat());
+    }
 }

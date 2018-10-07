@@ -21,6 +21,7 @@ import com.dodo.marcket.business.clasify.fragment.ClassifyFragment;
 import com.dodo.marcket.business.homepage.constrant.HomeContract;
 import com.dodo.marcket.business.homepage.fragment.HomePageFragment;
 import com.dodo.marcket.business.homepage.presenter.HomePresenter;
+import com.dodo.marcket.business.mine.activity.LoginActivity;
 import com.dodo.marcket.business.mine.fragment.MineFragment;
 import com.dodo.marcket.business.shoppingcar.fragment.ShoppingCartFragment;
 import com.dodo.marcket.utils.statusbar.StatusBarUtils;
@@ -34,7 +35,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
-import butterknife.ButterKnife;
 import butterknife.OnClick;
 import q.rorbin.badgeview.QBadgeView;
 
@@ -122,6 +122,12 @@ public class HomeActivity extends BaseActivity<HomePresenter> implements HomeCon
         group.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(RadioGroup radioGroup, int i) {
+
+                if (!hastoken){
+                    selectRg(0);
+                    return;
+                }
+
                 RadioButton select = (RadioButton) findViewById(i);
                 int index = Integer.parseInt(select.getTag().toString());
                 if (fragmentsList.get(index).isAdded()) {
@@ -141,7 +147,7 @@ public class HomeActivity extends BaseActivity<HomePresenter> implements HomeCon
         super.onResume();
 
 //        selectRg(fromWhere);
-
+        if (hastoken)
         updateCarNum();
     }
 
@@ -198,10 +204,14 @@ public class HomeActivity extends BaseActivity<HomePresenter> implements HomeCon
                 startActivity(ClasifyActivity.class);
                 break;
             case R.id.rb_buyCar:
-
+                if (!hastoken){
+                    startActivity(LoginActivity.class);
+                }
                 break;
             case R.id.rb_mime:
-
+                if (!hastoken){
+                    startActivity(LoginActivity.class);
+                }
                 break;
         }
     }

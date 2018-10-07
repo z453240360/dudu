@@ -53,146 +53,257 @@
     </LinearLayout>
 
     <LinearLayout
-        android:id="@+id/mLL_sendPrice"
-        android:gravity="center"
-        android:orientation="vertical"
-        android:background="#fffed5"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-
-        <TextView
-            android:id="@+id/mTxt_sendPrice"
-            android:textSize="12sp"
-            android:layout_marginTop="@dimen/dimen_5dp"
-            android:layout_marginBottom="@dimen/dimen_5dp"
-            android:textColor="@color/black_333333"
-            android:gravity="center"
-            android:text="还差30元起送"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent" />
-    </LinearLayout>
-
-    <LinearLayout
-        android:elevation="@dimen/dimen_5dp"
+        android:visibility="gone"
         android:id="@+id/mLL_bottomView"
         android:layout_width="match_parent"
-        android:layout_height="50dp"
+        android:layout_height="wrap_content"
         android:background="@color/white"
+        android:elevation="@dimen/dimen_5dp"
         android:gravity="center_vertical"
-        android:orientation="horizontal">
+        android:orientation="vertical">
 
         <LinearLayout
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="2"
+            android:id="@+id/mLL_sendPrice"
+            android:gravity="center"
+            android:orientation="vertical"
+            android:background="#fffed5"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:visibility="gone"
+                android:id="@+id/mTxt_sendPrice"
+                android:textSize="12sp"
+                android:layout_marginTop="@dimen/dimen_5dp"
+                android:layout_marginBottom="@dimen/dimen_5dp"
+                android:textColor="@color/black_333333"
+                android:gravity="center"
+                android:text=""
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/mLL_carMsg"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
             android:gravity="center"
             android:orientation="horizontal">
 
             <LinearLayout
+                android:orientation="vertical"
                 android:id="@+id/ll_img"
-                android:layout_width="50dp"
+                android:layout_width="@dimen/dimen_70dp"
                 android:layout_height="match_parent"
                 android:gravity="center"
                 android:paddingLeft="@dimen/dimen_5dp"
                 android:paddingRight="@dimen/dimen_5dp">
 
-                <ImageView
-                    android:id="@+id/mImg_huishou"
-                    android:layout_width="20dp"
-                    android:layout_height="20dp"
-                    android:src="@mipmap/gouwuche3" />
+                <FrameLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+                    <LinearLayout
+                        android:gravity="center"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent">
+                        <ImageView
+                            android:id="@+id/mImg_huishou"
+                            android:layout_width="20dp"
+                            android:layout_height="20dp"
+                            android:src="@mipmap/gouwuche3" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:gravity="right|top"
+                        android:orientation="horizontal"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent">
+                        <TextView
+                            android:elevation="@dimen/dimen_5dp"
+                            android:layout_marginTop="@dimen/dimen_4dp"
+                            android:textSize="@dimen/dimen_10sp"
+                            android:id="@+id/mTxt_carNum"
+                            android:background="@drawable/shape_lunkuo_circlecar2"
+                            android:textColor="@color/white"
+                            android:visibility="invisible"
+                            android:gravity="center"
+                            android:text="99"
+                            android:paddingLeft="@dimen/dimen_5dp"
+                            android:paddingRight="@dimen/dimen_5dp"
+                            android:layout_width="wrap_content"
+                            android:layout_height="15dp" />
+                    </LinearLayout>
+
+                </FrameLayout>
+
 
                 <TextView
-                    android:visibility="gone"
                     android:id="@+id/mTxt_selectAll"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
                     android:layout_marginLeft="@dimen/dimen_5dp"
                     android:gravity="center_vertical"
-                    android:text="全选"
+                    android:text=""
                     android:textColor="#333333"
                     android:textSize="14sp" />
             </LinearLayout>
 
-
-
             <LinearLayout
-                android:layout_marginLeft="@dimen/dimen_5dp"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:orientation="vertical">
-
-
+                android:visibility="visible"
+                android:id="@+id/mLL_showPrice"
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
                 <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="0dp"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_marginLeft="@dimen/dimen_5dp"
                     android:layout_weight="1"
-                    android:orientation="horizontal">
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="match_parent"
-                        android:layout_marginLeft="@dimen/dimen_10dp"
-                        android:gravity="center_vertical"
-                        android:text="合计"
-                        android:textColor="#333333"
-                        android:textSize="14sp" />
+                    android:orientation="vertical">
 
 
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="match_parent"
-                        android:layout_marginLeft="@dimen/dimen_10dp"
-                        android:gravity="center_vertical"
-                        android:text="￥ 99.99"
-                        android:textColor="#333333"
-                        android:textSize="14sp" />
-                </LinearLayout>
-
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="0dp"
-                    android:layout_weight="1"
-                    android:orientation="horizontal">
-
-                    <TextView
-                        android:layout_marginLeft="@dimen/dimen_10dp"
-                        android:layout_width="wrap_content"
-                        android:layout_height="match_parent"
-                        android:gravity="center_vertical"
-                        android:text="优惠"
-                        android:textColor="#f4333c"
-                        android:textSize="14sp" />
-
-                    <TextView
-                        android:id="@+id/mTxt_price"
+                    <LinearLayout
                         android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:layout_marginLeft="5dp"
+                        android:layout_height="0dp"
+                        android:layout_weight="1"
+                        android:orientation="horizontal">
+
+                        <TextView
+
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:gravity="center_vertical"
+                            android:text="合计¥ "
+                            android:textColor="@color/org_f39700"
+                            android:textSize="12sp" />
+
+
+                        <TextView
+                            android:id="@+id/mTxt_carTotalMoney"
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:layout_marginLeft="@dimen/dimen_10dp"
+                            android:layout_weight="1"
+                            android:gravity="center_vertical"
+                            android:text="99.99"
+                            android:textColor="@color/org_f39700"
+                            android:textSize="18sp" />
+                    </LinearLayout>
+
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="0dp"
+                        android:layout_weight="1"
                         android:gravity="center_vertical"
-                        android:text="￥ 1000.0"
-                        android:textColor="#f4333c"
-                        android:textSize="18sp"
-                        android:textStyle="bold" />
+                        android:orientation="horizontal">
+
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:gravity="center_vertical"
+                            android:orientation="horizontal">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="另需筐押金¥"
+                                android:textColor="@color/black_333333"
+                                android:textSize="@dimen/dimen_12sp" />
+
+                            <TextView
+                                android:id="@+id/mTxt_carBoxMoney"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="￥30"
+                                android:textColor="@color/black_333333"
+                                android:textSize="@dimen/dimen_12sp" />
+
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:id="@+id/mLL_carPost"
+                            android:layout_marginLeft="@dimen/dimen_10dp"
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:gravity="center_vertical"
+                            android:orientation="horizontal">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="配送费¥"
+                                android:textColor="@color/black_333333"
+                                android:textSize="@dimen/dimen_12sp" />
+
+                            <TextView
+                                android:id="@+id/mTxt_carPostMoney"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="¥10"
+                                android:textColor="@color/black_333333"
+                                android:textSize="@dimen/dimen_12sp" />
+
+                        </LinearLayout>
+                    </LinearLayout>
+
+
                 </LinearLayout>
+                <TextView
+                    android:paddingLeft="@dimen/dimen_15dp"
+                    android:paddingRight="@dimen/dimen_15dp"
+                    android:id="@+id/mTxt_pay"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:background="@color/basicColor"
+                    android:gravity="center"
+                    android:text="去结算"
+                    android:textColor="#ffffff"
+                    android:textSize="16sp" />
+            </LinearLayout>
 
+            <!--显示编辑窗口-->
+            <LinearLayout
+                android:visibility="gone"
+                android:gravity="center|right"
+                android:id="@+id/mLL_showEdit"
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+                <TextView
+                    android:paddingTop="@dimen/dimen_10dp"
+                    android:paddingBottom="@dimen/dimen_10dp"
+                    android:paddingLeft="@dimen/dimen_15dp"
+                    android:paddingRight="@dimen/dimen_15dp"
+                    android:id="@+id/mTxt_carClear"
+                    android:textSize="14sp"
+                    android:textColor="@color/white"
+                    android:background="@drawable/shape_lunkuo_paint"
+                    android:gravity="center"
+                    android:text="清空购物车"
+                    android:layout_marginRight="@dimen/dimen_10dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
 
+                <TextView
+                    android:id="@+id/mTxt_carDelete"
+                    android:textSize="14sp"
+                    android:textColor="@color/white"
+                    android:paddingTop="@dimen/dimen_10dp"
+                    android:paddingBottom="@dimen/dimen_10dp"
+                    android:paddingLeft="@dimen/dimen_15dp"
+                    android:paddingRight="@dimen/dimen_15dp"
+                    android:background="@drawable/shape_lunkuo_paint"
+                    android:layout_marginRight="@dimen/dimen_10dp"
+                    android:gravity="center"
+                    android:text="删除选中商品"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
             </LinearLayout>
 
         </LinearLayout>
 
-        <TextView
-            android:id="@+id/mTxt_pay"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:background="@color/basicColor"
-            android:gravity="center"
-            android:text="去结算"
-            android:textColor="#ffffff"
-            android:textSize="18sp" />
+
     </LinearLayout>
 
 </LinearLayout>

@@ -7,6 +7,33 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".business.mine.activity.MyBackBoxActivity">
+
+
+    <include
+        android:id="@+id/toolbar"
+        layout="@layout/layout_toolbar" />
+
+    <LinearLayout
+        android:id="@+id/mLL_noDate"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center"
+        android:orientation="vertical"
+        android:visibility="gone">
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@mipmap/no_date" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/dimen_10dp"
+            android:text="没有数据。。。"
+            android:textColor="@color/black_333333"
+            android:textSize="@dimen/dimen_16sp" />
+    </LinearLayout>
     <android.support.v7.widget.RecyclerView
         android:id="@+id/mRv_myBackBox"
         android:layout_width="match_parent"

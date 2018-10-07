@@ -15,6 +15,7 @@ import com.dodo.marcket.bean.LoginBean;
 import com.dodo.marcket.bean.MakeOrderBean;
 import com.dodo.marcket.bean.MyAddressBean;
 import com.dodo.marcket.bean.MyBackBoxBean;
+import com.dodo.marcket.bean.OrderDetailBean;
 import com.dodo.marcket.bean.OrderList;
 import com.dodo.marcket.bean.PayMethodBean;
 import com.dodo.marcket.bean.ProducHeadBean;
@@ -215,4 +216,8 @@ public interface ApiService {
     //订单----再次购买（批量添加购物车）
     @POST(Api.url)
     Observable<BResponse<List<OrderList>>> againOrder(@Body RequestBody verifyCode);
+
+    //订单----订单详情
+    @POST(Api.url)
+    Observable<BResponse<OrderDetailBean>> getOrderDitail(@Body RequestBody verifyCode);
 }

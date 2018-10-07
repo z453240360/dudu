@@ -3,8 +3,6 @@ package com.dodo.marcket.bean.basebean;
 import com.dodo.marcket.bean.AreaParamBean;
 import com.dodo.marcket.bean.ProductParmsBean;
 
-import java.util.List;
-
 /**
  * Created by Administrator on 2018/3/23 0023.
  */
@@ -32,6 +30,7 @@ public class PhoneBean {
     private String key;
     private String productId;
     private String specParam;
+
 
     public void setProductId(String productId) {
         this.productId = productId;

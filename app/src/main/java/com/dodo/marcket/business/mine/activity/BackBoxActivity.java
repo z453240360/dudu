@@ -1,9 +1,10 @@
 package com.dodo.marcket.business.mine.activity;
 
 
-import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.View;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.dodo.marcket.R;
@@ -17,7 +18,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
-import butterknife.ButterKnife;
 import butterknife.OnClick;
 
 /**
@@ -30,10 +30,11 @@ public class BackBoxActivity extends BaseActivity<BackBoxPresenter> implements B
     RecyclerView mRvBackBox;
     @BindView(R.id.mTxt_backBox)
     TextView mTxtBackBox;
+    @BindView(R.id.mLL_noDate)
+    LinearLayout mLLNoDate;
     private List<BackBoxBean> mDatas = new ArrayList<>();
     private LinearLayoutManager manager;
     private BackBoxAdapter adapter;
-
 
     @Override
     public int getLayoutId() {
@@ -47,6 +48,7 @@ public class BackBoxActivity extends BaseActivity<BackBoxPresenter> implements B
 
     @Override
     public void loadData() {
+        mTitle.setTitle("申请退筐");
         initRv();
 
         mPresenter.getBackBoxList();
@@ -68,7 +70,6 @@ public class BackBoxActivity extends BaseActivity<BackBoxPresenter> implements B
 
     }
 
-
     private void initRv() {
         manager = new LinearLayoutManager(mContext);
         adapter = new BackBoxAdapter(mContext, mDatas);
@@ -80,9 +81,11 @@ public class BackBoxActivity extends BaseActivity<BackBoxPresenter> implements B
     public void getBackBoxList(List<BackBoxBean> s) {
 
         if (s == null || s.size() == 0) {
+            mLLNoDate.setVisibility(View.VISIBLE);
             return;
         }
 
+        mLLNoDate.setVisibility(View.GONE);
         mDatas.clear();
         mDatas.addAll(s);
         adapter.notifyDataSetChanged();
@@ -92,7 +95,6 @@ public class BackBoxActivity extends BaseActivity<BackBoxPresenter> implements B
     //生成退框单
     @OnClick(R.id.mTxt_backBox)
     public void onViewClicked() {
-
 //        mPresenter.getBackOrder();
     }
 }

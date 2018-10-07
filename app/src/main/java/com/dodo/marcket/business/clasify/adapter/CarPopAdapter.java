@@ -1,30 +1,33 @@
 package com.dodo.marcket.business.clasify.adapter;
 
 import android.content.Context;
-import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.dodo.marcket.R;
-import com.dodo.marcket.bean.FirstClassfyBean;
+import com.dodo.marcket.bean.CartItemsBean;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+
 /**
- *分类页面显示购物车底部弹框
- *
+ * 分类页面显示购物车底部弹框
  */
 
 public class CarPopAdapter extends RecyclerView.Adapter<CarPopAdapter.MyViewHolder> {
+
     private Context mContext;
     private LayoutInflater mInflater;
-    private List<FirstClassfyBean> mDatas = new ArrayList<>();
+    private List<CartItemsBean> mDatas = new ArrayList<>();
 
-    public CarPopAdapter(Context context, List<FirstClassfyBean> datas) {
+    public CarPopAdapter(Context context, List<CartItemsBean> datas) {
         this.mInflater = LayoutInflater.from(context);
         mDatas = datas;
         this.mContext = context;
@@ -44,74 +47,70 @@ public class CarPopAdapter extends RecyclerView.Adapter<CarPopAdapter.MyViewHold
 
     @Override
     public void onBindViewHolder(final MyViewHolder holder, final int position) {
-        final FirstClassfyBean firstClassfyBean = mDatas.get(position);
+        CartItemsBean cartItemsBean = mDatas.get(position);
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (mListener != null) {
-                    mListener.onItemClick(position, 0);
+                    mListener.onItemClick(position);
                 }
 
-                initSelect(position, 0);
 
             }
         });
 
-        List<FirstClassfyBean.SubProductCategoryBean> subProductCategory = firstClassfyBean.getSubProductCategory();
+        CartItemsBean.ProductInfoBean productInfo = cartItemsBean.getProductInfo();
+        String name = productInfo.getName();
+        final long id = productInfo.getId();
+        double price = productInfo.getPrice();
+        int quantity = cartItemsBean.getQuantity();
 
-        if (firstClassfyBean.isFirstSelected()) {
-            holder.mRv_list.setVisibility(View.VISIBLE);
-            holder.mTxt_mineName.setTextColor(mContext.getResources().getColor(R.color.basicColor));
-        } else {
-            holder.mRv_list.setVisibility(View.GONE);
-            holder.mTxt_mineName.setTextColor(mContext.getResources().getColor(R.color.black));
-        }
-
-
-        holder.mTxt_mineName.setText(firstClassfyBean.getName());
-
-
-        LinearLayoutManager manager = new LinearLayoutManager(mContext);
-        ClassifyChildAdapter adapter = new ClassifyChildAdapter(mContext, subProductCategory);
-        holder.mRv_list.setAdapter(adapter);
-        holder.mRv_list.setLayoutManager(manager);
-
-        adapter.setOnItemClickListener(new ClassifyChildAdapter.OnChildItemClickListener() {
-
+        holder.mTxtNum.setText(""+quantity);
+        holder.mTxtCarPopName.setText(name);
+        holder.mTxtCarPopPrice.setText(price+"");
+        holder.mImgJia.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onChildItemClick(int parentPos, int id) {
+            public void onClick(View v) {
                 if (mListener != null) {
-                    mListener.onChildClick(position, id);
+                    mListener.onJiaClick(position,id);
                 }
-
-                initSelect(position, parentPos);
             }
         });
 
-        if (position == mDatas.size() - 1) {
-            holder.mTxt_line.setVisibility(View.INVISIBLE);
-        } else {
-            holder.mTxt_line.setVisibility(View.VISIBLE);
-        }
+        holder.mImgJian.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (mListener != null) {
+                    mListener.onJianClick(position,id);
+                }
+            }
+        });
     }
 
 
     public class MyViewHolder extends RecyclerView.ViewHolder {
-        private TextView mTxt_mineName, mTxt_line;
-        private RecyclerView mRv_list;
-
+        @BindView(R.id.mTxt_carPopName)
+        TextView mTxtCarPopName;
+        @BindView(R.id.mTxt_carPopPrice)
+        TextView mTxtCarPopPrice;
+        @BindView(R.id.mImg_jian)
+        ImageView mImgJian;
+        @BindView(R.id.mTxt_num)
+        TextView mTxtNum;
+        @BindView(R.id.mImg_jia)
+        ImageView mImgJia;
         public MyViewHolder(View itemView) {
             super(itemView);
-            mTxt_mineName = itemView.findViewById(R.id.mTxt_mineName);
-            mTxt_line = itemView.findViewById(R.id.mTxt_line);
-            mRv_list = itemView.findViewById(R.id.mRv_list);
+            ButterKnife.bind(this,itemView);
         }
     }
 
     public interface OnItemClickListener {
-        void onItemClick(int parentPos, int id);
+        void onItemClick(int parentPos);
 
-        void onChildClick(int parentPos, int id);
+        void onJiaClick(int parentPos,long proId);
+
+        void onJianClick(int pos,long proId);
     }
 
     private OnItemClickListener mListener;
@@ -121,48 +120,4 @@ public class CarPopAdapter extends RecyclerView.Adapter<CarPopAdapter.MyViewHold
     }
 
 
-    //选中
-    public void initSelect(int pos, int childPos) {
-        if (mDatas.size() == 0) {
-            return;
-        }
-        for (int i = 0; i < mDatas.size(); i++) {
-            if (i == pos) {
-                mDatas.get(i).setFirstSelected(true);
-
-                List<FirstClassfyBean.SubProductCategoryBean> subProductCategory = mDatas.get(i).getSubProductCategory();
-
-                if (subProductCategory.size() > 0 && childPos >= 0) {
-                    for (int j = 0; j < subProductCategory.size(); j++) {
-                        if (j == childPos) {
-                            subProductCategory.get(j).setSelected(true);
-                        } else {
-                            subProductCategory.get(j).setSelected(false);
-                        }
-                    }
-                } else {
-                    for (int j = 0; j < subProductCategory.size(); j++) {
-                        if (j == 0) {
-                            subProductCategory.get(j).setSelected(true);
-                        } else {
-                            subProductCategory.get(j).setSelected(false);
-                        }
-                    }
-                }
-
-            } else {
-                mDatas.get(i).setFirstSelected(false);
-
-                List<FirstClassfyBean.SubProductCategoryBean> subProductCategory = mDatas.get(i).getSubProductCategory();
-
-                if (subProductCategory.size() > 0) {
-                    for (int j = 0; j < subProductCategory.size(); j++) {
-                        subProductCategory.get(j).setSelected(false);
-                    }
-                }
-            }
-        }
-
-        notifyDataSetChanged();
-    }
 }

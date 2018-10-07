@@ -3,12 +3,9 @@ package com.dodo.marcket.business.mine.activity;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
-import android.support.v7.app.AppCompatActivity;
-import android.view.View;
 
 import com.dodo.marcket.R;
 import com.dodo.marcket.base.BaseActivity;
-import com.dodo.marcket.business.mine.adapter.ViewPagerFragmentAdapter;
 import com.dodo.marcket.business.mine.adapter.ViewTestAdapter;
 import com.dodo.marcket.business.mine.constrant.MyOrderContract;
 import com.dodo.marcket.business.mine.fragment.OrderFragment;
@@ -19,7 +16,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
-import butterknife.ButterKnife;
 
 public class MyOrderActivity extends BaseActivity<MyOrderPresenter> implements MyOrderContract.View {
 
@@ -30,6 +26,7 @@ public class MyOrderActivity extends BaseActivity<MyOrderPresenter> implements M
     private List<Fragment> fragments = new ArrayList<>();
     private String[] titles = null;
     private ViewTestAdapter myPagerAdapter;
+    private int currentPage;
 
 
     @Override
@@ -39,11 +36,15 @@ public class MyOrderActivity extends BaseActivity<MyOrderPresenter> implements M
 
     @Override
     public void initPresenter() {
-
+        mPresenter.init(this);
     }
 
     @Override
     public void loadData() {
+        Bundle extras = getIntent().getExtras();
+
+        currentPage = extras.getInt("currentPage", 0);
+
         titles = new String[]{"全部","待付款","待发货","配送中","已完成","已取消"};
         setViewPagerAdapter();
         setTabBindViewPager();
@@ -69,6 +70,7 @@ public class MyOrderActivity extends BaseActivity<MyOrderPresenter> implements M
      */
     private void setTabBindViewPager() {
         mXTab.setupWithViewPager(mViewPage);
+        mViewPage.setCurrentItem(2,false);
         mXTab.setOnTabSelectedListener(new XTabLayout.OnTabSelectedListener() {
 
             @Override

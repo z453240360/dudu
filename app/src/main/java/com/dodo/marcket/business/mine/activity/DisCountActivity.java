@@ -1,6 +1,5 @@
 package com.dodo.marcket.business.mine.activity;
 
-import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
 
@@ -9,7 +8,6 @@ import com.dodo.marcket.base.BaseActivity;
 import com.dodo.marcket.business.mine.adapter.ViewPagerFragmentAdapter;
 import com.dodo.marcket.business.mine.constrant.DisCountContract;
 import com.dodo.marcket.business.mine.fragment.DisCountFragment;
-import com.dodo.marcket.business.mine.fragment.OrderFragment;
 import com.dodo.marcket.business.mine.presenter.DisCountPresenter;
 import com.dodo.marcket.wedget.XTabLayout.XTabLayout;
 
@@ -17,7 +15,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
-import butterknife.ButterKnife;
 
 public class DisCountActivity extends BaseActivity<DisCountPresenter> implements DisCountContract.View {
 
@@ -42,6 +39,7 @@ public class DisCountActivity extends BaseActivity<DisCountPresenter> implements
 
     @Override
     public void loadData() {
+        mTitle.setTitle("优惠券");
         titles = new String[]{"未使用", "已使用/过期"};
         setViewPagerAdapter();
         setTabBindViewPager();

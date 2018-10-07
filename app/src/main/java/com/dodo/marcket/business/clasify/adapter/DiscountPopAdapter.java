@@ -11,7 +11,6 @@ import android.widget.TextView;
 
 import com.dodo.marcket.R;
 import com.dodo.marcket.bean.DisCountBean;
-import com.dodo.marcket.bean.PayMethodBean;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -52,9 +51,17 @@ public class DiscountPopAdapter extends RecyclerView.Adapter<DiscountPopAdapter.
         DisCountBean payMethodBean = mDatas.get(position);
         double amount = payMethodBean.getAmount();
         double lowLimit = payMethodBean.getLowLimit();
-
+        String no = payMethodBean.getNo();
         boolean selected = payMethodBean.isSelected();
 
+        holder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (mListener!=null){
+                    mListener.onItemClick(position,0);
+                }
+            }
+        });
         if (selected){
             holder.mCheckBoxSelect.setChecked(true);
         }else {

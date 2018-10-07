@@ -6,24 +6,16 @@ import com.dodo.marcket.base.BasePresenter;
 import com.dodo.marcket.bean.AliPayBean;
 import com.dodo.marcket.bean.CancelOrderBean;
 import com.dodo.marcket.bean.OrderList;
-import com.dodo.marcket.bean.basebean.PhoneBean;
 import com.dodo.marcket.bean.params.OptionOrderParamsBean;
 import com.dodo.marcket.bean.params.OrderParamsBean;
-import com.dodo.marcket.bean.params.PayBean;
 import com.dodo.marcket.bean.params.PayBean2;
-import com.dodo.marcket.bean.params.PayOrderParamsBean;
-import com.dodo.marcket.bean.params.PayParamsBean;
-import com.dodo.marcket.bean.params.PayParamsFatherBean;
-import com.dodo.marcket.business.mine.constrant.MineFragmentContract;
 import com.dodo.marcket.business.mine.constrant.OrderFragmentContract;
-import com.dodo.marcket.business.mine.fragment.MineFragment;
 import com.dodo.marcket.business.mine.fragment.OrderFragment;
 import com.dodo.marcket.http.utils.APIException;
 import com.dodo.marcket.http.utils.ResponseSubscriber;
 import com.dodo.marcket.utils.ParamsUtils;
 import com.google.gson.Gson;
 
-import java.util.ArrayList;
 import java.util.List;
 
 
@@ -78,7 +70,7 @@ public class OrderFragmentPresenter extends BasePresenter<OrderFragment> impleme
         addSubscription(apiModel.payOrder(ParamsUtils.getParams(new Gson().toJson(bean),name,mToken)), new ResponseSubscriber<AliPayBean>(mContext) {
             @Override
             public void apiSuccess(AliPayBean s) {
-                mView.payOrder(1);
+                mView.payOrder(s);
             }
 
             @Override

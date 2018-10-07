@@ -1,20 +1,17 @@
 package com.dodo.marcket.business.shoppingcar.presenter;
 
 
-
 import com.dodo.marcket.base.BasePresenter;
-import com.dodo.marcket.bean.DisCountBean;
-import com.dodo.marcket.bean.FirstClassfyBean;
 import com.dodo.marcket.bean.ProductBean;
 import com.dodo.marcket.bean.ProductParmsBean;
 import com.dodo.marcket.bean.basebean.PhoneBean;
+import com.dodo.marcket.bean.params.ProductDetailParamsBean;
 import com.dodo.marcket.business.shoppingcar.constrant.BuyListFragmentContract;
-import com.dodo.marcket.business.shoppingcar.constrant.ShoppingCartFragmentContract;
 import com.dodo.marcket.business.shoppingcar.fragment.BuyListFragment;
-import com.dodo.marcket.business.shoppingcar.fragment.ShoppingCartFragment;
 import com.dodo.marcket.http.utils.APIException;
 import com.dodo.marcket.http.utils.ResponseSubscriber;
 import com.dodo.marcket.utils.ParamsUtils;
+import com.google.gson.Gson;
 
 import java.util.List;
 
@@ -81,6 +78,27 @@ public class BuyListFragmentPresenter extends BasePresenter<BuyListFragment> imp
         phoneBean.setId(id);
         String name = "product.getProductDetailById";
         addSubscription(apiModel.getProductDetailById(ParamsUtils.getParams(phoneBean,name)), new ResponseSubscriber<ProductBean>(mContext,"获取商品详情") {
+
+            @Override
+            public void apiSuccess(ProductBean s) {
+                mView.getProductDetailById(s);
+            }
+
+            @Override
+            public void apiError(APIException e) {
+                mView.showErrorMsg(e.getMessage(),e.code);
+            }
+        });
+    }
+
+    //根据规格获取商品详情
+    @Override
+    public void getProductBySize(long productId, String specParam) {
+        ProductDetailParamsBean phoneBean = new ProductDetailParamsBean();
+        phoneBean.setProductId(productId);
+        phoneBean.setSpecParam(specParam);
+        String name = "product.getProductDetailByProductSpec";
+        addSubscription(apiModel.getProductDetailByProductSpec(ParamsUtils.getParams(new Gson().toJson(phoneBean),name)), new ResponseSubscriber<ProductBean>(mContext,"asd") {
 
             @Override
             public void apiSuccess(ProductBean s) {

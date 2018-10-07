@@ -5,6 +5,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.dodo.marcket.R;
@@ -52,10 +53,38 @@ public class DisCountAdapter extends RecyclerView.Adapter<DisCountAdapter.MyView
         String anhao = disCountBean.getAnhao();
         String anHaoStatus = disCountBean.getAnHaoStatus();
         String anHaoType = disCountBean.getAnHaoType();
+        String startDate = disCountBean.getStartDate();
+        String endDate = disCountBean.getEndDate();
+        holder.mTxtDiscountPrice.setText(amount + "");
+        holder.mTxtDiscountDec.setText("满" + disCountBean.getLowLimit() + "可用");
+        holder.mTxtDiscountTime.setText(startDate + "至" + endDate);
+        holder.mTxtDiscountName.setText(anHaoType);
 
-        holder.mTxtDiscountPrice.setText(amount+"");
-        holder.mTxtDiscountDec.setText("满"+disCountBean.getLowLimit()+"可用");
+        if (anHaoStatus.equals("NEW")) {
+            holder.mTxtDiscountUse.setClickable(true);
+            holder.mLL_0.setBackgroundResource(R.mipmap.discount);
+            holder.mTxtDiscountStatus.setBackgroundResource(R.drawable.shape_lunkuo_paint);
+            holder.mTxtDiscountUse.setText("立即使用");
+        } else if (anHaoStatus.equals("USERD")){
+            holder.mTxtDiscountUse.setClickable(false);
+            holder.mLL_0.setBackgroundResource(R.mipmap.discount);
+            holder.mTxtDiscountStatus.setBackgroundResource(R.drawable.shape_lunkuo_line4);
+            holder.mTxtDiscountUse.setText("已使用");
+        }else {
+            holder.mTxtDiscountUse.setClickable(false);
+            holder.mLL_0.setBackgroundResource(R.mipmap.discount);
+            holder.mTxtDiscountStatus.setBackgroundResource(R.drawable.shape_lunkuo_paint4);
+            holder.mTxtDiscountUse.setText("已过期");
+        }
 
+        holder.mTxtDiscountUse.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (mListener!=null){
+                    mListener.onUseClic(position);
+                }
+            }
+        });
     }
 
 
@@ -74,15 +103,21 @@ public class DisCountAdapter extends RecyclerView.Adapter<DisCountAdapter.MyView
         View dottedLine;
         @BindView(R.id.mTxt_discountUse)
         TextView mTxtDiscountUse;
-
+        @BindView(R.id.mLL_1)
+        LinearLayout mLL_1;
+        @BindView(R.id.mLL_2)
+        LinearLayout mLL_2;
+        @BindView(R.id.mLL_0)
+        LinearLayout mLL_0;
         public MyViewHolder(View itemView) {
             super(itemView);
-            ButterKnife.bind(this,itemView);
+            ButterKnife.bind(this, itemView);
         }
     }
 
     public interface OnItemClickListener {
-        void onItemClick(int parentPos, int childPos, String status, String villageCode, String villageName);
+        void onItemClick(int parentPos);
+        void onUseClic(int pos);
     }
 
     private OnItemClickListener mListener;

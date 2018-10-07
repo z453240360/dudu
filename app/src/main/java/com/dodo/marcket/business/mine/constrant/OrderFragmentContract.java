@@ -3,8 +3,8 @@ package com.dodo.marcket.business.mine.constrant;
 
 
 import com.dodo.marcket.base.BaseView;
+import com.dodo.marcket.bean.AliPayBean;
 import com.dodo.marcket.bean.OrderList;
-import com.dodo.marcket.bean.params.PayBean;
 import com.dodo.marcket.bean.params.PayBean2;
 
 import java.util.List;
@@ -18,7 +18,7 @@ public class OrderFragmentContract {
     public interface View extends BaseView {
         void getOrderList(List<OrderList> orderLists);
         void cancelOrder(int id);
-        void payOrder(int id);
+        void payOrder(AliPayBean id);
         void againOrder(int id);
     }
 

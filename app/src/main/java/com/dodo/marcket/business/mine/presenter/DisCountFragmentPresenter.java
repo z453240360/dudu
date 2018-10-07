@@ -5,8 +5,6 @@ package com.dodo.marcket.business.mine.presenter;
 import com.dodo.marcket.base.BasePresenter;
 import com.dodo.marcket.bean.DisCountBean;
 import com.dodo.marcket.bean.basebean.PhoneBean;
-import com.dodo.marcket.business.mine.activity.DisCountActivity;
-import com.dodo.marcket.business.mine.constrant.DisCountContract;
 import com.dodo.marcket.business.mine.constrant.DisCountFragmentContract;
 import com.dodo.marcket.business.mine.fragment.DisCountFragment;
 import com.dodo.marcket.http.utils.APIException;
@@ -23,7 +21,7 @@ public class DisCountFragmentPresenter extends BasePresenter<DisCountFragment> i
         PhoneBean phoneBean = new PhoneBean();
         phoneBean.setStatus(status);
         String name = "member.getAnhao";
-        addSubscription(apiModel.getVerCode(ParamsUtils.getParams(phoneBean,name,mToken)), new ResponseSubscriber<List<DisCountBean>>(mContext) {
+        addSubscription(apiModel.getDisCount(ParamsUtils.getParams(phoneBean,name,mToken)), new ResponseSubscriber<List<DisCountBean>>(mContext) {
 
             @Override
             public void apiSuccess(List<DisCountBean> s) {

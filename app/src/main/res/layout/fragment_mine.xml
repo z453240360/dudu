@@ -162,11 +162,13 @@
                 </LinearLayout>
 
                 <LinearLayout
+                    android:visibility="gone"
                     android:layout_width="match_parent"
                     android:layout_height="0.2dp"
                     android:background="#dddddd" />
 
                 <LinearLayout
+                    android:visibility="gone"
                     android:id="@+id/mLL_postAddress"
                     android:layout_width="match_parent"
                     android:layout_height="45dp"
@@ -280,6 +282,7 @@
                         </LinearLayout>
 
                         <LinearLayout
+                            android:visibility="gone"
                             android:gravity="right|top"
                             android:orientation="horizontal"
                             android:layout_width="match_parent"
@@ -330,6 +333,7 @@
                         </LinearLayout>
 
                         <LinearLayout
+                            android:visibility="gone"
                             android:gravity="right|top"
                             android:orientation="horizontal"
                             android:layout_width="match_parent"
@@ -380,6 +384,7 @@
                         </LinearLayout>
 
                         <LinearLayout
+                            android:visibility="gone"
                             android:gravity="right|top"
                             android:orientation="horizontal"
                             android:layout_width="match_parent"
@@ -430,6 +435,7 @@
                         </LinearLayout>
 
                         <LinearLayout
+                            android:visibility="gone"
                             android:gravity="right|top"
                             android:orientation="horizontal"
                             android:layout_width="match_parent"
@@ -480,6 +486,7 @@
                         </LinearLayout>
 
                         <LinearLayout
+                            android:visibility="gone"
                             android:gravity="right|top"
                             android:orientation="horizontal"
                             android:layout_width="match_parent"

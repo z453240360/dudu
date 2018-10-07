@@ -1,7 +1,6 @@
 package com.dodo.marcket.business.mine.activity;
 
 import android.graphics.Color;
-import android.os.Bundle;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -9,7 +8,6 @@ import android.widget.TextView;
 import com.dodo.marcket.R;
 import com.dodo.marcket.base.BaseActivity;
 import com.dodo.marcket.bean.LoginBean;
-import com.dodo.marcket.business.HomeActivity;
 import com.dodo.marcket.business.mine.constrant.LoginContract;
 import com.dodo.marcket.business.mine.presenter.LoginPresenter;
 import com.dodo.marcket.http.constant.Constant;
@@ -18,7 +16,6 @@ import com.dodo.marcket.utils.Tool;
 import com.dodo.marcket.wedget.ClearEditText;
 
 import butterknife.BindView;
-import butterknife.ButterKnife;
 import butterknife.OnClick;
 import rx.Subscriber;
 
@@ -87,20 +84,21 @@ public class LoginActivity extends BaseActivity<LoginPresenter> implements Login
             public void onStart() {
                 super.onStart();
                 mTxtSs.setClickable(false);
-                mTxtSs.setTextColor(Color.parseColor("#ffffff"));
+                mTxtSs.setTextColor(Color.parseColor("#888888"));
             }
 
             @Override
             public void onCompleted() {
                 String phone = mEdPhone.getText().toString().trim();
+
                 if (phone.length() == 13) {
                     mTxtSs.setText("获取验证码");
                     mTxtSs.setClickable(true);
-                    mTxtSs.setTextColor(Color.parseColor("#ffffff"));
+                    mTxtSs.setTextColor(Color.parseColor("#333333"));
                 } else {
                     mTxtSs.setText("获取验证码");
                     mTxtSs.setClickable(true);
-                    mTxtSs.setTextColor(Color.parseColor("#99ffffff"));
+                    mTxtSs.setTextColor(Color.parseColor("#333333"));
                 }
             }
 
@@ -108,11 +106,13 @@ public class LoginActivity extends BaseActivity<LoginPresenter> implements Login
             public void onError(Throwable e) {
                 mTxtSs.setText("获取验证码");
                 mTxtSs.setClickable(true);
-                mTxtSs.setTextColor(Color.parseColor("#99ffffff"));
+                mTxtSs.setTextColor(Color.parseColor("#333333"));
             }
 
             @Override
             public void onNext(Integer integer) {
+                mTxtSs.setClickable(false);
+                mTxtSs.setTextColor(Color.parseColor("#888888"));
                 mTxtSs.setText("" + integer + "s");
             }
         });

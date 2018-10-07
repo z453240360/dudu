@@ -281,10 +281,10 @@ public class ShoppingCartFragment extends BaseFragment<ShoppingCartFragmentPrese
         double productAmount = productBeans.getProductAmount();//productamount是商品金额
 
 //        mTxtSendPrice.setText("还差"+minPrice+"元起送");
-        mTxtSendPrice.setText("满"+freeFreight+"免运费");
-        mTxtCarTotalMoney.setText(productAmount + "");//合计
-        mTxtCarBoxMoney.setText(boxAmount + "");
-        mTxtCarPostMoney.setText(freight + "");
+//        mTxtSendPrice.setText("满"+freeFreight+"免运费");
+//        mTxtCarTotalMoney.setText(productAmount + "");//合计
+//        mTxtCarBoxMoney.setText(boxAmount + "");
+//        mTxtCarPostMoney.setText(freight + "");
 
         List<CartItemsBean> cartItems = productBeans.getCartItems();
         if (cartItems == null || cartItems.size() == 0) {

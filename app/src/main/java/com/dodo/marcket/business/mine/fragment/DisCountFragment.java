@@ -9,6 +9,7 @@ import android.support.v7.widget.RecyclerView;
 import com.dodo.marcket.R;
 import com.dodo.marcket.base.BaseFragment;
 import com.dodo.marcket.bean.DisCountBean;
+import com.dodo.marcket.business.HomeActivity;
 import com.dodo.marcket.business.mine.adapter.DisCountAdapter;
 import com.dodo.marcket.business.mine.constrant.DisCountFragmentContract;
 import com.dodo.marcket.business.mine.presenter.DisCountFragmentPresenter;
@@ -17,7 +18,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
-import butterknife.Unbinder;
 
 
 @SuppressLint("ValidFragment")
@@ -84,14 +84,21 @@ public class DisCountFragment extends BaseFragment<DisCountFragmentPresenter> im
 
 
     private void initRv() {
-
-//        for (int i = 0; i < 10; i++) {
-//            mDates.add(new DisCountBean());
-//        }
         adapter = new DisCountAdapter(mContext, mDates);
         manager = new LinearLayoutManager(mContext);
         mRvDiscount.setAdapter(adapter);
         mRvDiscount.setLayoutManager(manager);
+        adapter.setOnItemClickListener(new DisCountAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClick(int parentPos) {
+
+            }
+
+            @Override
+            public void onUseClic(int pos) {
+                startActivity(HomeActivity.class);
+            }
+        });
     }
 
 

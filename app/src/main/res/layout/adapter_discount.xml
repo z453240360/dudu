@@ -7,6 +7,7 @@
 
 
     <LinearLayout
+        android:id="@+id/mLL_0"
         android:layout_marginRight="@dimen/dimen_10dp"
         android:layout_marginLeft="@dimen/dimen_10dp"
         android:layout_marginTop="@dimen/dimen_10dp"
@@ -17,6 +18,7 @@
         android:orientation="horizontal">
 
         <LinearLayout
+            android:id="@+id/mLL_1"
             android:gravity="center"
             android:layout_width="130dp"
             android:layout_height="match_parent"
@@ -66,6 +68,7 @@
         </LinearLayout>
 
         <LinearLayout
+            android:id="@+id/mLL_2"
             android:background="@color/white"
             android:layout_width="match_parent"
             android:layout_height="match_parent"

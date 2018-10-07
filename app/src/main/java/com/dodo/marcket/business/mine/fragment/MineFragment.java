@@ -3,15 +3,14 @@ package com.dodo.marcket.business.mine.fragment;
 
 import android.os.Bundle;
 import android.text.TextUtils;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.dodo.marcket.R;
 import com.dodo.marcket.base.BaseFragment;
 import com.dodo.marcket.bean.basebean.UserInfoBean;
+import com.dodo.marcket.business.HomeActivity;
 import com.dodo.marcket.business.mine.activity.BackBoxActivity;
 import com.dodo.marcket.business.mine.activity.DisCountActivity;
 import com.dodo.marcket.business.mine.activity.MyAddressActivity;
@@ -20,11 +19,11 @@ import com.dodo.marcket.business.mine.activity.MyOrderActivity;
 import com.dodo.marcket.business.mine.activity.SalesManActivity;
 import com.dodo.marcket.business.mine.constrant.MineFragmentContract;
 import com.dodo.marcket.business.mine.presenter.MineFragmentPresenter;
+import com.dodo.marcket.utils.SharedPreferencesUtil;
 import com.dodo.marcket.utils.statusbar.StatusBarUtils;
 import com.dodo.marcket.wedget.CircleImageView;
 
 import butterknife.BindView;
-import butterknife.ButterKnife;
 import butterknife.OnClick;
 import butterknife.Unbinder;
 
@@ -145,17 +144,34 @@ public class MineFragment extends BaseFragment<MineFragmentPresenter> implements
                 startActivity(SalesManActivity.class);
                 break;
             case R.id.mLL_postAddress://跳转送货点列表
+
                 break;
             case R.id.mLL_allOrder://查看所有订单
+                Bundle bundle1 = new Bundle();
+                bundle1.putInt("currentPage",0);
+                startActivity(MyOrderActivity.class,bundle1);
                 startActivity(MyOrderActivity.class);
                 break;
             case R.id.mLL_dealwith://待处理
+                Bundle bundle2 = new Bundle();
+                bundle2.putInt("currentPage",2);
+                startActivity(MyOrderActivity.class,bundle2);
+                startActivity(MyOrderActivity.class);
                 break;
             case R.id.mLL_send://待发送
+                Bundle bundle3 = new Bundle();
+                bundle3.putInt("currentPage",1);
+                startActivity(MyOrderActivity.class,bundle3);
                 break;
             case R.id.mLL_deliver://已发货
+                Bundle bundle4 = new Bundle();
+                bundle4.putInt("currentPage",4);
+                startActivity(MyOrderActivity.class,bundle4);
                 break;
             case R.id.mLL_finish://已完成
+                Bundle bundle5 = new Bundle();
+                bundle5.putInt("currentPage",3);
+                startActivity(MyOrderActivity.class,bundle5);
                 break;
             case R.id.mLL_discount://跳转优惠券
                 startActivity(DisCountActivity.class);
@@ -170,6 +186,9 @@ public class MineFragment extends BaseFragment<MineFragmentPresenter> implements
                 startActivity(MyBackBoxActivity.class);
                 break;
             case R.id.mTxt_loginOut://退出登陆
+                SharedPreferencesUtil.clear(mContext);
+                hastoken = false;
+                ((HomeActivity) mActivity).selectRg(0);
 
                 break;
         }

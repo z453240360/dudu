@@ -3,13 +3,13 @@ package com.dodo.marcket.business.shoppingcar.fragment;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
-import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.PopupWindow;
@@ -21,10 +21,13 @@ import com.dodo.marcket.bean.ProductBean;
 import com.dodo.marcket.bean.ProductParmsBean;
 import com.dodo.marcket.bean.SpecificationsBean;
 import com.dodo.marcket.business.clasify.adapter.ProductAdapter;
+import com.dodo.marcket.business.clasify.fragment.ClassifyFragment;
 import com.dodo.marcket.business.homepage.activity.ProductDetailActivity;
 import com.dodo.marcket.business.homepage.adapter.ProductDetailAdapter;
 import com.dodo.marcket.business.shoppingcar.constrant.BuyListFragmentContract;
 import com.dodo.marcket.business.shoppingcar.presenter.BuyListFragmentPresenter;
+import com.dodo.marcket.utils.ImageLoaders;
+import com.dodo.marcket.utils.NumberUtils;
 import com.dodo.marcket.utils.ToastUtils;
 import com.dodo.marcket.utils.photo.PopupWindowHelper;
 
@@ -32,7 +35,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
-import butterknife.ButterKnife;
 import butterknife.Unbinder;
 
 
@@ -70,10 +72,20 @@ public class BuyListFragment extends BaseFragment<BuyListFragmentPresenter> impl
     private ImageView mImg_jia;
     private TextView mTxt_num;
     private ProductDetailAdapter productDetailAdapter;
+    private boolean isCanBuy = false;
+    private Button mBtn_select;
+    private long buyId;
+    private ClassifyFragment classifyFragment;
 
     public BuyListFragment(int id) {
         super();
         this.mId = id;
+    }
+
+    public BuyListFragment(ClassifyFragment classifyFragment,int id) {
+        super();
+        this.mId = id;
+        this.classifyFragment = classifyFragment;
     }
 
     public static BuyListFragment getInstance() {
@@ -148,6 +160,12 @@ public class BuyListFragment extends BaseFragment<BuyListFragmentPresenter> impl
 
             @Override
             public void onAddClicked(int pos) {//单规格的加入购物车
+
+                if (!hastoken){
+                    goToLogin();
+                    return;
+                }
+
                 ProductBean productBean = mDates.get(pos);
                 long id = productBean.getId();
                 mPresenter.addProduct(1, new ProductParmsBean(id));
@@ -155,6 +173,10 @@ public class BuyListFragment extends BaseFragment<BuyListFragmentPresenter> impl
 
             @Override
             public void onMutiSizeClicked(int pos) {//多规格的添加购物车
+                if (!hastoken){
+                    goToLogin();
+                    return;
+                }
 //                ToastUtils.show(mContext, "多规格");
                 mPresenter.getProductDetailById(mDates.get(pos).getId());
             }
@@ -193,6 +215,7 @@ public class BuyListFragment extends BaseFragment<BuyListFragmentPresenter> impl
     public void addProduct(boolean isAdd) {
         if (isAdd) {
             ToastUtils.show(mContext, "加入购物车成功");
+            classifyFragment.initProducts();
         } else {
             ToastUtils.show(mContext, "加入购物车失败");
         }
@@ -201,7 +224,60 @@ public class BuyListFragment extends BaseFragment<BuyListFragmentPresenter> impl
     //获取商品详情（用于多重规格的商品的展示）
     @Override
     public void getProductDetailById(ProductBean productBean) {
-        List<SpecificationsBean> specifications = productBean.getSpecifications();
+        if (productBean == null) {
+            showErrorToast("获取商品信息错误");
+            return;
+        }
+
+        if (productBean == null) {
+            return;
+        }
+
+        isCanBuy = false;
+        if (productBean.getStock() == null) {//不限制库存
+            isCanBuy = true;
+        } else if (productBean.getStock() == 0) {
+            isCanBuy = false;
+        } else if (productBean.getStock() > 0) {
+            isCanBuy = true;
+        }
+
+        //是否可以购买
+        if (isCanBuy) {
+            mBtn_select.setClickable(true);
+            mBtn_select.setBackgroundResource(R.color.basicColor);
+        } else {
+            mBtn_select.setClickable(false);
+            mBtn_select.setBackgroundResource(R.color.defalute);
+        }
+
+        List<SpecificationsBean> specifications = productBean.getSpecifications();//商品规格
+        List<String> productImages = productBean.getProductImages();//banner图片
+        String name = productBean.getName();//商品名称
+        String introduction = productBean.getIntroduction();//商品描述
+        String memo = productBean.getMemo();//备注
+        double price = productBean.getPrice();//价格
+        String unit = productBean.getUnit();//单位
+        double unitPrice = productBean.getUnitPrice();
+        String image = productBean.getImage();
+        String packaging = productBean.getPackaging();
+        long id = productBean.getId();
+        buyId = id;
+
+        ImageLoaders.displayImage(mImg_productImg, image);
+        mTxt_productName.setText(name);
+        mTxt_productMsg.setText(memo);
+        mTxt_price.setText("¥" + unitPrice + "/"+unit);
+        mTxt_package.setText(packaging);
+        mTxt_productPrice.setText("" + price + "");
+
+        if (specifications == null || specifications.size() == 0) {
+//            carId = mId;
+        } else {
+            specificationsBeanList.clear();
+            specificationsBeanList.addAll(specifications);
+            productDetailAdapter.notifyDataSetChanged();
+        }
 
         shoePOP();
     }
@@ -244,6 +320,8 @@ public class BuyListFragment extends BaseFragment<BuyListFragmentPresenter> impl
         mImg_jia = pickVIew.findViewById(R.id.mImg_jia);
         //数量
         mTxt_num = pickVIew.findViewById(R.id.mTxt_num);
+        //选好了
+        mBtn_select = pickVIew.findViewById(R.id.mBtn_select);
 
         popupWindow = PopupWindowHelper.createPopupWindow(pickVIew, ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
         popupWindow.setAnimationStyle(R.style.slide_up_in_down_out);
@@ -256,30 +334,53 @@ public class BuyListFragment extends BaseFragment<BuyListFragmentPresenter> impl
             }
         });
 
-
-        //多选标签
-        for (int i = 0; i < 5; i++) {
-            specificationsBeanList.add(new SpecificationsBean());
-        }
         productDetailAdapter = new ProductDetailAdapter(mContext, specificationsBeanList);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(mContext);
         mRv_mutle.setAdapter(productDetailAdapter);
         mRv_mutle.setLayoutManager(linearLayoutManager);
 
-
-        //点击加号
-        mImg_jian.setOnClickListener(new View.OnClickListener() {
+        productDetailAdapter.setOnItemClickListener(new ProductDetailAdapter.OnItemClickListener() {
             @Override
-            public void onClick(View v) {
+            public void onItemClick(int parentPos, String specParam) {
+                mPresenter.getProductBySize(buyId, specParam);
 
             }
         });
 
-        //点击减号
+        //点击加号
         mImg_jia.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                String s = mTxt_num.getText().toString().trim();
+                int i = NumberUtils.string2Int(s);
+                i++;
+                mTxt_num.setText(i + "");
+            }
+        });
 
+        //点击减号
+        mImg_jian.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String s = mTxt_num.getText().toString().trim();
+                int i = NumberUtils.string2Int(s);
+                if (i <= 1) {
+                    ToastUtils.show(mContext, "已经是最少了");
+                    return;
+                } else {
+                    i--;
+                    mTxt_num.setText(i + "");
+                }
+            }
+        });
+
+        //点击选好了
+        mBtn_select.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String s = mTxt_num.getText().toString().trim();
+                int i = NumberUtils.string2Int(s);
+                mPresenter.addProduct(i, new ProductParmsBean(buyId));
             }
         });
     }
