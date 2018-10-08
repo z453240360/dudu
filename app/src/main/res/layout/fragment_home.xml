@@ -26,6 +26,7 @@
                 android:layout_height="200dp" />
 
             <LinearLayout
+                android:visibility="gone"
                 android:id="@+id/mLL_yh"
                 android:layout_marginTop="@dimen/dimen_10dp"
                 android:layout_width="match_parent"
@@ -44,6 +45,7 @@
 
 
             <LinearLayout
+                android:visibility="gone"
                 android:layout_marginBottom="@dimen/dimen_10dp"
                 android:id="@+id/mLL_hotGoods"
                 android:layout_marginTop="@dimen/dimen_10dp"

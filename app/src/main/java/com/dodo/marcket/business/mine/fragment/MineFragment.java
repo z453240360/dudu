@@ -137,7 +137,7 @@ public class MineFragment extends BaseFragment<MineFragmentPresenter> implements
     }
 
 
-    @OnClick({R.id.mLL_salesMan, R.id.mLL_postAddress, R.id.mLL_allOrder, R.id.mLL_dealwith, R.id.mLL_send, R.id.mLL_deliver, R.id.mLL_finish, R.id.mLL_discount, R.id.mLL_address, R.id.mLL_backMoney, R.id.mLL_backBox, R.id.mTxt_loginOut})
+    @OnClick({R.id.mLL_salesMan, R.id.mLL_postAddress, R.id.mLL_allOrder, R.id.mLL_dealwith, R.id.mLL_send, R.id.mLL_deliver,R.id.mLL_cancel ,R.id.mLL_finish, R.id.mLL_discount, R.id.mLL_address, R.id.mLL_backMoney, R.id.mLL_backBox, R.id.mTxt_loginOut})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.mLL_salesMan://跳转业务员
@@ -150,29 +150,34 @@ public class MineFragment extends BaseFragment<MineFragmentPresenter> implements
                 Bundle bundle1 = new Bundle();
                 bundle1.putInt("currentPage",0);
                 startActivity(MyOrderActivity.class,bundle1);
-                startActivity(MyOrderActivity.class);
                 break;
             case R.id.mLL_dealwith://待处理
                 Bundle bundle2 = new Bundle();
-                bundle2.putInt("currentPage",2);
+                bundle2.putInt("currentPage",1);
                 startActivity(MyOrderActivity.class,bundle2);
-                startActivity(MyOrderActivity.class);
                 break;
             case R.id.mLL_send://待发送
                 Bundle bundle3 = new Bundle();
-                bundle3.putInt("currentPage",1);
+                bundle3.putInt("currentPage",2);
                 startActivity(MyOrderActivity.class,bundle3);
                 break;
             case R.id.mLL_deliver://已发货
                 Bundle bundle4 = new Bundle();
-                bundle4.putInt("currentPage",4);
+                bundle4.putInt("currentPage",3);
                 startActivity(MyOrderActivity.class,bundle4);
                 break;
             case R.id.mLL_finish://已完成
                 Bundle bundle5 = new Bundle();
-                bundle5.putInt("currentPage",3);
+                bundle5.putInt("currentPage",4);
                 startActivity(MyOrderActivity.class,bundle5);
                 break;
+
+            case R.id.mLL_cancel:
+                Bundle bundle6 = new Bundle();
+                bundle6.putInt("currentPage",5);
+                startActivity(MyOrderActivity.class,bundle6);
+                break;
+
             case R.id.mLL_discount://跳转优惠券
                 startActivity(DisCountActivity.class);
                 break;

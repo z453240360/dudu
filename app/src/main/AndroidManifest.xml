@@ -12,6 +12,7 @@
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
 
     <application
+
         android:name=".base.App"
         android:allowBackup="true"
         android:icon="@mipmap/logo"
@@ -30,7 +31,7 @@
                 android:resource="@xml/file_paths" />
         </provider>
 
-        <activity android:name=".MainActivity">
+        <activity android:name=".MainActivity" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -39,7 +40,12 @@
         </activity>
         <activity
             android:name=".business.HomeActivity"
-            android:launchMode="singleTask" />
+            android:launchMode="singleTask" >
+
+
+        </activity>
+
+
         <activity android:name=".business.mine.activity.LoginActivity" />
         <activity android:name=".business.shoppingcar.activity.GoToPayActivity" />
         <activity android:name=".business.mine.activity.SalesManActivity" />
@@ -75,7 +81,9 @@
         <activity
             android:name=".wxapi.WXPayEntryActivity"
             android:exported="true"
-            android:launchMode="singleTop" />
+            android:launchMode="singleTop">
+        </activity>
+
 
 
         <activity android:name=".business.mine.activity.CommentOrderActivity"></activity>

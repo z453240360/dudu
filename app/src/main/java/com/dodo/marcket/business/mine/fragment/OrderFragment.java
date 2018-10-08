@@ -1,6 +1,7 @@
 package com.dodo.marcket.business.mine.fragment;
 
 import android.annotation.SuppressLint;
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -18,6 +19,8 @@ import com.dodo.marcket.R;
 import com.dodo.marcket.base.BaseFragment;
 import com.dodo.marcket.bean.AliPayBean;
 import com.dodo.marcket.bean.AuthResult;
+import com.dodo.marcket.bean.CommentBean;
+import com.dodo.marcket.bean.OrderDetailBean;
 import com.dodo.marcket.bean.OrderList;
 import com.dodo.marcket.bean.PayResult;
 import com.dodo.marcket.bean.params.PayBean2;
@@ -35,6 +38,7 @@ import com.tencent.mm.opensdk.modelpay.PayReq;
 import com.tencent.mm.opensdk.openapi.IWXAPI;
 import com.tencent.mm.opensdk.openapi.WXAPIFactory;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -140,7 +144,23 @@ public class OrderFragment extends BaseFragment<OrderFragmentPresenter> implemen
 
             @Override
             public void disOrder(int id, int postion) {//评价订单
-                startActivity(CommentOrderActivity.class);
+                Bundle b = new Bundle();
+                List<OrderList.OrderItemsBean> orderItems = mDates.get(postion).getOrderItems();
+                List<CommentBean> commentBeans = new ArrayList<>();
+                for (int i = 0; i < orderItems.size(); i++) {
+                    OrderList.OrderItemsBean.ProductInfoBean productInfo = orderItems.get(i).getProductInfo();
+
+                    String name = productInfo.getName();
+                    int id1 = productInfo.getId();
+                    CommentBean commentBean = new CommentBean();
+                    commentBean.setId(id1);
+                    commentBean.setName(name);
+                    commentBean.setScore(0);
+                    commentBeans.add(commentBean);
+                }
+
+                b.putSerializable("list", (Serializable) commentBeans);
+                startActivity(CommentOrderActivity.class,b);
             }
 
             @Override

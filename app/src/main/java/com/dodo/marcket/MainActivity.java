@@ -21,10 +21,12 @@ import android.widget.TextView;
 import com.dodo.marcket.base.BaseActivity;
 import com.dodo.marcket.base.BaseView;
 import com.dodo.marcket.bean.AliPayBean;
+import com.dodo.marcket.bean.OrderList;
 import com.dodo.marcket.bean.SpecificationValuesBean;
 import com.dodo.marcket.business.HomeActivity;
 import com.dodo.marcket.business.clasify.activity.ClasifyActivity;
 import com.dodo.marcket.business.clasify.activity.SearchActivity;
+import com.dodo.marcket.business.mine.activity.CommentOrderActivity;
 import com.dodo.marcket.business.mine.activity.LoginActivity;
 import com.dodo.marcket.business.mine.adapter.MineAdapter;
 import com.dodo.marcket.http.constant.Constant;
@@ -41,15 +43,20 @@ import com.tencent.mm.opensdk.openapi.WXAPIFactory;
 
 import org.greenrobot.eventbus.EventBus;
 
+import java.io.Serializable;
+import java.security.MessageDigest;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.Random;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import io.reactivex.internal.operators.flowable.FlowableFromIterable;
 
-public class MainActivity extends BaseActivity implements BaseView,PermissionsListener {
+public class MainActivity extends BaseActivity implements BaseView, PermissionsListener {
 
 
     @BindView(R.id.toolbar)
@@ -85,7 +92,7 @@ public class MainActivity extends BaseActivity implements BaseView,PermissionsLi
     @Override
     public void loadData() {
 
-        requestPermissions(permissions,this);
+        requestPermissions(permissions, this);
         showShopCarActivity();
         displayUI();
 
@@ -109,10 +116,10 @@ public class MainActivity extends BaseActivity implements BaseView,PermissionsLi
             TextView mTxtTag = (TextView) view.findViewById(R.id.mTxt_tag);
             mTxtTag.setText(specificationValuesBean.getName());
 
-            if (specificationValuesBean.isCurrentSpecVal()){
+            if (specificationValuesBean.isCurrentSpecVal()) {
                 mTxtTag.setBackgroundResource(R.drawable.shape_lunkuo_line);
                 mTxtTag.setTextColor(this.getResources().getColor(R.color.basicColor));
-            }else {
+            } else {
                 mTxtTag.setBackgroundResource(R.drawable.shape_lunkuo_line3);
                 mTxtTag.setTextColor(this.getResources().getColor(R.color.black_333333));
             }
@@ -162,7 +169,7 @@ public class MainActivity extends BaseActivity implements BaseView,PermissionsLi
             EventBus.getDefault().unregister(this);
     }
 
-    @OnClick({R.id.mBtn_1, R.id.mBtn_2, R.id.mBtn_3, R.id.mBtn_4,R.id.mBtn_5,R.id.mBtn_6})
+    @OnClick({R.id.mBtn_1, R.id.mBtn_2, R.id.mBtn_3, R.id.mBtn_4, R.id.mBtn_5, R.id.mBtn_6, R.id.mBtn_7})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.mBtn_1:
@@ -189,12 +196,27 @@ public class MainActivity extends BaseActivity implements BaseView,PermissionsLi
 //                startActivityForResult(intent,2000);
 
                 //调用市民版登陆
-                HuiLoginUtil.HZLogin(MainActivity.this,"AS1TG2MUT3WLVJYNPAOHYHM4TUJMC3S3GW7LW3VCTZWF6SGCJCFTQYQ7PTHUTRG7FF6IREQMRV7HZFUOQ6CTPUCSHBE7RVQNSHENNNDRE2TQ32YFQVMIJ7YDS5Z7PPLABXMUTDYNZELQNYC2JMZEC6L33TF2R2LIONLZUKLN36IMYXDK5YWURMEJBKFVV4B2UEEPYMMKLXJFTWVVE5YYBYKY7DX4L4LRBC6FXSMGHR6I3BBG32RAS6PCXSZY6JJ7VFCZHJ6XKHKTHD3HWX2BN6DSWG6FDOAZEDQNTEBVVRHWXAQ6FQZQ");
+                HuiLoginUtil.HZLogin(MainActivity.this, "AS1TG2MUT3WLVJYNPAOHYHM4TUJMC3S3GW7LW3VCTZWF6SGCJCFTQYQ7PTHUTRG7FF6IREQMRV7HZFUOQ6CTPUCSHBE7RVQNSHENNNDRE2TQ32YFQVMIJ7YDS5Z7PPLABXMUTDYNZELQNYC2JMZEC6L33TF2R2LIONLZUKLN36IMYXDK5YWURMEJBKFVV4B2UEEPYMMKLXJFTWVVE5YYBYKY7DX4L4LRBC6FXSMGHR6I3BBG32RAS6PCXSZY6JJ7VFCZHJ6XKHKTHD3HWX2BN6DSWG6FDOAZEDQNTEBVVRHWXAQ6FQZQ");
 
 
                 break;
             case R.id.mBtn_6:
                 wxPay(testWxPay(ap));
+                break;
+
+            case R.id.mBtn_7://评价
+                List<OrderList> mDates = new ArrayList<>();
+
+                mDates.add(new OrderList());
+                mDates.add(new OrderList());
+                mDates.add(new OrderList());
+
+                Bundle b = new Bundle();
+                b.putSerializable("list", (Serializable) mDates);
+
+                startActivity(CommentOrderActivity.class, b);
+
+
                 break;
 
         }
@@ -249,7 +271,7 @@ public class MainActivity extends BaseActivity implements BaseView,PermissionsLi
                 case 2000:
                     String result = data.getStringExtra("value");
                     mBtn1.setText(result);
-                    Log.i("hz", "onActivityResult: 获取到返回值"+result);
+                    Log.i("hz", "onActivityResult: 获取到返回值" + result);
                     break;
             }
         }
@@ -257,25 +279,26 @@ public class MainActivity extends BaseActivity implements BaseView,PermissionsLi
 
     public String ap = "{\"aliPayResult\":null,\"paymentMethonCode\":\"wxpay\",\"paymentMethonName\":\"微信支付\",\"wxPayResult\":{\"appId\":\"wx50dd81792e10ae50\",\"nonceStr\":\"ltopq8unc0cxh7j5p1llyz24zsg18sal\",\"packageValue\":\"Sign=WXPay\",\"partnerId\":\"1514263511\",\"prepayId\":\"wx201717492428540a89ddc55d0098382847\",\"sign\":\"0804C647536E9BE1DF737FD993182C76\",\"timeStamp\":\"1538103138\"}}";
 
-    public AliPayBean testWxPay(String s){
+    public AliPayBean testWxPay(String s) {
         AliPayBean aliPayBean = new Gson().fromJson(ap, AliPayBean.class);
 
         return aliPayBean;
     }
-    public void wxPay(AliPayBean aliPayBean){
+
+    public void wxPay(AliPayBean aliPayBean) {
         AliPayBean.WxPayResult wxPayResult = aliPayBean.getWxPayResult();
         String appId = wxPayResult.getAppId();
-        final IWXAPI msgApi = WXAPIFactory.createWXAPI(this, appId,false);
+        final IWXAPI msgApi = WXAPIFactory.createWXAPI(this, appId, true);
         msgApi.registerApp(appId);
 
         PayReq request = new PayReq();
         request.appId = appId;
         request.partnerId = wxPayResult.getPartnerId();
-        request.prepayId= wxPayResult.getPrepayId();
-        request.packageValue =  wxPayResult.getPackageValue();
-        request.nonceStr= wxPayResult.getNonceStr();
-        request.timeStamp=wxPayResult.getTimeStamp();
-        request.sign= wxPayResult.getSign();
+        request.prepayId = wxPayResult.getPrepayId();
+        request.packageValue = wxPayResult.getPackageValue();
+        request.nonceStr = wxPayResult.getNonceStr();
+        request.timeStamp = wxPayResult.getTimeStamp();
+        request.sign = wxPayResult.getSign();
         msgApi.sendReq(request);
     }
 
@@ -303,4 +326,8 @@ public class MainActivity extends BaseActivity implements BaseView,PermissionsLi
     public void onDenied(List<String> deniedPermissions, boolean isNeverAsk) {
 
     }
+
+
+
+
 }

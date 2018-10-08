@@ -18,6 +18,7 @@ import com.dodo.marcket.R;
 import com.dodo.marcket.base.BaseActivity;
 import com.dodo.marcket.bean.AliPayBean;
 import com.dodo.marcket.bean.AuthResult;
+import com.dodo.marcket.bean.CommentBean;
 import com.dodo.marcket.bean.OrderDetailBean;
 import com.dodo.marcket.bean.PayResult;
 import com.dodo.marcket.bean.params.PayBean2;
@@ -32,6 +33,7 @@ import com.tencent.mm.opensdk.modelpay.PayReq;
 import com.tencent.mm.opensdk.openapi.IWXAPI;
 import com.tencent.mm.opensdk.openapi.WXAPIFactory;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -295,7 +297,24 @@ public class OrderDetailActivity extends BaseActivity<OrderDetailPresenter> impl
 
                 break;
             case R.id.mTxt_orderDiscuss3://评价
+                Bundle b = new Bundle();
 
+
+                List<CommentBean> commentBeans = new ArrayList<>();
+                for (int i = 0; i < orderItems.size(); i++) {
+                    OrderDetailBean.OrderItemsBean.ProductInfoBean productInfo = orderItems.get(i).getProductInfo();
+                    String name = productInfo.getName();
+                    int id = productInfo.getId();
+                    CommentBean commentBean = new CommentBean();
+                    commentBean.setId(id);
+                    commentBean.setName(name);
+                    commentBean.setScore(0);
+                    commentBeans.add(commentBean);
+                }
+
+
+                b.putSerializable("list", (Serializable) commentBeans);
+                startActivity(CommentOrderActivity.class,b);
                 break;
 
 

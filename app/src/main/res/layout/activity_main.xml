@@ -131,6 +131,19 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
 
+
+        <Button
+            android:layout_margin="@dimen/dimen_10dp"
+            android:padding="@dimen/dimen_5dp"
+            android:textStyle="bold"
+            android:background="@color/gray_cd"
+            android:textColor="@color/basicColor"
+            android:textSize="18sp"
+            android:id="@+id/mBtn_7"
+            android:text="评价"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
         <com.nex3z.flowlayout.FlowLayout
             android:id="@+id/mFlow_dd"
             android:background="@color/basicColor"

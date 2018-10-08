@@ -117,4 +117,7 @@ dependencies {
     implementation 'com.nex3z:flow-layout:1.2.2'
     implementation files('libs/HzCitySDK.jar')
     implementation files('libs/alipaySdk-20180601.jar')
+
+    //打分控件
+    implementation 'com.hedgehog.ratingbar:app:1.0.2'
 }

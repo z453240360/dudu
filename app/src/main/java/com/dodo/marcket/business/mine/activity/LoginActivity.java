@@ -1,6 +1,7 @@
 package com.dodo.marcket.business.mine.activity;
 
 import android.graphics.Color;
+import android.support.annotation.NonNull;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -14,6 +15,9 @@ import com.dodo.marcket.http.constant.Constant;
 import com.dodo.marcket.utils.SharedPreferencesUtil;
 import com.dodo.marcket.utils.Tool;
 import com.dodo.marcket.wedget.ClearEditText;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import butterknife.BindView;
 import butterknife.OnClick;
@@ -56,7 +60,7 @@ public class LoginActivity extends BaseActivity<LoginPresenter> implements Login
 
     @Override
     public void showErrorMsg(String msg, String type) {
-
+        showErrorToast(msg);
     }
 
 
@@ -66,15 +70,33 @@ public class LoginActivity extends BaseActivity<LoginPresenter> implements Login
             case R.id.mTxt_ss://倒计时获取验证码
                 countTimeDown();
                 String phoneNumber = mEdPhone.getText().toString().trim();
+
+                phoneNumber = changePhoneNumber(phoneNumber).toString();
                 mPresenter.getVerificationCode(phoneNumber);
                 break;
             case R.id.mTxt_login://登陆
                 String phone = mEdPhone.getText().toString().trim();
                 String psw = mEdPsw.getText().toString().trim();
-
+                phone = changePhoneNumber(phone).toString();
                 mPresenter.getLogin(phone,psw);
                 break;
         }
+    }
+
+    @NonNull
+    private StringBuffer changePhoneNumber(String phone) {
+        List<Character> phoneNumber = new ArrayList<>();
+        char[] chars = phone.toCharArray();
+        for (int i = 0; i < chars.length; i++) {
+            if (chars[i] != ' ') {
+                phoneNumber.add(chars[i]);
+            }
+        }
+        StringBuffer buffer = new StringBuffer();
+        for (int i = 0; i < phoneNumber.size(); i++) {
+            buffer.append(phoneNumber.get(i).toString());
+        }
+        return buffer;
     }
 
     //倒计时 60 S
@@ -94,11 +116,11 @@ public class LoginActivity extends BaseActivity<LoginPresenter> implements Login
                 if (phone.length() == 13) {
                     mTxtSs.setText("获取验证码");
                     mTxtSs.setClickable(true);
-                    mTxtSs.setTextColor(Color.parseColor("#333333"));
+                    mTxtSs.setTextColor(getResources().getColor(R.color.basicColor));
                 } else {
                     mTxtSs.setText("获取验证码");
                     mTxtSs.setClickable(true);
-                    mTxtSs.setTextColor(Color.parseColor("#333333"));
+                    mTxtSs.setTextColor(getResources().getColor(R.color.basicColor));
                 }
             }
 
@@ -106,7 +128,7 @@ public class LoginActivity extends BaseActivity<LoginPresenter> implements Login
             public void onError(Throwable e) {
                 mTxtSs.setText("获取验证码");
                 mTxtSs.setClickable(true);
-                mTxtSs.setTextColor(Color.parseColor("#333333"));
+                mTxtSs.setTextColor(getResources().getColor(R.color.basicColor));
             }
 
             @Override

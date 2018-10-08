@@ -6,6 +6,7 @@ import com.dodo.marcket.bean.BackBoxBean;
 import com.dodo.marcket.bean.BannerBean;
 import com.dodo.marcket.bean.CancelOrderBean;
 import com.dodo.marcket.bean.ChildAddressBean;
+import com.dodo.marcket.bean.CommentBean;
 import com.dodo.marcket.bean.DisCountBean;
 import com.dodo.marcket.bean.FirstClassfyBean;
 import com.dodo.marcket.bean.GoToPayBean;
@@ -211,7 +212,7 @@ public interface ApiService {
 
     //订单----评价订单
     @POST(Api.url)
-    Observable<BResponse<List<OrderList>>> getComment(@Body RequestBody verifyCode);
+    Observable<BResponse<List<CommentBean>>> getComment(@Body RequestBody verifyCode);
 
     //订单----再次购买（批量添加购物车）
     @POST(Api.url)

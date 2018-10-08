@@ -3,7 +3,9 @@ package com.dodo.marcket.business.mine.presenter;
 
 
 import com.dodo.marcket.base.BasePresenter;
+import com.dodo.marcket.bean.CommentBean;
 import com.dodo.marcket.bean.OrderList;
+import com.dodo.marcket.bean.params.CommentParamsBean;
 import com.dodo.marcket.bean.params.OptionOrderParamsBean;
 import com.dodo.marcket.business.mine.activity.CommentOrderActivity;
 import com.dodo.marcket.business.mine.constrant.CommentOrderContract;
@@ -20,12 +22,12 @@ public class CommentOrderPresenter extends BasePresenter<CommentOrderActivity> i
     //评价订单
     @Override
     public void discussOrder(int id) {
-        OptionOrderParamsBean bean = new OptionOrderParamsBean();
-        bean.setId(id);
+        CommentParamsBean paramsBean = new CommentParamsBean();
+
         String name = "order.getComment";
-        addSubscription(apiModel.getComment(ParamsUtils.getParams(new Gson().toJson(bean),name,mToken)), new ResponseSubscriber<List<OrderList>>(mContext) {
+        addSubscription(apiModel.getComment(ParamsUtils.getParams(new Gson().toJson(paramsBean),name,mToken)), new ResponseSubscriber<List<CommentBean>>(mContext) {
             @Override
-            public void apiSuccess(List<OrderList> s) {
+            public void apiSuccess(List<CommentBean> s) {
                 mView.discussOrder(1);
             }
 

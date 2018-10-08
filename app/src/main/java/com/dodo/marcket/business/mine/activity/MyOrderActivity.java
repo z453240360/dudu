@@ -70,7 +70,7 @@ public class MyOrderActivity extends BaseActivity<MyOrderPresenter> implements M
      */
     private void setTabBindViewPager() {
         mXTab.setupWithViewPager(mViewPage);
-        mViewPage.setCurrentItem(2,false);
+        mViewPage.setCurrentItem(currentPage,false);
         mXTab.setOnTabSelectedListener(new XTabLayout.OnTabSelectedListener() {
 
             @Override

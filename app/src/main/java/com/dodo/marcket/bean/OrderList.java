@@ -1,11 +1,12 @@
 package com.dodo.marcket.bean;
 
+import java.io.Serializable;
 import java.util.List;
 
 /**
  *订单列表
  */
-public class  OrderList {
+public class  OrderList implements Serializable{
     /**
      * amount : 22.71
      * createDate : 2018-09-26 15:51:32
@@ -110,7 +111,7 @@ public class  OrderList {
         this.orderItems = orderItems;
     }
 
-    public static class OrderItemsBean {
+    public static class OrderItemsBean implements Serializable{
         /**
          * orderPrice : null
          * orderWeight : null

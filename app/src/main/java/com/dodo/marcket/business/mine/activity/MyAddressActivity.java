@@ -43,7 +43,7 @@ public class MyAddressActivity extends BaseActivity<MyAddressPresenter> implemen
 
     @Override
     public void loadData() {
-
+        mTitle.setTitle("我的地址");
         initRv();
 
     }
