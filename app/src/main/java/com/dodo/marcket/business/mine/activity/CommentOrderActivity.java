@@ -15,8 +15,6 @@ import com.dodo.marcket.bean.params.CommentParamsBean;
 import com.dodo.marcket.business.mine.adapter.CommentAdapter;
 import com.dodo.marcket.business.mine.constrant.CommentOrderContract;
 import com.dodo.marcket.business.mine.presenter.CommentOrderPresenter;
-import com.dodo.marcket.utils.ToastUtils;
-import com.hedgehog.ratingbar.RatingBar;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -27,10 +25,10 @@ import butterknife.OnClick;
 
 public class CommentOrderActivity extends BaseActivity<CommentOrderPresenter> implements CommentOrderContract.View {
 
-    @BindView(R.id.ratingbar1)
-    RatingBar ratingbar1;
-    @BindView(R.id.ratingbar2)
-    RatingBar ratingbar2;
+//    @BindView(R.id.ratingbar1)
+//    RatingBar ratingbar1;
+//    @BindView(R.id.ratingbar2)
+//    RatingBar ratingbar2;
     @BindView(R.id.mRv_pingjia)
     RecyclerView mRvPingjia;
     @BindView(R.id.mEd_msg)
@@ -88,27 +86,27 @@ public class CommentOrderActivity extends BaseActivity<CommentOrderPresenter> im
 
     //初始化评分控件
     private void initStarView() {
-        ratingbar1.setOnRatingChangeListener(//配送分
-                new RatingBar.OnRatingChangeListener() {
-                    @Override
-                    public void onRatingChange(int RatingCount) {
-                        expressScore = RatingCount;
-                        isPost = true;
-                        initSubmitView(isPost,isShop,isList,isMsg);
-                    }
-                }
-        );
-
-        ratingbar2.setOnRatingChangeListener(//商家分
-                new RatingBar.OnRatingChangeListener() {
-                    @Override
-                    public void onRatingChange(int RatingCount) {
-                        productScore = RatingCount;
-                        isShop = true;
-                        initSubmitView(isPost,isShop,isList,isMsg);
-                    }
-                }
-        );
+//        ratingbar1.setOnRatingChangeListener(//配送分
+//                new RatingBar.OnRatingChangeListener() {
+//                    @Override
+//                    public void onRatingChange(int RatingCount) {
+//                        expressScore = RatingCount;
+//                        isPost = true;
+//                        initSubmitView(isPost,isShop,isList,isMsg);
+//                    }
+//                }
+//        );
+//
+//        ratingbar2.setOnRatingChangeListener(//商家分
+//                new RatingBar.OnRatingChangeListener() {
+//                    @Override
+//                    public void onRatingChange(int RatingCount) {
+//                        productScore = RatingCount;
+//                        isShop = true;
+//                        initSubmitView(isPost,isShop,isList,isMsg);
+//                    }
+//                }
+//        );
 
         mEdMsg.addTextChangedListener(new TextWatcher() {
             @Override

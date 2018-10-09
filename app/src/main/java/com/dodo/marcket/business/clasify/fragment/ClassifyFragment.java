@@ -140,7 +140,7 @@ public class ClassifyFragment extends BaseFragment<ClassifyFragmentPresenter> im
     public void onResume() {
         super.onResume();
         if (hastoken) {
-            mLLBottomView.setVisibility(View.VISIBLE);
+//            mLLBottomView.setVisibility(View.VISIBLE);
             mPresenter.getProducts();//获取购物车商品
             mPresenter.getCarNum();//获取购物车数量
             initBottomPrice();

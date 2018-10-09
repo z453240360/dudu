@@ -202,7 +202,7 @@ public class GoToPayActivity extends BaseActivity<GoToPayPresenter> implements G
                 break;
 
             case R.id.mLL_give: //赠品
-                mPresenter.payOrder("SO20180920161894");//支付
+//                mPresenter.payOrder("SO20180920161894");//支付
                 break;
 
             case R.id.mLL_coupon://优惠券选择
@@ -802,6 +802,7 @@ public class GoToPayActivity extends BaseActivity<GoToPayPresenter> implements G
         request.timeStamp=wxPayResult.getTimeStamp();
         request.sign= wxPayResult.getSign();
         msgApi.sendReq(request);
+        finish();
     }
 }
 

@@ -12,6 +12,7 @@ import android.widget.TextView;
 
 import com.dodo.marcket.R;
 import com.dodo.marcket.http.constant.Constant;
+import com.dodo.marcket.utils.ToastUtils;
 import com.tencent.mm.opensdk.constants.ConstantsAPI;
 import com.tencent.mm.opensdk.modelbase.BaseReq;
 import com.tencent.mm.opensdk.modelbase.BaseResp;
@@ -45,19 +46,31 @@ public class WXPayEntryActivity extends Activity implements IWXAPIEventHandler {
         //0 成功 -1信息错误 -2 用户取消
         if(resp.getType()== ConstantsAPI.COMMAND_PAY_BY_WX){
             Log.d("dd","onPayFinish,errCode="+resp.errCode);
-            View inflate = LayoutInflater.from(this).inflate(R.layout.showpay, null);
-            TextView mTxtTitle = inflate.findViewById(R.id.mTxt_title);
-            TextView mTxt_msg = inflate.findViewById(R.id.mTxt_msg);
-            AlertDialog dialog = new AlertDialog.Builder(this).create();//创建对话框
-            dialog.setIcon(R.mipmap.ic_launcher);//设置对话框icon
-            mTxt_msg.setText("微信支付结果："+ String.valueOf(resp.errCode));
-            mTxtTitle.setText("提示");
 
-            dialog.setView(inflate);
-//            dialog.setTitle("提示");//设置对话框标题
-//            dialog.setMessage("微信支付结果："+ String.valueOf(resp.errCode));//设置文字显示内容
-            dialog.show();
-            mTxt_paywx.setText(resp.errStr+" 调用支付失败，签名未通过"  +"    错误码："+resp.errCode);
+            switch (resp.errCode){
+                case 0://支付成功
+                    ToastUtils.show(this,"支付成功");
+                    break;
+
+                case -1://支付失败
+                    ToastUtils.show(this,"支付失败");
+                    break;
+
+                case -2://取消支付
+                    ToastUtils.show(this,"取消支付");
+                    break;
+            }
+//            View inflate = LayoutInflater.from(this).inflate(R.layout.showpay, null);
+//            TextView mTxtTitle = inflate.findViewById(R.id.mTxt_title);
+//            TextView mTxt_msg = inflate.findViewById(R.id.mTxt_msg);
+//            AlertDialog dialog = new AlertDialog.Builder(this).create();//创建对话框
+//            dialog.setIcon(R.mipmap.ic_launcher);//设置对话框icon
+//            mTxt_msg.setText("微信支付结果："+ String.valueOf(resp.errCode));
+//            mTxtTitle.setText("提示");
+//
+//            dialog.setView(inflate);
+//            dialog.show();
+//            mTxt_paywx.setText(resp.errStr+" 调用支付失败，签名未通过"  +"    错误码："+resp.errCode);
         }
     }
 

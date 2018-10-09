@@ -32,19 +32,17 @@
         </provider>
 
         <activity android:name=".MainActivity" >
+
+        </activity>
+
+
+        <activity android:name=".business.HomeActivity" android:launchMode="singleTask" >
+
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity
-            android:name=".business.HomeActivity"
-            android:launchMode="singleTask" >
-
-
-        </activity>
-
 
         <activity android:name=".business.mine.activity.LoginActivity" />
         <activity android:name=".business.shoppingcar.activity.GoToPayActivity" />
@@ -70,6 +68,7 @@
             android:exported="false"
             android:screenOrientation="behind"
             android:windowSoftInputMode="adjustResize|stateHidden" />
+
         <activity
             android:name="com.alipay.sdk.app.H5AuthActivity"
             android:configChanges="orientation|keyboardHidden|navigation"
@@ -81,8 +80,8 @@
         <activity
             android:name=".wxapi.WXPayEntryActivity"
             android:exported="true"
-            android:launchMode="singleTop">
-        </activity>
+            android:launchMode="singleTop"/>
+
 
 
 

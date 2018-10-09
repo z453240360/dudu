@@ -21,6 +21,7 @@ import android.widget.TextView;
 import com.dodo.marcket.base.BaseActivity;
 import com.dodo.marcket.base.BaseView;
 import com.dodo.marcket.bean.AliPayBean;
+import com.dodo.marcket.bean.CommentBean;
 import com.dodo.marcket.bean.OrderList;
 import com.dodo.marcket.bean.SpecificationValuesBean;
 import com.dodo.marcket.business.HomeActivity;
@@ -34,6 +35,7 @@ import com.dodo.marcket.huizlogin.HuiLoginUtil;
 import com.dodo.marcket.iCallback.PermissionsListener;
 import com.dodo.marcket.utils.ScreenUtil;
 import com.dodo.marcket.utils.ToastUtils;
+import com.dodo.marcket.utils.WeiXinPayUtils;
 import com.dodo.marcket.wedget.YhFlowLayout;
 import com.google.gson.Gson;
 import com.nex3z.flowlayout.FlowLayout;
@@ -169,7 +171,7 @@ public class MainActivity extends BaseActivity implements BaseView, PermissionsL
             EventBus.getDefault().unregister(this);
     }
 
-    @OnClick({R.id.mBtn_1, R.id.mBtn_2, R.id.mBtn_3, R.id.mBtn_4, R.id.mBtn_5, R.id.mBtn_6, R.id.mBtn_7})
+    @OnClick({R.id.mBtn_1, R.id.mBtn_2, R.id.mBtn_3, R.id.mBtn_4, R.id.mBtn_5, R.id.mBtn_6, R.id.mBtn_7, R.id.mBtn_8})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.mBtn_1:
@@ -205,11 +207,11 @@ public class MainActivity extends BaseActivity implements BaseView, PermissionsL
                 break;
 
             case R.id.mBtn_7://评价
-                List<OrderList> mDates = new ArrayList<>();
+                List<CommentBean> mDates = new ArrayList<>();
 
-                mDates.add(new OrderList());
-                mDates.add(new OrderList());
-                mDates.add(new OrderList());
+                mDates.add(new CommentBean());
+                mDates.add(new CommentBean());
+                mDates.add(new CommentBean());
 
                 Bundle b = new Bundle();
                 b.putSerializable("list", (Serializable) mDates);
@@ -217,6 +219,10 @@ public class MainActivity extends BaseActivity implements BaseView, PermissionsL
                 startActivity(CommentOrderActivity.class, b);
 
 
+                break;
+
+            case R.id.mBtn_8:
+                WeiXinPayUtils.getSign(new HashMap<String, String>());
                 break;
 
         }
