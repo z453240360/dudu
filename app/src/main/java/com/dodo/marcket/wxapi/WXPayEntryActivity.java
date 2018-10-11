@@ -60,6 +60,8 @@ public class WXPayEntryActivity extends Activity implements IWXAPIEventHandler {
                     ToastUtils.show(this,"取消支付");
                     break;
             }
+
+            finish();
 //            View inflate = LayoutInflater.from(this).inflate(R.layout.showpay, null);
 //            TextView mTxtTitle = inflate.findViewById(R.id.mTxt_title);
 //            TextView mTxt_msg = inflate.findViewById(R.id.mTxt_msg);

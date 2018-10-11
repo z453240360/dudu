@@ -67,12 +67,12 @@ public class DisCountAdapter extends RecyclerView.Adapter<DisCountAdapter.MyView
             holder.mTxtDiscountUse.setText("立即使用");
         } else if (anHaoStatus.equals("USERD")){
             holder.mTxtDiscountUse.setClickable(false);
-            holder.mLL_0.setBackgroundResource(R.mipmap.discount);
+            holder.mLL_0.setBackgroundResource(R.mipmap.discount2);
             holder.mTxtDiscountStatus.setBackgroundResource(R.drawable.shape_lunkuo_line4);
             holder.mTxtDiscountUse.setText("已使用");
         }else {
             holder.mTxtDiscountUse.setClickable(false);
-            holder.mLL_0.setBackgroundResource(R.mipmap.discount);
+            holder.mLL_0.setBackgroundResource(R.mipmap.discount2);
             holder.mTxtDiscountStatus.setBackgroundResource(R.drawable.shape_lunkuo_paint4);
             holder.mTxtDiscountUse.setText("已过期");
         }

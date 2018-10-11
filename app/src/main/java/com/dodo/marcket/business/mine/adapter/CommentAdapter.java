@@ -11,6 +11,8 @@ import android.widget.TextView;
 import com.dodo.marcket.R;
 import com.dodo.marcket.bean.CommentBean;
 import com.dodo.marcket.bean.DisCountBean;
+import com.dodo.marcket.bean.OrderItemCommentParamsBean;
+import com.dodo.marcket.bean.params.CommentParamsBean;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -28,9 +30,9 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.MyViewHo
 
     private Context mContext;
     private LayoutInflater mInflater;
-    private List<CommentBean> mDatas = new ArrayList<>();
+    private List<OrderItemCommentParamsBean> mDatas = new ArrayList<>();
 
-    public CommentAdapter(Context context, List<CommentBean> datas) {
+    public CommentAdapter(Context context, List<OrderItemCommentParamsBean> datas) {
         this.mInflater = LayoutInflater.from(context);
         mDatas = datas;
         this.mContext = context;
@@ -51,15 +53,19 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.MyViewHo
     @Override
     public void onBindViewHolder(final MyViewHolder holder, final int position) {
 
-        CommentBean commentBean = mDatas.get(position);
+        final OrderItemCommentParamsBean commentBean = mDatas.get(position);
 
-        String name = commentBean.getName();
-        long id = commentBean.getId();
-        int score = commentBean.getScore();
+        String name = commentBean.getProductName();
+        long id = commentBean.getProductId();
+//        int score = commentBean.getScore();
+        boolean support = commentBean.isSupport();//是否点赞
 
         holder.mImg1.setOnClickListener(new View.OnClickListener() {//点赞
             @Override
             public void onClick(View v) {
+                if (!commentBean.isCanClick()){
+                    return;
+                }
                 if (mListener!=null){
                     mListener.onZanClicked(position);
                 }
@@ -69,6 +75,11 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.MyViewHo
         holder.mImg2.setOnClickListener(new View.OnClickListener() {//差评
             @Override
             public void onClick(View v) {
+
+                if (!commentBean.isCanClick()){
+                    return;
+                }
+
                 if (mListener!=null){
                     mListener.onLowClicked(position);
                 }
@@ -77,19 +88,28 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.MyViewHo
 
         holder.mTxtName.setText(name);
 
-        if (score==0){
-            holder.mImg1.setImageResource(R.mipmap.zan4);
-            holder.mImg2.setImageResource(R.mipmap.zan1);
-        }else if (score==1){
-            holder.mImg1.setImageResource(R.mipmap.zan2);
-            holder.mImg2.setImageResource(R.mipmap.zan4);
-        }else if (score==5){
+        if (support){
             holder.mImg1.setImageResource(R.mipmap.zan3);
             holder.mImg2.setImageResource(R.mipmap.zan1);
         }else {
+
+            holder.mImg2.setImageResource(R.mipmap.zan2);
             holder.mImg1.setImageResource(R.mipmap.zan4);
-            holder.mImg2.setImageResource(R.mipmap.zan1);
         }
+
+//        if (score==0){
+//            holder.mImg1.setImageResource(R.mipmap.zan4);
+//            holder.mImg2.setImageResource(R.mipmap.zan1);
+//        }else if (score==1){
+//            holder.mImg1.setImageResource(R.mipmap.zan2);
+//            holder.mImg2.setImageResource(R.mipmap.zan4);
+//        }else if (score==5){
+//            holder.mImg1.setImageResource(R.mipmap.zan3);
+//            holder.mImg2.setImageResource(R.mipmap.zan1);
+//        }else {
+//            holder.mImg1.setImageResource(R.mipmap.zan4);
+//            holder.mImg2.setImageResource(R.mipmap.zan1);
+//        }
 
     }
 
@@ -101,14 +121,32 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.MyViewHo
         }
 
         for (int i = 0; i < mDatas.size(); i++) {
-            int score = mDatas.get(i).getScore();
-            if (score==0||score==1){
+            boolean score = mDatas.get(i).isSupport();
+            if (!score){
                 return false;
             }
         }
         return true;
     }
 
+    //获取商品评价对象
+    public List<OrderItemCommentParamsBean> getSupportPro(){
+        if (mDatas.size()==0){
+            return null;
+        }
+
+        List<OrderItemCommentParamsBean> list = new ArrayList<>();
+
+        for (int i = 0; i < mDatas.size(); i++) {
+            long id = mDatas.get(i).getProductId();
+            boolean support = mDatas.get(i).isSupport();
+            OrderItemCommentParamsBean paramsBean = new OrderItemCommentParamsBean();
+            paramsBean.setProductId(id);
+            paramsBean.setSupport(support);
+            list.add(paramsBean);
+        }
+        return list;
+    }
 
     public class MyViewHolder extends RecyclerView.ViewHolder {
         @BindView(R.id.mTxt_name)

@@ -21,6 +21,7 @@ import com.dodo.marcket.bean.AliPayBean;
 import com.dodo.marcket.bean.AuthResult;
 import com.dodo.marcket.bean.CommentBean;
 import com.dodo.marcket.bean.OrderDetailBean;
+import com.dodo.marcket.bean.OrderItemCommentParamsBean;
 import com.dodo.marcket.bean.OrderList;
 import com.dodo.marcket.bean.PayResult;
 import com.dodo.marcket.bean.params.PayBean2;
@@ -146,19 +147,20 @@ public class OrderFragment extends BaseFragment<OrderFragmentPresenter> implemen
             public void disOrder(int id, int postion) {//评价订单
                 Bundle b = new Bundle();
                 List<OrderList.OrderItemsBean> orderItems = mDates.get(postion).getOrderItems();
-                List<CommentBean> commentBeans = new ArrayList<>();
+                List<OrderItemCommentParamsBean> commentBeans = new ArrayList<>();
                 for (int i = 0; i < orderItems.size(); i++) {
                     OrderList.OrderItemsBean.ProductInfoBean productInfo = orderItems.get(i).getProductInfo();
 
                     String name = productInfo.getName();
                     int id1 = productInfo.getId();
-                    CommentBean commentBean = new CommentBean();
-                    commentBean.setId(id1);
-                    commentBean.setName(name);
-                    commentBean.setScore(0);
+                    OrderItemCommentParamsBean commentBean = new OrderItemCommentParamsBean();
+                    commentBean.setProductName(name);
+                    commentBean.setSupport(true);
+                    commentBean.setProductId((long) id);
                     commentBeans.add(commentBean);
                 }
 
+                b.putLong("orderId",mDates.get(id).getId());
                 b.putSerializable("list", (Serializable) commentBeans);
                 startActivity(CommentOrderActivity.class,b);
             }
@@ -349,7 +351,7 @@ public class OrderFragment extends BaseFragment<OrderFragmentPresenter> implemen
     public void wxPay(AliPayBean aliPayBean){
         AliPayBean.WxPayResult wxPayResult = aliPayBean.getWxPayResult();
         String appId = wxPayResult.getAppId();
-        final IWXAPI msgApi = WXAPIFactory.createWXAPI(mContext, Constant.APP_ID,false);
+        final IWXAPI msgApi = WXAPIFactory.createWXAPI(mContext, Constant.APP_ID,true);
         msgApi.registerApp(appId);
         PayReq request = new PayReq();
         request.appId = appId;

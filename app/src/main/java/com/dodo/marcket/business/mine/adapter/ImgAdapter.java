@@ -46,6 +46,14 @@ public class ImgAdapter extends RecyclerView.Adapter<ImgAdapter.MyViewHolder> {
     @Override
     public void onBindViewHolder(final MyViewHolder holder, final int position) {
 //            holder.mTxt_mineName.setText(position+"嘟嘟生鲜");
+        holder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (mListener!=null){
+                    mListener.onItemClick(position);
+                }
+            }
+        });
         ImageLoaders.displayImage(holder.mImg_orderImg,mDatas.get(position).getProductInfo().getImage());
     }
 
@@ -60,7 +68,7 @@ public class ImgAdapter extends RecyclerView.Adapter<ImgAdapter.MyViewHolder> {
     }
 
     public interface OnItemClickListener {
-        void onItemClick(int parentPos, int childPos, String status, String villageCode, String villageName);
+        void onItemClick(int parentPos);
     }
 
     private OnItemClickListener mListener;

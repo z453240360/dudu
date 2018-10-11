@@ -5,16 +5,20 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
 
 import com.dodo.marcket.R;
 import com.dodo.marcket.base.BaseActivity;
 import com.dodo.marcket.bean.CommentBean;
+import com.dodo.marcket.bean.OrderItemCommentParamsBean;
 import com.dodo.marcket.bean.params.CommentParamsBean;
 import com.dodo.marcket.business.mine.adapter.CommentAdapter;
 import com.dodo.marcket.business.mine.constrant.CommentOrderContract;
 import com.dodo.marcket.business.mine.presenter.CommentOrderPresenter;
+import com.dodo.marcket.utils.ToastUtils;
+import com.dodo.marcket.wedget.RatingBar;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -25,10 +29,10 @@ import butterknife.OnClick;
 
 public class CommentOrderActivity extends BaseActivity<CommentOrderPresenter> implements CommentOrderContract.View {
 
-//    @BindView(R.id.ratingbar1)
-//    RatingBar ratingbar1;
-//    @BindView(R.id.ratingbar2)
-//    RatingBar ratingbar2;
+    @BindView(R.id.ratingbar1)
+    RatingBar ratingbar1;
+    @BindView(R.id.ratingbar2)
+    RatingBar ratingbar2;
     @BindView(R.id.mRv_pingjia)
     RecyclerView mRvPingjia;
     @BindView(R.id.mEd_msg)
@@ -36,12 +40,14 @@ public class CommentOrderActivity extends BaseActivity<CommentOrderPresenter> im
     @BindView(R.id.mTxt_pingjia)
     TextView mTxtPingjia;
 
-    private int productScore;//商品分
-    private int expressScore;//快递分
+    private long orderId;
+    private float productScore = -1;//商品分
+    private float expressScore = -1;//快递分
     private String comment;//评论
-    private List<CommentBean> commentBeans = new ArrayList<>();
+    private List<OrderItemCommentParamsBean> commentBeans = new ArrayList<>();
     private CommentAdapter adapter;
     private LinearLayoutManager manager;
+
 
     private boolean isPost = false;//是否评论配送
     private boolean isShop = false;//是否评论商家
@@ -62,10 +68,12 @@ public class CommentOrderActivity extends BaseActivity<CommentOrderPresenter> im
     public void loadData() {
         mTitle.setTitle("已完成订单评价");
         Bundle extras = getIntent().getExtras();
-
-        commentBeans = (List<CommentBean>) extras.getSerializable("list");
+        orderId = extras.getLong("orderId");
+        commentBeans = (List<OrderItemCommentParamsBean>) extras.getSerializable("list");
         initStarView();
         initRv();
+        mPresenter.getDiscussOrder(orderId);
+
     }
 
 
@@ -86,27 +94,27 @@ public class CommentOrderActivity extends BaseActivity<CommentOrderPresenter> im
 
     //初始化评分控件
     private void initStarView() {
-//        ratingbar1.setOnRatingChangeListener(//配送分
-//                new RatingBar.OnRatingChangeListener() {
-//                    @Override
-//                    public void onRatingChange(int RatingCount) {
-//                        expressScore = RatingCount;
-//                        isPost = true;
-//                        initSubmitView(isPost,isShop,isList,isMsg);
-//                    }
-//                }
-//        );
-//
-//        ratingbar2.setOnRatingChangeListener(//商家分
-//                new RatingBar.OnRatingChangeListener() {
-//                    @Override
-//                    public void onRatingChange(int RatingCount) {
-//                        productScore = RatingCount;
-//                        isShop = true;
-//                        initSubmitView(isPost,isShop,isList,isMsg);
-//                    }
-//                }
-//        );
+        ratingbar1.setOnRatingChangeListener(//配送分
+                new RatingBar.OnRatingChangeListener() {
+                    @Override
+                    public void onRatingChange(float RatingCount) {
+                        expressScore = RatingCount;
+                        isPost = true;
+                        initSubmitView(isPost,isShop,isList,isMsg);
+                    }
+                }
+        );
+
+        ratingbar2.setOnRatingChangeListener(//商家分
+                new RatingBar.OnRatingChangeListener() {
+                    @Override
+                    public void onRatingChange(float RatingCount) {
+                        productScore = RatingCount;
+                        isShop = true;
+                        initSubmitView(isPost,isShop,isList,isMsg);
+                    }
+                }
+        );
 
         mEdMsg.addTextChangedListener(new TextWatcher() {
             @Override
@@ -147,13 +155,13 @@ public class CommentOrderActivity extends BaseActivity<CommentOrderPresenter> im
 
             @Override
             public void onZanClicked(int pos) {//点赞
-                commentBeans.get(pos).setScore(5);
+                commentBeans.get(pos).setSupport(true);
                 adapter.notifyDataSetChanged();
             }
 
             @Override
             public void onLowClicked(int pos) {//差评
-                commentBeans.get(pos).setScore(1);
+                commentBeans.get(pos).setSupport(false);
                 adapter.notifyDataSetChanged();
             }
         });
@@ -183,10 +191,50 @@ public class CommentOrderActivity extends BaseActivity<CommentOrderPresenter> im
 
 
 
-    //评价订单
+    //提交订单评价
     @Override
     public void discussOrder(int id) {
+        ToastUtils.show(mContext,"评价成功");
 
+        mPresenter.getDiscussOrder(orderId);
+    }
+
+    //获取订单评价详情
+    @Override
+    public void getDiscussOrder(CommentParamsBean commentParamsBean) {
+        if (commentParamsBean==null){//说明没有订单评价
+            ratingbar1.setmClickable(true);
+            ratingbar2.setmClickable(true);
+            mTxtPingjia.setVisibility(View.VISIBLE);
+            mEdMsg.setFocusable(true);
+            return;
+        }
+
+        String comment = commentParamsBean.getComment();//评价信息
+        expressScore = commentParamsBean.getExpressScore();
+        productScore = commentParamsBean.getProductScore();
+        long orderId = commentParamsBean.getOrderId();
+
+        mEdMsg.setText(comment);
+        mEdMsg.setFocusable(false);
+        ratingbar1.setStar(expressScore);
+        ratingbar2.setStar(productScore);
+        ratingbar2.setmClickable(false);
+        ratingbar1.setmClickable(false);
+        mTxtPingjia.setVisibility(View.GONE);
+
+        List<OrderItemCommentParamsBean> orderItemCommentParams = commentParamsBean.getOrderItemCommentParams();
+
+        if (orderItemCommentParams==null||orderItemCommentParams.size()==0){
+            return;
+        }
+
+        for (int i = 0; i < orderItemCommentParams.size(); i++) {
+            orderItemCommentParams.get(i).setCanClick(false);
+        }
+        commentBeans.clear();
+        commentBeans.addAll(orderItemCommentParams);
+        adapter.notifyDataSetChanged();
 
     }
 
@@ -194,16 +242,37 @@ public class CommentOrderActivity extends BaseActivity<CommentOrderPresenter> im
     @OnClick(R.id.mTxt_pingjia)
     public void onViewClicked() {//提交评价
 
+        if (expressScore==-1){
+            showErrorToast("请对配送打分");
+            return;
+        }
+
+        if (productScore==-1){
+            showErrorToast("请对商品打分");
+            return;
+        }
+
+
+        List<OrderItemCommentParamsBean> supportPro = adapter.getSupportPro();
+        if (supportPro==null||supportPro.size()==0){
+            showErrorToast("商品异常");
+            return;
+        }
+        comment = mEdMsg.getText().toString();//评价信息
+
+        if (!adapter.getCommetStatus()&&comment.equals("")){//有差评情况，须填写原因
+            showErrorToast("请填写差评原因");
+            return;
+        }
+
         CommentParamsBean commentParamsBean = new CommentParamsBean();
+        commentParamsBean.setOrderId(orderId);
+        commentParamsBean.setOrderItemCommentParams(supportPro);
+        commentParamsBean.setExpressScore((int) expressScore);
+        commentParamsBean.setProductScore((int) productScore);
+        commentParamsBean.setComment(comment);
 
-        String s = mEdMsg.getText().toString();//评价信息
-
-//        if (!adapter.getCommetStatus()&&s.equals("")){
-//            showErrorToast("请填写差评原因");
-//            return;
-//        }
-
-        mPresenter.discussOrder(0);
+        mPresenter.discussOrder(commentParamsBean);//提交评价
     }
 
 

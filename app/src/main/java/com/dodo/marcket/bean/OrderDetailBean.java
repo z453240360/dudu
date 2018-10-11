@@ -128,26 +128,26 @@ public class OrderDetailBean {
          * realWeight : 0
          */
 
-        private int orderPrice;
-        private int orderWeight;
+        private double orderPrice;
+        private double orderWeight;
         private ProductInfoBean productInfo;
         private int qty;
-        private int realPrice;
-        private int realWeight;
+        private double realPrice;
+        private double realWeight;
 
-        public int getOrderPrice() {
+        public double getOrderPrice() {
             return orderPrice;
         }
 
-        public void setOrderPrice(int orderPrice) {
+        public void setOrderPrice(double orderPrice) {
             this.orderPrice = orderPrice;
         }
 
-        public int getOrderWeight() {
+        public double getOrderWeight() {
             return orderWeight;
         }
 
-        public void setOrderWeight(int orderWeight) {
+        public void setOrderWeight(double orderWeight) {
             this.orderWeight = orderWeight;
         }
 
@@ -167,15 +167,15 @@ public class OrderDetailBean {
             this.qty = qty;
         }
 
-        public int getRealPrice() {
+        public double getRealPrice() {
             return realPrice;
         }
 
-        public void setRealPrice(int realPrice) {
+        public void setRealPrice(double realPrice) {
             this.realPrice = realPrice;
         }
 
-        public int getRealWeight() {
+        public double getRealWeight() {
             return realWeight;
         }
 
@@ -212,13 +212,13 @@ public class OrderDetailBean {
             private String memo;
             private String name;
             private String packaging;
-            private int price;
+            private double price;
             private int specificationNumber;
             private int stock;
             private String tag;
             private String unit;
-            private int unitPrice;
-            private int weight;
+            private double unitPrice;
+            private double weight;
 
             public String getBoxCode() {
                 return boxCode;
@@ -292,11 +292,11 @@ public class OrderDetailBean {
                 this.packaging = packaging;
             }
 
-            public int getPrice() {
+            public double getPrice() {
                 return price;
             }
 
-            public void setPrice(int price) {
+            public void setPrice(double price) {
                 this.price = price;
             }
 
@@ -332,19 +332,19 @@ public class OrderDetailBean {
                 this.unit = unit;
             }
 
-            public int getUnitPrice() {
+            public double getUnitPrice() {
                 return unitPrice;
             }
 
-            public void setUnitPrice(int unitPrice) {
+            public void setUnitPrice(double unitPrice) {
                 this.unitPrice = unitPrice;
             }
 
-            public int getWeight() {
+            public double getWeight() {
                 return weight;
             }
 
-            public void setWeight(int weight) {
+            public void setWeight(double weight) {
                 this.weight = weight;
             }
         }

@@ -6,6 +6,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.dodo.marcket.R;
@@ -117,6 +118,15 @@ public class MultiAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
         final LinearLayoutManager manager = new LinearLayoutManager(mContext, LinearLayoutManager.HORIZONTAL, false);
         ImgAdapter adapter = new ImgAdapter(mContext, orderItems);
 
+        adapter.setOnItemClickListener(new ImgAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClick(int parentPos) {
+                if (mListener != null) {
+                    mListener.onItemClick(position, id, sn);
+                }
+            }
+        });
+
         int itemViewType = getItemViewType(position);
         switch (itemViewType) {
             case DEALWITH://待付款
@@ -157,6 +167,23 @@ public class MultiAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
                     }
                 });
 
+                dealwithHolder.mLLRv.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        if (mListener != null) {
+                            mListener.onItemClick(position, id, sn);
+                        }
+                    }
+                });
+                dealwithHolder.mRvOrderImg.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        if (mListener != null) {
+                            mListener.onItemClick(position, id, sn);
+                        }
+                    }
+                });
+
                 break;
 
             case SEND://代发货
@@ -180,6 +207,14 @@ public class MultiAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
                 sendHolder.mRvOrderImg.setAdapter(adapter);
                 sendHolder.mRvOrderImg.setLayoutManager(manager);
 
+                sendHolder.mRvOrderImg.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        if (mListener != null) {
+                            mListener.onItemClick(position, id, sn);
+                        }
+                    }
+                });
                 //取消订单
                 sendHolder.mTxtOrderCancel.setOnClickListener(new View.OnClickListener() {
                     @Override
@@ -213,6 +248,15 @@ public class MultiAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
                 deliverHolder.mRvOrderImg.setAdapter(adapter);
                 deliverHolder.mRvOrderImg.setLayoutManager(manager);
 
+                deliverHolder.mRvOrderImg.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        if (mListener != null) {
+                            mListener.onItemClick(position, id, sn);
+                        }
+                    }
+                });
+
                 //取消订单
                 deliverHolder.mTxtOrderCancel.setOnClickListener(new View.OnClickListener() {
                     @Override
@@ -245,6 +289,16 @@ public class MultiAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
 //                finishHolder.mTxtOrderPayReal2.setText("" + amount);//应付
                 finishHolder.mRvOrderImg.setAdapter(adapter);
                 finishHolder.mRvOrderImg.setLayoutManager(manager);
+
+                finishHolder.mRvOrderImg.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        if (mListener != null) {
+                            mListener.onItemClick(position, id, sn);
+                        }
+                    }
+                });
+
                 //再来一单
                 finishHolder.mTxtOrderAgain.setOnClickListener(new View.OnClickListener() {
                     @Override
@@ -286,6 +340,15 @@ public class MultiAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
 
                 cancelHolder.mRvOrderImg.setAdapter(adapter);
                 cancelHolder.mRvOrderImg.setLayoutManager(manager);
+
+                cancelHolder.mRvOrderImg.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        if (mListener != null) {
+                            mListener.onItemClick(position, id, sn);
+                        }
+                    }
+                });
 
                 //再来订单
                 cancelHolder.mTxtOrderCancel.setOnClickListener(new View.OnClickListener() {
@@ -398,6 +461,9 @@ public class MultiAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
         TextView mTxtOrderCancel;
         @BindView(R.id.mTxt_orderPay)
         TextView mTxtOrderPay;
+        @BindView(R.id.mLL_rv)
+        LinearLayout mLLRv;
+
 
         public DealwithHolder(View itemView) {
             super(itemView);

@@ -20,7 +20,9 @@ import com.dodo.marcket.business.HomeActivity;
 import com.dodo.marcket.business.homepage.adapter.ProductDetailAdapter;
 import com.dodo.marcket.business.homepage.constrant.ProductDetailContract;
 import com.dodo.marcket.business.homepage.presenter.ProductDetailPresenter;
+import com.dodo.marcket.http.constant.Constant;
 import com.dodo.marcket.utils.GlideImageLoader;
+import com.dodo.marcket.utils.SharedPreferencesUtil;
 import com.dodo.marcket.utils.ToastUtils;
 import com.youth.banner.Banner;
 import com.youth.banner.BannerConfig;
@@ -98,8 +100,13 @@ public class ProductDetailActivity extends BaseActivity<ProductDetailPresenter> 
         initBanner();
         initRv();
         mTxtNum.setText(cartNumber + "");
+
+
         mPresenter.getProductDetailById(mId);//获取商品详情
-        mPresenter.getCarNum();//获取购物车数量
+
+        if (hastoken) {
+            mPresenter.getCarNum();//获取购物车数量
+        }
     }
 
     @Override
@@ -115,6 +122,22 @@ public class ProductDetailActivity extends BaseActivity<ProductDetailPresenter> 
     @Override
     public void showErrorMsg(String msg, String type) {
 
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        needToken = (String) SharedPreferencesUtil.get(mContext, Constant.token, "");
+        if (needToken.equals("")){
+            hastoken = false;
+        }else {
+            hastoken = true;
+        }
+
+        if (hastoken) {
+            mPresenter.getCarNum();//获取购物车数量
+        }
     }
 
     private void initRv() {
@@ -146,6 +169,13 @@ public class ProductDetailActivity extends BaseActivity<ProductDetailPresenter> 
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.mImg_jia://点击减号
+
+                if (!hastoken){
+                    goToLogin();
+                    return;
+                }
+
+
                 if (!isCanBuy){
                     return;
                 }
@@ -153,6 +183,13 @@ public class ProductDetailActivity extends BaseActivity<ProductDetailPresenter> 
                 mTxtNum.setText(cartNumber + "");
                 break;
             case R.id.mImg_jian://点击加号
+
+                if (!hastoken){
+                    goToLogin();
+                    return;
+                }
+
+
                 if (!isCanBuy){
                     return;
                 }
@@ -163,6 +200,13 @@ public class ProductDetailActivity extends BaseActivity<ProductDetailPresenter> 
                 mTxtNum.setText(cartNumber + "");
                 break;
             case R.id.mTxt_pay://点击加入购物车
+
+                if (!hastoken){
+                    goToLogin();
+                    return;
+                }
+
+
                 if (!isCanBuy){
                     return;
                 }
@@ -170,6 +214,12 @@ public class ProductDetailActivity extends BaseActivity<ProductDetailPresenter> 
                 break;
 
             case R.id.ll_img://点击购物车图标
+
+                if (!hastoken){
+                    goToLogin();
+                    return;
+                }
+
                 Bundle bundle = new Bundle();
                 bundle.putInt("fromWhere",1);
                 startActivity(HomeActivity.class,bundle);

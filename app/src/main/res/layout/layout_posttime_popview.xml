@@ -25,7 +25,7 @@
             android:layout_height="40dp">
             <ImageView
                 android:visibility="invisible"
-                android:src="@mipmap/rightbutton"
+                android:src="@mipmap/chahao"
                 android:layout_width="13dp"
                 android:layout_height="match_parent" />
             <TextView
@@ -39,7 +39,8 @@
 
 
             <ImageView
-                android:src="@mipmap/rightbutton"
+                android:id="@+id/mImg_chaPay"
+                android:src="@mipmap/chahao"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent" />
 
@@ -54,17 +55,18 @@
                 android:id="@+id/mRv_day"
                 android:layout_width="0dp"
                 android:layout_weight="1"
-                android:layout_height="wrap_content"/>
+                android:layout_height="200dp"/>
             <android.support.v7.widget.RecyclerView
                 android:layout_marginTop="@dimen/dimen_10dp"
                 android:id="@+id/mRv_time"
                 android:layout_width="0dp"
                 android:layout_weight="1"
-                android:layout_height="wrap_content"/>
+                android:layout_height="200dp"/>
         </LinearLayout>
 
 
         <TextView
+            android:id="@+id/mTxt_arriveTimePop"
             android:textSize="18sp"
             android:layout_margin="@dimen/dimen_10dp"
             android:gravity="center"

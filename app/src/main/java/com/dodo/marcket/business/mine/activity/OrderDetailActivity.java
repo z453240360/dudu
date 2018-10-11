@@ -20,7 +20,9 @@ import com.dodo.marcket.bean.AliPayBean;
 import com.dodo.marcket.bean.AuthResult;
 import com.dodo.marcket.bean.CommentBean;
 import com.dodo.marcket.bean.OrderDetailBean;
+import com.dodo.marcket.bean.OrderItemCommentParamsBean;
 import com.dodo.marcket.bean.PayResult;
+import com.dodo.marcket.bean.params.CommentParamsBean;
 import com.dodo.marcket.bean.params.PayBean2;
 import com.dodo.marcket.bean.params.PayParamsBean;
 import com.dodo.marcket.bean.params.PayParamsFatherBean;
@@ -113,7 +115,7 @@ public class OrderDetailActivity extends BaseActivity<OrderDetailPresenter> impl
         sn = extras.getString("sn");
         snId = extras.getInt("snId");
 
-
+        mTitle.setTitle("订单详情");
         initRv();
         mPresenter.getOrderDitail(snId);
     }
@@ -143,10 +145,10 @@ public class OrderDetailActivity extends BaseActivity<OrderDetailPresenter> impl
     private void initRv() {
         adapter = new OrderDetailAdapter(mContext, orderItems);
         manager = new LinearLayoutManager(mContext);
+        mRvOrderDetailList.setFocusable(false);
         mRvOrderDetailList.setAdapter(adapter);
         mRvOrderDetailList.setLayoutManager(manager);
     }
-
 
     //获取订单详情
     @Override
@@ -157,7 +159,7 @@ public class OrderDetailActivity extends BaseActivity<OrderDetailPresenter> impl
         String sn = od.getSn();
         String orderStatus = od.getOrderStatus();//订单状态
         double offsetAmount = od.getOffsetAmount();
-        int payAmount = od.getPayAmount();
+        double payAmount = od.getPayAmount();
 
         //"¥ " + payAmount//实付
         //"¥ " + payAmount + offsetAmount) + "");//实收
@@ -223,7 +225,7 @@ public class OrderDetailActivity extends BaseActivity<OrderDetailPresenter> impl
         String orderStatus = od.getOrderStatus();//订单状态
         id = od.getId();
         double offsetAmount = od.getOffsetAmount();
-        int payAmount = od.getPayAmount();
+        double payAmount = od.getPayAmount();
 
         switch (status) {
             case "1"://1=待付款
@@ -300,19 +302,21 @@ public class OrderDetailActivity extends BaseActivity<OrderDetailPresenter> impl
                 Bundle b = new Bundle();
 
 
-                List<CommentBean> commentBeans = new ArrayList<>();
+                List<OrderItemCommentParamsBean> commentBeans = new ArrayList<>();
                 for (int i = 0; i < orderItems.size(); i++) {
                     OrderDetailBean.OrderItemsBean.ProductInfoBean productInfo = orderItems.get(i).getProductInfo();
                     String name = productInfo.getName();
                     int id = productInfo.getId();
-                    CommentBean commentBean = new CommentBean();
-                    commentBean.setId(id);
-                    commentBean.setName(name);
-                    commentBean.setScore(0);
+
+                    OrderItemCommentParamsBean commentBean = new OrderItemCommentParamsBean();
+                    commentBean.setProductName(name);
+                    commentBean.setSupport(true);
+                    commentBean.setProductId((long) id);
+
                     commentBeans.add(commentBean);
                 }
 
-
+                b.putLong("orderId",snId);
                 b.putSerializable("list", (Serializable) commentBeans);
                 startActivity(CommentOrderActivity.class,b);
                 break;

@@ -24,6 +24,8 @@ import com.dodo.marcket.business.homepage.presenter.HomePresenter;
 import com.dodo.marcket.business.mine.activity.LoginActivity;
 import com.dodo.marcket.business.mine.fragment.MineFragment;
 import com.dodo.marcket.business.shoppingcar.fragment.ShoppingCartFragment;
+import com.dodo.marcket.http.constant.Constant;
+import com.dodo.marcket.utils.SharedPreferencesUtil;
 import com.dodo.marcket.utils.statusbar.StatusBarUtils;
 import com.dodo.marcket.wedget.MyRadioButton;
 
@@ -146,7 +148,14 @@ public class HomeActivity extends BaseActivity<HomePresenter> implements HomeCon
     protected void onResume() {
         super.onResume();
 
-//        selectRg(fromWhere);
+        needToken = (String) SharedPreferencesUtil.get(mContext, Constant.token, "");
+        if (needToken.equals("")){
+            hastoken = false;
+        }else {
+            hastoken = true;
+        }
+
+
         if (hastoken)
         updateCarNum();
     }

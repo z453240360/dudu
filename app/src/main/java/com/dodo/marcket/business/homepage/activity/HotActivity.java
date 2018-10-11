@@ -104,6 +104,12 @@ public class HotActivity extends BaseActivity<HotPresenter> implements HotContra
 
             @Override
             public void onAddClicked(int pos) {
+                if (!hastoken){
+                    goToLogin();
+                    return;
+                }
+
+
                 ProductBean productBean = mDates.get(pos);
                 long id = productBean.getId();
                 mPresenter.addProduct(1, new ProductParmsBean(id));
@@ -111,6 +117,12 @@ public class HotActivity extends BaseActivity<HotPresenter> implements HotContra
 
             @Override
             public void onMutiSizeClicked(int pos) {
+
+                if (!hastoken){
+                    goToLogin();
+                    return;
+                }
+
                 mPresenter.getProductDetailById(mDates.get(pos).getId());
             }
         });

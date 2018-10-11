@@ -48,7 +48,7 @@ public class SelectPostTimeBean {
 
     public static class ItemBean{
         private String name;
-        private boolean isSelected;
+        private boolean isSelected = false;
 
         public String getName() {
             return name;

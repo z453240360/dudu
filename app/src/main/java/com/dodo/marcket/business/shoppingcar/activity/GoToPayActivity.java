@@ -11,7 +11,10 @@ import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.PopupWindow;
 import android.widget.TextView;
@@ -122,6 +125,10 @@ public class GoToPayActivity extends BaseActivity<GoToPayPresenter> implements G
     EditText mEdSay;
     @BindView(R.id.mLL_say)
     LinearLayout mLLSay;
+    @BindView(R.id.mCheckBox)
+    CheckBox mCheckBox;
+
+
     private List<PayParamsFatherBean> payList;
     private View discountPopView;
     private PopupWindow discountPopWindow;
@@ -145,6 +152,17 @@ public class GoToPayActivity extends BaseActivity<GoToPayPresenter> implements G
     private GoToPayParamsBean goToPayParamsBean;
     private TimePop1Adapter timePop1Adapter;
     private TimePop2Adapter timePop2Adapter;
+    private double productAmount;
+    private double userPoint;
+    private double pointMoney;
+    private double boxAmount;
+    private double freight;
+    private double onlineDiscount;
+    private double onLineMoney;
+    private double dicCount = 0;
+    private String selectTime;
+    private String selectDay;
+    private TextView mTxt_arriveTimePop;
 
     @Override
     public int getLayoutId() {
@@ -279,6 +297,25 @@ public class GoToPayActivity extends BaseActivity<GoToPayPresenter> implements G
 
     //初始化商品列表
     private void initRv() {
+
+        mCheckBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if (isChecked){
+                    if (userPoint==0d){
+//                        showErrorToast("没有可用积分");
+                        return;
+                    }
+                    pointMoney = userPoint/100;
+                    initTotalPrice();
+
+                }else {
+                    pointMoney = 0;
+                    initTotalPrice();
+                }
+            }
+        });
+
         proList = new ArrayList<>();
         CustomLinearLayoutManager proManager = new CustomLinearLayoutManager(mContext);
         proAdapter = new PayAdapter(mContext, proList);
@@ -411,20 +448,36 @@ public class GoToPayActivity extends BaseActivity<GoToPayPresenter> implements G
         }
 
 
-        double boxAmount = payBean.getBoxAmount();//筐的金额
-        double freight = payBean.getFreight();//运费
-        double onlineDiscount = payBean.getOnlineDiscount();//在线支付金额
-        double productAmount = payBean.getProductAmount();//总价格
+        //筐的金额
+        boxAmount = payBean.getBoxAmount();
+        //运费
+        freight = payBean.getFreight();
+        //在线支付金额
+        onlineDiscount = payBean.getOnlineDiscount();
+        //总价格
+        productAmount = payBean.getProductAmount();
 
-        double userPoint = payBean.getUserPoint();//用户积分
+        //用户积分
+        userPoint = payBean.getUserPoint();
 
+        if (mCheckBox.isChecked()){
+            pointMoney = userPoint / 100;
+        }else {
+            pointMoney = 0;
+        }
+
+        onLineMoney = onlineDiscount;
+        mTxtPoint.setText(""+userPoint+"积分");
         mTxtRealPay.setText("¥" + productAmount + "");
-        mTxtPostMoney.setText("+ ¥" + freight);
-        mTxtPayOnlineMoney.setText("- ¥" + onlineDiscount);
-        mTxtBoxMoney.setText("+ ¥" + boxAmount);
-        mTxtPointMoney.setText("- ¥" + userPoint / 100);
+        mTxtPostMoney.setText("+ ¥ " + freight);
+        mTxtPayOnlineMoney.setText("- ¥ " + onlineDiscount);
+        mTxtBoxMoney.setText("+ ¥ " + boxAmount);
+        mTxtPointMoney.setText("- ¥ " + pointMoney);
+        mTxtDiscountMoney.setText("- ¥ " + 0);
 
-        mTxtFinalMony.setText("¥" + (productAmount + boxAmount + freight - onlineDiscount - userPoint / 100) + "");
+
+        initTotalPrice();
+//        mTxtFinalMony.setText("¥" + (productAmount + boxAmount + freight - onlineDiscount - userPoint / 100) + "");
 
     }
 
@@ -438,7 +491,7 @@ public class GoToPayActivity extends BaseActivity<GoToPayPresenter> implements G
 
         SelectPostTimeBean selectPostTimeBean = s.get(0);
 
-        String selectDay = selectPostTimeBean.getSelectDay();
+        selectDay = selectPostTimeBean.getSelectDay();
         String s1 = selectPostTimeBean.getSelectTimes().get(0);
         mTxtArriveTime.setText(selectDay + " " + s1);
 
@@ -447,59 +500,30 @@ public class GoToPayActivity extends BaseActivity<GoToPayPresenter> implements G
 
         selectPostTimeBeanList.clear();
 
-        for (int i = 0; i < s.size(); i++) {
-            if (i == 0) {
-                String selectDay1 = s.get(i).getSelectDay();
-                List<String> selectTimes = s.get(i).getSelectTimes();
 
-                SelectPostTimeBean selectPostTimeBean1 = new SelectPostTimeBean();
-                List<SelectPostTimeBean.ItemBean> itemBeansList = new ArrayList<>();
-                for (int j = 0; j < selectTimes.size(); j++) {
-                    if (j == 0) {
-                        SelectPostTimeBean.ItemBean itemBean = new SelectPostTimeBean.ItemBean();
-                        itemBean.setName(selectTimes.get(i));
-                        itemBean.setSelected(true);
-                        itemBeansList.add(itemBean);
-                    } else {
-                        SelectPostTimeBean.ItemBean itemBean = new SelectPostTimeBean.ItemBean();
-                        itemBean.setName(selectTimes.get(i));
-                        itemBean.setSelected(false);
-                        itemBeansList.add(itemBean);
-                    }
-                }
-                selectPostTimeBean1.setItemBeansList(itemBeansList);
-                selectPostTimeBean1.setSelected(true);
-                selectPostTimeBean1.setSelectDay(selectDay1);
-                selectPostTimeBeanList.add(selectPostTimeBean1);
-            } else {
-                String selectDay1 = s.get(i).getSelectDay();
-                List<String> selectTimes = s.get(i).getSelectTimes();
-                SelectPostTimeBean selectPostTimeBean1 = new SelectPostTimeBean();
-                List<SelectPostTimeBean.ItemBean> itemBeansList = new ArrayList<>();
-                for (int j = 0; j < selectTimes.size(); j++) {
-                    if (j == 0) {
-                        SelectPostTimeBean.ItemBean itemBean = new SelectPostTimeBean.ItemBean();
-                        itemBean.setName(selectTimes.get(i));
-                        itemBean.setSelected(true);
-                        itemBeansList.add(itemBean);
-                    } else {
-                        SelectPostTimeBean.ItemBean itemBean = new SelectPostTimeBean.ItemBean();
-                        itemBean.setName(selectTimes.get(i));
-                        itemBean.setSelected(false);
-                        itemBeansList.add(itemBean);
-                    }
-                }
-
-                selectPostTimeBean1.setItemBeansList(itemBeansList);
-                selectPostTimeBean1.setSelected(false);
-                selectPostTimeBean1.setSelectDay(selectDay1);
-                selectPostTimeBeanList.add(selectPostTimeBean1);
-            }
-        }
-        int size = selectPostTimeBeanList.size();
+        selectPostTimeBeanList.addAll(s);
+        selectPostTimeBeanList.get(0).setSelected(true);
         timePop1Adapter.notifyDataSetChanged();
+
+        itemBeanList.clear();
+        List<String> selectTimes = selectPostTimeBeanList.get(0).getSelectTimes();
+
+        List<SelectPostTimeBean.ItemBean> mItemList = new ArrayList<>();
+        for (int i = 0; i < selectTimes.size(); i++) {
+            SelectPostTimeBean.ItemBean itemBean = new SelectPostTimeBean.ItemBean();
+            itemBean.setName(selectTimes.get(i));
+            itemBean.setSelected(false);
+            mItemList.add(itemBean);
+        }
+
+        itemBeanList.addAll(mItemList);
+        itemBeanList.get(0).setSelected(true);
         timePop2Adapter.notifyDataSetChanged();
 
+        selectDay = selectPostTimeBeanList.get(0).getSelectDay();
+        selectTime = itemBeanList.get(0).getName();
+
+        mTxtArriveTime.setText(selectDay +" "+selectTime);
     }
 
     //列出支付方式
@@ -588,7 +612,14 @@ public class GoToPayActivity extends BaseActivity<GoToPayPresenter> implements G
         discountPopView = LayoutInflater.from(mActivity).inflate(R.layout.layout_discount_popview, null, false);
         View view_pop = discountPopView.findViewById(R.id.view_pop);
         mRv_discountPop = (RecyclerView) discountPopView.findViewById(R.id.mRv_discountPop);
+        ImageView mImg_chaPay = (ImageView)discountPopView.findViewById(R.id.mImg_chaPay);
 
+        mImg_chaPay.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                discountPopWindow.dismiss();
+            }
+        });
         discountPopAdapter = new DiscountPopAdapter(mContext, disCountBeanList);
         discountManager = new LinearLayoutManager(mContext);
         mRv_discountPop.setAdapter(discountPopAdapter);
@@ -600,7 +631,21 @@ public class GoToPayActivity extends BaseActivity<GoToPayPresenter> implements G
                 DisCountBean disCountBean = disCountBeanList.get(parentPos);
                 List<DisCountBean> disCountBeans = new ArrayList<>();
                 disCountBeans.add(disCountBean);
-                goToPayParamsBean.setAnHaos(disCountBeans);//设置优惠券
+
+                dicCount = disCountBean.getAmount();
+                double lowLimit = disCountBean.getLowLimit();
+
+                if (lowLimit<productAmount){//满足条件可以使用优惠券
+
+                    goToPayParamsBean.setAnHaos(disCountBeans);//设置优惠券
+                    mTxtCoupon.setText("满"+disCountBean.getLowLimit()+"减"+disCountBean.getAmount());
+                    mTxtDiscountMoney.setText("- ¥ "+dicCount);
+                    initTotalPrice();
+
+                }else {
+                    showErrorToast("不满足使用条件");
+                }
+
                 discountPopWindow.dismiss();
             }
         });
@@ -617,12 +662,37 @@ public class GoToPayActivity extends BaseActivity<GoToPayPresenter> implements G
         });
     }
 
+    //计算总价格
+    private void initTotalPrice() {
+        mTxtFinalMony.setText("¥" + (productAmount + boxAmount + freight - onLineMoney - pointMoney -dicCount) + "");
+    }
+
     //初始化时间选择弹框
     private void initPostTimePop() {
         postTimePopView = LayoutInflater.from(mActivity).inflate(R.layout.layout_posttime_popview, null, false);
         View view_pop = postTimePopView.findViewById(R.id.view_pop);
         RecyclerView mRv_day = (RecyclerView) postTimePopView.findViewById(R.id.mRv_day);
         RecyclerView mRv_time = (RecyclerView) postTimePopView.findViewById(R.id.mRv_time);
+        ImageView mImg_chaPay = (ImageView)postTimePopView.findViewById(R.id.mImg_chaPay);
+        mTxt_arriveTimePop = (TextView)postTimePopView.findViewById(R.id.mTxt_arriveTimePop);
+
+        mTxt_arriveTimePop.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mTxtArriveTime.setText(selectDay+ " "+selectTime);
+                goToPayParamsBean.setReceiverDate(selectDay+ " "+selectTime);
+                postTimeWindow.dismiss();
+            }
+        });
+
+        mImg_chaPay.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                postTimeWindow.dismiss();
+            }
+        });
+
+
         LinearLayoutManager datManager = new LinearLayoutManager(mContext);
         LinearLayoutManager timeManager = new LinearLayoutManager(mContext);
 
@@ -640,9 +710,19 @@ public class GoToPayActivity extends BaseActivity<GoToPayPresenter> implements G
             @Override
             public void onItemClick(int pos, String select) {
                 timePop1Adapter.selectItem(pos);
-                List<SelectPostTimeBean.ItemBean> itemBeansList = selectPostTimeBeanList.get(pos).getItemBeansList();
+                selectDay = selectPostTimeBeanList.get(pos).getSelectDay();
+                List<String> itemBeansList = selectPostTimeBeanList.get(pos).getSelectTimes();
+
+                List<SelectPostTimeBean.ItemBean> mItemList = new ArrayList<>();
+                for (int i = 0; i < itemBeansList.size(); i++) {
+                    SelectPostTimeBean.ItemBean itemBean = new SelectPostTimeBean.ItemBean();
+                    itemBean.setName(itemBeansList.get(i));
+                    itemBean.setSelected(false);
+                    mItemList.add(itemBean);
+                }
                 itemBeanList.clear();
-                itemBeanList.addAll(itemBeansList);
+                itemBeanList.addAll(mItemList);
+                itemBeanList.get(0).setSelected(true);
                 timePop2Adapter.notifyDataSetChanged();
             }
         });
@@ -652,6 +732,7 @@ public class GoToPayActivity extends BaseActivity<GoToPayPresenter> implements G
             @Override
             public void onItemClick(int pos, String select) {
                 timePop2Adapter.selectItem(pos);
+                selectTime = select;
             }
         });
 
@@ -673,6 +754,14 @@ public class GoToPayActivity extends BaseActivity<GoToPayPresenter> implements G
         payPopView = LayoutInflater.from(mActivity).inflate(R.layout.layout_pay_popview, null, false);
         View view_pop = payPopView.findViewById(R.id.view_pop);
         mRv_payPop = (RecyclerView) payPopView.findViewById(R.id.mRv_payPop);
+        ImageView mImg_chaPay = (ImageView)payPopView.findViewById(R.id.mImg_chaPay);
+
+        mImg_chaPay.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                payWindow.dismiss();
+            }
+        });
 
         payManager = new LinearLayoutManager(mContext);
         payPopAdapter = new PayPopAdapter(mContext, payMethodBeanList);
@@ -682,10 +771,20 @@ public class GoToPayActivity extends BaseActivity<GoToPayPresenter> implements G
             @Override
             public void onItemClick(int parentPos, long id) {
                 payPopAdapter.selectItem(parentPos);
+
+
                 mTxtPayMethed.setText(payMethodBeanList.get(parentPos).getName());
 
                 goToPayParamsBean.setPaymentMethodId(payMethodBeanList.get(parentPos).getId());//设置支付方式id
 
+                if (payMethodBeanList.get(parentPos).getId()==3){
+                    onLineMoney = 0;
+                    mTxtPayOnlineMoney.setText("- ¥ 0");
+                }else {
+                    onLineMoney = onlineDiscount;
+                }
+
+                initTotalPrice();
                 payWindow.dismiss();
             }
         });

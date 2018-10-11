@@ -41,6 +41,7 @@ public class MyOrderActivity extends BaseActivity<MyOrderPresenter> implements M
 
     @Override
     public void loadData() {
+        mTitle.setTitle("订单列表");
         Bundle extras = getIntent().getExtras();
 
         currentPage = extras.getInt("currentPage", 0);

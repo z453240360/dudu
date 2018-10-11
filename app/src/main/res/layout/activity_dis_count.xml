@@ -6,12 +6,14 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/mainbackground"
     tools:context=".business.mine.activity.DisCountActivity">
     <include
         android:id="@+id/toolbar"
         layout="@layout/layout_toolbar" />
 
     <com.dodo.marcket.wedget.XTabLayout.XTabLayout
+        android:layout_marginTop="@dimen/dimen_10dp"
         android:id="@+id/mXTab"
         android:layout_width="match_parent"
         android:layout_height="48dp"

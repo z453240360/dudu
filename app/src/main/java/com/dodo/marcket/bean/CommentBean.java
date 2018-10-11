@@ -4,24 +4,25 @@ import java.io.Serializable;
 
 public class CommentBean implements Serializable{
 
-    private String name;
-    private long id;
+    private String productName;
+    private long productId;
     private int score;
+    private boolean support;//点赞1 差评0；
 
-    public String getName() {
-        return name;
+    public String getProductName() {
+        return productName;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setProductName(String productName) {
+        this.productName = productName;
     }
 
-    public long getId() {
-        return id;
+    public long getProductId() {
+        return productId;
     }
 
-    public void setId(long id) {
-        this.id = id;
+    public void setProductId(long productId) {
+        this.productId = productId;
     }
 
     public int getScore() {
@@ -30,5 +31,13 @@ public class CommentBean implements Serializable{
 
     public void setScore(int score) {
         this.score = score;
+    }
+
+    public boolean isSupport() {
+        return support;
+    }
+
+    public void setSupport(boolean support) {
+        this.support = support;
     }
 }

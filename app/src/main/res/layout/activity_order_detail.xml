@@ -5,10 +5,13 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
+    android:background="@color/mainbackground"
     tools:context=".business.mine.activity.OrderDetailActivity">
-
+    <include
+        android:id="@+id/toolbar"
+        layout="@layout/layout_toolbar" />
     <android.support.v4.widget.NestedScrollView
-
+        android:layout_marginTop="@dimen/dimen_10dp"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
@@ -342,7 +345,7 @@
             </LinearLayout>
 
             <LinearLayout
-                android:visibility="visible"
+                android:visibility="gone"
                 android:id="@+id/mLL_4"
                 android:layout_width="match_parent"
                 android:layout_height="50dp"

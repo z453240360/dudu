@@ -380,7 +380,7 @@ public class ShoppingCartFragment extends BaseFragment<ShoppingCartFragmentPrese
             mTxtHuishou.setBackgroundResource(R.color.basicColor);
             mTxtHuishou.setClickable(true);
         }
-
+        mTxtSendPrice.setText("满"+minPrice+"起送");
         mTxtCarTotalMoney.setText(""+productAmount);
         mTxtCarBoxMoney.setText(""+boxAmount);
         if ((freight-0)<=0){

@@ -25,6 +25,8 @@
 
             <!--//配送打分-->
             <LinearLayout
+                android:paddingBottom="@dimen/dimen_10dp"
+                android:paddingTop="@dimen/dimen_10dp"
                 android:layout_width="match_parent"
                 android:layout_height="200dp"
                 android:background="@color/white"
@@ -47,18 +49,18 @@
                         android:textColor="@color/black_333333"
                         android:textSize="16sp" />
 
-                    <!--<com.hedgehog.ratingbar.RatingBar-->
-                        <!--android:id="@+id/ratingbar1"-->
-                        <!--android:layout_width="wrap_content"-->
-                        <!--android:layout_height="wrap_content"-->
-                        <!--android:layout_centerInParent="true"-->
-                        <!--android:layout_gravity="center"-->
-                        <!--android:layout_marginTop="20dp"-->
-                        <!--hedgehog:clickable="true"-->
-                        <!--hedgehog:starCount="5"-->
-                        <!--hedgehog:starEmpty="@mipmap/start2"-->
-                        <!--hedgehog:starFill="@mipmap/star1"-->
-                        <!--hedgehog:starImageSize="30dp" />-->
+                    <com.dodo.marcket.wedget.RatingBar
+                        android:id="@+id/ratingbar1"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerInParent="true"
+                        android:layout_gravity="center"
+                        android:layout_marginTop="0dp"
+                        hedgehog:clickable="true"
+                        hedgehog:starCount="5"
+                        hedgehog:starEmpty="@mipmap/start2"
+                        hedgehog:starFill="@mipmap/star1"
+                        hedgehog:starImageSize="30dp" />
                 </LinearLayout>
 
 
@@ -78,18 +80,18 @@
                         android:textColor="@color/black_333333"
                         android:textSize="16sp" />
 
-                    <!--<com.hedgehog.ratingbar.RatingBar-->
-                        <!--android:id="@+id/ratingbar2"-->
-                        <!--android:layout_width="wrap_content"-->
-                        <!--android:layout_height="wrap_content"-->
-                        <!--android:layout_centerInParent="true"-->
-                        <!--android:layout_gravity="center"-->
-                        <!--android:layout_marginTop="20dp"-->
-                        <!--hedgehog:clickable="true"-->
-                        <!--hedgehog:starCount="5"-->
-                        <!--hedgehog:starEmpty="@mipmap/start2"-->
-                        <!--hedgehog:starFill="@mipmap/star1"-->
-                        <!--hedgehog:starImageSize="30dp" />-->
+                    <com.dodo.marcket.wedget.RatingBar
+                        android:id="@+id/ratingbar2"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerInParent="true"
+                        android:layout_gravity="center"
+                        android:layout_marginTop="0dp"
+                        hedgehog:clickable="true"
+                        hedgehog:starCount="5"
+                        hedgehog:starEmpty="@mipmap/start2"
+                        hedgehog:starFill="@mipmap/star1"
+                        hedgehog:starImageSize="30dp" />
                 </LinearLayout>
             </LinearLayout>
 
@@ -110,6 +112,17 @@
                 android:orientation="vertical"
                 android:visibility="visible">
 
+
+                <TextView
+                    android:textStyle="bold"
+                    android:layout_marginTop="@dimen/dimen_10dp"
+                    android:textColor="@color/black_333333"
+                    android:textSize="@dimen/dimen_14sp"
+                    android:layout_marginLeft="@dimen/dimen_10dp"
+                    android:gravity="center_vertical"
+                    android:text="我的评价"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/dimen_40dp" />
                 <EditText
                     android:id="@+id/mEd_msg"
                     android:layout_width="match_parent"
@@ -126,6 +139,7 @@
 
 
             <TextView
+                android:visibility="gone"
                 android:id="@+id/mTxt_pingjia"
                 android:textSize="@dimen/dimen_18sp"
                 android:textColor="@color/white"

@@ -72,7 +72,7 @@ public abstract class BaseActivity<T extends BasePresenter> extends AppCompatAct
     public String token;
     private TimePickerView pvTime;
     public boolean isCheckToken = true;
-    private String needToken;
+    public static String needToken;
 
 
     @Override
@@ -80,7 +80,7 @@ public abstract class BaseActivity<T extends BasePresenter> extends AppCompatAct
         super.onCreate(savedInstanceState);
         setContentView(getLayoutId());
 
-//        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);//竖屏
+        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);//竖屏
 
         ButterKnife.bind(this);
         AppManager.getInstance().addActivity(this);

@@ -45,7 +45,7 @@ public class LoginActivity extends BaseActivity<LoginPresenter> implements Login
 
     @Override
     public void loadData() {
-
+        mTitle.setTitle("登录");
     }
 
     @Override

@@ -222,12 +222,15 @@ public class ClassifyFragment extends BaseFragment<ClassifyFragmentPresenter> im
             mLLBottomView.setVisibility(View.GONE);
             return;
         }
-        mLLBottomView.setVisibility(View.VISIBLE);
+
 
         List<CartItemsBean> cartItems = productBeans.getCartItems();
         if (cartItems == null || cartItems.size() == 0) {
+            mLLBottomView.setVisibility(View.GONE);
             return;
         }
+
+        mLLBottomView.setVisibility(View.VISIBLE);
         double freeFreight = productBeans.getFreeFreight();
         mTxtSendPrice.setVisibility(View.VISIBLE);
         minPrice = productBeans.getMinPrice();

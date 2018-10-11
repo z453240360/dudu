@@ -59,11 +59,13 @@ public class TimePop2Adapter extends RecyclerView.Adapter<TimePop2Adapter.MyView
             }
         });
 
+        holder.mTxtDesc.setText(mDatas.get(position).getName());
+
         if (mDatas.get(position).isSelected()){
-            holder.mTxtDesc.setTextSize(ScreenUtil.sp2px(mContext,16));
+            holder.mTxtDesc.setTextSize(ScreenUtil.sp2px(mContext,8));
             holder.mTxtDesc.setTextColor(Color.parseColor("#333333"));
         }else {
-            holder.mTxtDesc.setTextSize(ScreenUtil.sp2px(mContext,14));
+            holder.mTxtDesc.setTextSize(ScreenUtil.sp2px(mContext,7));
             holder.mTxtDesc.setTextColor(Color.parseColor("#b9b9b9"));
         }
     }

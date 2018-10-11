@@ -25,6 +25,7 @@ import com.dodo.marcket.bean.SalesMan;
 import com.dodo.marcket.bean.SelectPostTimeBean;
 import com.dodo.marcket.bean.ShoppingCarBean;
 import com.dodo.marcket.bean.basebean.UserInfoBean;
+import com.dodo.marcket.bean.params.CommentParamsBean;
 import com.dodo.marcket.http.utils.BResponse;
 
 import java.util.List;
@@ -218,7 +219,12 @@ public interface ApiService {
     @POST(Api.url)
     Observable<BResponse<List<OrderList>>> againOrder(@Body RequestBody verifyCode);
 
-    //订单----订单详情
+    //订单----提交订单评价
     @POST(Api.url)
     Observable<BResponse<OrderDetailBean>> getOrderDitail(@Body RequestBody verifyCode);
+
+    //订单----获取订单详情
+    @POST(Api.url)
+    Observable<BResponse<CommentParamsBean>> getDiscussOrder(@Body RequestBody verifyCode);
+
 }

@@ -13,6 +13,7 @@
         layout="@layout/layout_toolbar" />
 
     <android.support.v4.widget.NestedScrollView
+        android:layout_marginTop="@dimen/dimen_10dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_weight="1"
@@ -523,6 +524,12 @@
                         android:hint="0"
                         android:textColor="@color/org_f39700"
                         android:textSize="16sp" />
+
+                    <CheckBox
+                        android:id="@+id/mCheckBox"
+                        android:checked="true"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" />
                 </LinearLayout>
 
                 <LinearLayout

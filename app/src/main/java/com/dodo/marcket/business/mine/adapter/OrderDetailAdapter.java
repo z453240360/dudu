@@ -27,6 +27,7 @@ import butterknife.ButterKnife;
 
 public class OrderDetailAdapter extends RecyclerView.Adapter<OrderDetailAdapter.MyViewHolder> {
 
+
     private Context mContext;
     private LayoutInflater mInflater;
     private List<OrderDetailBean.OrderItemsBean> mDatas = new ArrayList<>();
@@ -63,25 +64,29 @@ public class OrderDetailAdapter extends RecyclerView.Adapter<OrderDetailAdapter.
         });
 
         holder.mTxtProductName.setText(productBean.getName());//名字
-        holder.mTxtPrice.setText("¥"+productBean.getUnitPrice()+"/"+productBean.getUnit());//单价
+        holder.mTxtPrice.setText("¥" + productBean.getUnitPrice() + "/" + productBean.getUnit());//单价
 
         if (productBean.getMemo().equals("")) {
             holder.mTxtProductMsg.setVisibility(View.GONE);//描述
-        }else {
+        } else {
             holder.mTxtProductMsg.setVisibility(View.VISIBLE);
             holder.mTxtProductMsg.setText(productBean.getMemo());//描述
         }
 
-        holder.mTxtProductPrice.setText(productBean.getPrice()+"");//销售价格
+        holder.mTxtProductPrice.setText(productBean.getPrice() + "");//销售价格
         holder.mTxtPackage.setText(productBean.getPackaging());//包装
-        ImageLoaders.displayImage(holder.mImgProductImg,productBean.getImage());
-        holder.mTxt_Number.setText(" x "+productBean.getCartNumber());
+        ImageLoaders.displayImage(holder.mImgProductImg, productBean.getImage());
+        holder.mTxtNumber.setText(" x " + productBean.getCartNumber());
+
+        if (position == mDatas.size() - 1) {
+            holder.mTxtLine.setVisibility(View.GONE);
+        } else {
+            holder.mTxtLine.setVisibility(View.VISIBLE);
+        }
     }
 
 
     public class MyViewHolder extends RecyclerView.ViewHolder {
-        @BindView(R.id.mImg_superValue)
-        ImageView mImgSuperValue;
         @BindView(R.id.mImg_select)
         ImageView mImgSelect;
         @BindView(R.id.mLL_select)
@@ -94,6 +99,8 @@ public class OrderDetailAdapter extends RecyclerView.Adapter<OrderDetailAdapter.
         TextView mTxtProductName;
         @BindView(R.id.mTxt_productMsg)
         TextView mTxtProductMsg;
+        @BindView(R.id.mTxt_package)
+        TextView mTxtPackage;
         @BindView(R.id.ll_boxs)
         LinearLayout llBoxs;
         @BindView(R.id.mTxt_price)
@@ -106,16 +113,17 @@ public class OrderDetailAdapter extends RecyclerView.Adapter<OrderDetailAdapter.
         ImageView mImgJian;
         @BindView(R.id.mTxt_num)
         TextView mTxtNum;
-        @BindView(R.id.mTxt_package)
-        TextView mTxtPackage;
-        @BindView(R.id.mTxt_Number)
-        TextView mTxt_Number;
         @BindView(R.id.mImg_jia)
         ImageView mImgJia;
-        @BindView(R.id.mImg_add)
-        ImageView mImgAdd;
-        @BindView(R.id.mImg_addCar)
-        CircleImageView mImgAddCar;
+        @BindView(R.id.mTxt_Number)
+        TextView mTxtNumber;
+        @BindView(R.id.mLL_main)
+        LinearLayout mLLMain;
+        @BindView(R.id.mTxt_line)
+        TextView mTxtLine;
+        @BindView(R.id.mImg_superValue)
+        ImageView mImgSuperValue;
+
         public MyViewHolder(View itemView) {
             super(itemView);
             ButterKnife.bind(this, itemView);
@@ -124,6 +132,7 @@ public class OrderDetailAdapter extends RecyclerView.Adapter<OrderDetailAdapter.
 
     public interface OnItemClickListener {
         void onItemClick(int parentPos);
+
         void onUseClic(int pos);
     }
 

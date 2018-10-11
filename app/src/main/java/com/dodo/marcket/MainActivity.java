@@ -22,8 +22,10 @@ import com.dodo.marcket.base.BaseActivity;
 import com.dodo.marcket.base.BaseView;
 import com.dodo.marcket.bean.AliPayBean;
 import com.dodo.marcket.bean.CommentBean;
+import com.dodo.marcket.bean.OrderItemCommentParamsBean;
 import com.dodo.marcket.bean.OrderList;
 import com.dodo.marcket.bean.SpecificationValuesBean;
+import com.dodo.marcket.bean.params.CommentParamsBean;
 import com.dodo.marcket.business.HomeActivity;
 import com.dodo.marcket.business.clasify.activity.ClasifyActivity;
 import com.dodo.marcket.business.clasify.activity.SearchActivity;
@@ -207,17 +209,36 @@ public class MainActivity extends BaseActivity implements BaseView, PermissionsL
                 break;
 
             case R.id.mBtn_7://评价
-                List<CommentBean> mDates = new ArrayList<>();
 
-                mDates.add(new CommentBean());
-                mDates.add(new CommentBean());
-                mDates.add(new CommentBean());
+                String s = "{\"amount\":2.71,\"createDate\":\"2018-10-07 15:39:52\",\"id\":67,\"msg\":\"\",\"offsetAmount\":0,\"orderItems\":[{\"orderPrice\":4,\"orderWeight\":1,\"productInfo\":{\"boxCode\":\"\",\"boxPrice\":null,\"cartNumber\":0,\"id\":1,\"image\":\"https:\\/\\/ss0.bdstatic.com\\/70cFuHSh_Q1YnxGkpoWK1HF6hhy\\/it\\/u=780835599,1196854585&fm=26&gp=0.jpg\",\"isGift\":false,\"memo\":\"\",\"name\":\"土豆\",\"packaging\":\"纸盒\",\"price\":4,\"specificationNumber\":0,\"stock\":100,\"tag\":\"\",\"unit\":\"\",\"unitPrice\":4,\"weight\":1},\"qty\":1,\"realPrice\":0,\"realWeight\":0}],\"orderStatus\":\"待发货\",\"payAmount\":0,\"paymentStatus\":\"未支付 \",\"retCode\":0,\"sn\":\"SO20181007192573\"}";
+
+                OrderList orderList = new Gson().fromJson(s, OrderList.class);
+
+                List<OrderList.OrderItemsBean> orderItems = orderList.getOrderItems();
+
+                List<OrderItemCommentParamsBean> mDates = new ArrayList<>();
+
+
+                for (int i = 0; i < orderItems.size(); i++) {
+                    OrderList.OrderItemsBean.ProductInfoBean productInfo = orderItems.get(i).getProductInfo();
+                    int id = productInfo.getId();
+                    String name = productInfo.getName();
+
+                    OrderItemCommentParamsBean commentBean = new OrderItemCommentParamsBean();
+                    CommentParamsBean commentParamsBean = new CommentParamsBean();
+
+
+                    commentBean.setProductName(name);
+                    commentBean.setSupport(true);
+                    commentBean.setProductId((long) id);
+
+                    mDates.add(commentBean);
+                }
 
                 Bundle b = new Bundle();
                 b.putSerializable("list", (Serializable) mDates);
-
+                b.putLong("orderId",75);
                 startActivity(CommentOrderActivity.class, b);
-
 
                 break;
 
