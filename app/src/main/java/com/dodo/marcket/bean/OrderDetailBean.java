@@ -24,7 +24,7 @@ public class OrderDetailBean {
     private String msg;
     private double offsetAmount;
     private String orderStatus;
-    private int payAmount;
+    private double payAmount;
     private String paymentStatus;
     private int retCode;
     private String sn;
@@ -78,11 +78,11 @@ public class OrderDetailBean {
         this.orderStatus = orderStatus;
     }
 
-    public int getPayAmount() {
+    public double getPayAmount() {
         return payAmount;
     }
 
-    public void setPayAmount(int payAmount) {
+    public void setPayAmount(double payAmount) {
         this.payAmount = payAmount;
     }
 

@@ -121,7 +121,7 @@ public class ProductDetailActivity extends BaseActivity<ProductDetailPresenter> 
 
     @Override
     public void showErrorMsg(String msg, String type) {
-
+        showErrorToast(msg);
     }
 
     @Override

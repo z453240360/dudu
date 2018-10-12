@@ -66,6 +66,16 @@ public class AddressAdapter extends RecyclerView.Adapter<AddressAdapter.MyViewHo
             }
         });
 
+        //点击条目
+        holder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (mListener != null) {
+                    mListener.onViewClick(position, myAddressBean);
+                }
+            }
+        });
+
         //设置默认
         if (myAddressBean.isDefaultX()) {
             holder.mCheckBox.setChecked(true);
@@ -96,6 +106,7 @@ public class AddressAdapter extends RecyclerView.Adapter<AddressAdapter.MyViewHo
 
     public interface OnItemClickListener {
         void onItemClick(int pos, MyAddressBean myAddressBean);
+        void onViewClick(int pos, MyAddressBean myAddressBean);
     }
 
     private OnItemClickListener mListener;

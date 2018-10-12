@@ -19,6 +19,7 @@ import com.dodo.marcket.business.mine.activity.MyOrderActivity;
 import com.dodo.marcket.business.mine.activity.SalesManActivity;
 import com.dodo.marcket.business.mine.constrant.MineFragmentContract;
 import com.dodo.marcket.business.mine.presenter.MineFragmentPresenter;
+import com.dodo.marcket.http.constant.Constant;
 import com.dodo.marcket.utils.SharedPreferencesUtil;
 import com.dodo.marcket.utils.statusbar.StatusBarUtils;
 import com.dodo.marcket.wedget.CircleImageView;
@@ -125,7 +126,7 @@ public class MineFragment extends BaseFragment<MineFragmentPresenter> implements
 
     @Override
     public void showErrorMsg(String msg, String type) {
-
+        showErrorToast(msg);
     }
 
     @Override
@@ -182,7 +183,9 @@ public class MineFragment extends BaseFragment<MineFragmentPresenter> implements
                 startActivity(DisCountActivity.class);
                 break;
             case R.id.mLL_address://跳转我的地址
-                startActivity(MyAddressActivity.class);
+                Bundle bundle = new Bundle();
+                bundle.putBoolean("needBackResult",false);
+                startActivity(MyAddressActivity.class,bundle);
                 break;
             case R.id.mLL_backMoney://申请退框
                 startActivity(BackBoxActivity.class);
@@ -193,7 +196,12 @@ public class MineFragment extends BaseFragment<MineFragmentPresenter> implements
             case R.id.mTxt_loginOut://退出登陆
                 SharedPreferencesUtil.clear(mContext);
                 hastoken = false;
+
+                String o = (String) SharedPreferencesUtil.get(mContext, Constant.token, "");
+
+
                 ((HomeActivity) mActivity).selectRg(0);
+                ((HomeActivity) mActivity).initHasToken();
 
                 break;
         }

@@ -16,7 +16,7 @@ public class OrderDetailContract {
         void getOrderDitail(OrderDetailBean orderDetailBean);
         void cancelOrder(int id);
         void payOrder(AliPayBean id);
-        void againOrder(int id);
+        void againOrder(boolean id);
     }
 
     public interface Presenter {

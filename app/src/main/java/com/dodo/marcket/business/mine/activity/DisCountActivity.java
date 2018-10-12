@@ -57,7 +57,7 @@ public class DisCountActivity extends BaseActivity<DisCountPresenter> implements
 
     @Override
     public void showErrorMsg(String msg, String type) {
-
+        showErrorToast(msg);
     }
 
     @Override

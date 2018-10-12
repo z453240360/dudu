@@ -1,5 +1,6 @@
 package com.dodo.marcket.business.clasify.activity;
 
+import android.content.Intent;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
@@ -24,6 +25,7 @@ import com.dodo.marcket.bean.SpecificationsBean;
 import com.dodo.marcket.business.clasify.adapter.ProductAdapter;
 import com.dodo.marcket.business.clasify.constrant.SearchContract;
 import com.dodo.marcket.business.clasify.presenter.SearchPresenter;
+import com.dodo.marcket.business.homepage.activity.ProductDetailActivity;
 import com.dodo.marcket.business.homepage.adapter.ProductDetailAdapter;
 import com.dodo.marcket.utils.ImageLoaders;
 import com.dodo.marcket.utils.NumberUtils;
@@ -158,8 +160,10 @@ public class SearchActivity extends BaseActivity<SearchPresenter> implements Sea
 
         adapter.setOnItemClickListener(new ProductAdapter.OnItemClickListener() {
             @Override
-            public void onItemClick(int parentPos) {
-
+            public void onItemClick(int parentPos) {//查看详情
+                Intent intent = new Intent(mActivity, ProductDetailActivity.class);
+                intent.putExtra("productId", mDates.get(parentPos).getId());
+                startActivity(intent);
             }
 
             @Override
@@ -213,7 +217,7 @@ public class SearchActivity extends BaseActivity<SearchPresenter> implements Sea
 
     @Override
     public void showErrorMsg(String msg, String type) {
-
+        showErrorToast(msg);
     }
 
     @Override

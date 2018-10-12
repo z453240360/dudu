@@ -70,7 +70,7 @@ public class HotActivity extends BaseActivity<HotPresenter> implements HotContra
 
     @Override
     public void showErrorMsg(String msg, String type) {
-
+        showErrorToast(msg);
     }
 
     private void initRv() {

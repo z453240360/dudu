@@ -17,7 +17,7 @@ public class ProducHeadBean {
 
     private int id;
     private String name;
-    private String showType;
+    private String showType;// 1 横排 2 竖排
     private List<ProductBean> products;
     private ProductBean productInfo;
 

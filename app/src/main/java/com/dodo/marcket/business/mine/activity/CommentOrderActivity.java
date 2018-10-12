@@ -89,7 +89,7 @@ public class CommentOrderActivity extends BaseActivity<CommentOrderPresenter> im
 
     @Override
     public void showErrorMsg(String msg, String type) {
-
+        showErrorToast(msg);
     }
 
     //初始化评分控件
@@ -207,6 +207,17 @@ public class CommentOrderActivity extends BaseActivity<CommentOrderPresenter> im
             ratingbar2.setmClickable(true);
             mTxtPingjia.setVisibility(View.VISIBLE);
             mEdMsg.setFocusable(true);
+            return;
+        }
+
+
+        List<OrderItemCommentParamsBean> orderItemCommentParams1 = commentParamsBean.getOrderItemComments();
+        if (orderItemCommentParams1==null||orderItemCommentParams1.size()==0){
+            ratingbar1.setmClickable(true);
+            ratingbar2.setmClickable(true);
+            mTxtPingjia.setVisibility(View.VISIBLE);
+            mEdMsg.setFocusable(true);
+
             return;
         }
 

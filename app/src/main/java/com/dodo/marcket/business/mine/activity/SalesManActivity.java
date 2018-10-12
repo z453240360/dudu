@@ -79,7 +79,7 @@ public class SalesManActivity extends BaseActivity<SalesManPresenter> implements
 
     @Override
     public void showErrorMsg(String msg, String type) {
-
+        showErrorToast(msg);
     }
 
     //初始化标题

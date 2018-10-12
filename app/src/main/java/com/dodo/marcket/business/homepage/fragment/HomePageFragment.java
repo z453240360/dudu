@@ -3,12 +3,15 @@ package com.dodo.marcket.business.homepage.fragment;
 
 import android.content.Context;
 import android.content.Intent;
+import android.os.Bundle;
+import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.PopupWindow;
@@ -18,27 +21,35 @@ import com.dodo.marcket.R;
 import com.dodo.marcket.base.BaseFragment;
 import com.dodo.marcket.bean.BannerBean;
 import com.dodo.marcket.bean.HomePageActivityBean;
+import com.dodo.marcket.bean.ProducHeadBean;
 import com.dodo.marcket.bean.ProductBean;
 import com.dodo.marcket.bean.ProductParmsBean;
 import com.dodo.marcket.bean.SpecificationsBean;
 import com.dodo.marcket.business.HomeActivity;
 import com.dodo.marcket.business.clasify.activity.ClasifyActivity;
 import com.dodo.marcket.business.clasify.activity.SearchActivity;
+import com.dodo.marcket.business.clasify.adapter.Product2Adapter;
 import com.dodo.marcket.business.clasify.adapter.ProductAdapter;
 import com.dodo.marcket.business.homepage.activity.HotActivity;
 import com.dodo.marcket.business.homepage.activity.ProductDetailActivity;
 import com.dodo.marcket.business.homepage.activity.WebActivity;
+import com.dodo.marcket.business.homepage.adapter.HomeHotAdapter;
 import com.dodo.marcket.business.homepage.adapter.ProductDetailAdapter;
 import com.dodo.marcket.business.homepage.constrant.HomePageContract;
 import com.dodo.marcket.business.homepage.presenter.HomePagePresenter;
+import com.dodo.marcket.http.constant.Constant;
 import com.dodo.marcket.utils.GlideImageLoader;
 import com.dodo.marcket.utils.ImageLoaders;
 import com.dodo.marcket.utils.NumberUtils;
 import com.dodo.marcket.utils.ScreenUtil;
+import com.dodo.marcket.utils.SharedPreferencesUtil;
 import com.dodo.marcket.utils.ToastUtils;
 import com.dodo.marcket.utils.photo.PopupWindowHelper;
 import com.dodo.marcket.wedget.YhFlowLayout;
 import com.dodo.marcket.wedget.dialog.AdDialog;
+import com.scwang.smartrefresh.layout.SmartRefreshLayout;
+import com.scwang.smartrefresh.layout.api.RefreshLayout;
+import com.scwang.smartrefresh.layout.listener.OnRefreshListener;
 import com.youth.banner.Banner;
 import com.youth.banner.BannerConfig;
 import com.youth.banner.Transformer;
@@ -48,6 +59,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
+import butterknife.ButterKnife;
 import butterknife.Unbinder;
 
 
@@ -65,8 +77,11 @@ public class HomePageFragment extends BaseFragment<HomePagePresenter> implements
     @BindView(R.id.mLL_hotGoods)
     LinearLayout mLLHotGoods;
     public static HomePageFragment homePageFragment;
+    @BindView(R.id.refreshLayout)
+    SmartRefreshLayout refreshLayout;
+
     private LinearLayoutManager manager;
-    private ProductAdapter adapter;
+    private HomeHotAdapter adapter;
     private List<ProductBean> mDates;
     private View pickVIew;
     private ImageView mImg_productImg;
@@ -82,7 +97,11 @@ public class HomePageFragment extends BaseFragment<HomePagePresenter> implements
     private PopupWindow popupWindow;
     private HomeActivity homeActivity;
     private List<SpecificationsBean> specificationsBeanList = new ArrayList<>();
+    private List<ProducHeadBean> mDates2 = new ArrayList<>();
     private ProductDetailAdapter productDetailAdapter;
+    private Button mBtn_select;
+    private boolean isCanBuy;
+    private long buyId;
 
     public static HomePageFragment getInstance() {
         if (homePageFragment == null)
@@ -107,11 +126,13 @@ public class HomePageFragment extends BaseFragment<HomePagePresenter> implements
         initRv();
         initPickView();
 
+        initRefresh();
         mPresenter.getBanner(2);//首页banner
         mPresenter.getHotProduct();//获取热销商品信息
         mPresenter.getAdPosition(1);//弹窗广告
         mPresenter.getAllPromotion();//首页获取活动模块信息
     }
+
 
     @Override
     public void showLoading(String content) {
@@ -125,7 +146,19 @@ public class HomePageFragment extends BaseFragment<HomePagePresenter> implements
 
     @Override
     public void showErrorMsg(String msg, String type) {
+        showErrorToast(msg);
+    }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+
+        needToken = (String) SharedPreferencesUtil.get(mContext, Constant.token, "");
+        if (needToken.equals("")){
+            hastoken = false;
+        }else {
+            hastoken = true;
+        }
     }
 
     //首页轮播
@@ -138,71 +171,88 @@ public class HomePageFragment extends BaseFragment<HomePagePresenter> implements
 
     }
 
+    //下拉刷新
+    private void initRefresh() {
+
+        refreshLayout.setEnableLoadmore(false);
+        refreshLayout.setEnableFooterTranslationContent(false);
+        refreshLayout.setOnRefreshListener(new OnRefreshListener() {
+            @Override
+            public void onRefresh(RefreshLayout refreshlayout) {
+                mPresenter.getBanner(2);//首页banner
+                mPresenter.getHotProduct();//获取热销商品信息
+//                mPresenter.getAdPosition(1);//弹窗广告
+                mPresenter.getAllPromotion();//首页获取活动模块信息
+                refreshLayout.finishRefresh();
+            }
+        });
+    }
+
 
     //首页热销商品
     private void initRv() {
         mDates = new ArrayList<>();
         manager = new LinearLayoutManager(mContext);
-        adapter = new ProductAdapter(mContext, mDates);
+        adapter = new HomeHotAdapter(mContext,mDates2);
         mRvMain.setLayoutManager(manager);
         mRvMain.setAdapter(adapter);
 
-        adapter.setOnItemClickListener(new ProductAdapter.OnItemClickListener() {
+        adapter.setOnItemClickListener(new HomeHotAdapter.OnItemClickListener() {
             @Override
-            public void onItemClick(int parentPos) {
+            public void onItemClick(int parentPos, int childPos) {
                 Intent intent = new Intent(mActivity, ProductDetailActivity.class);
-                intent.putExtra("productId", mDates.get(parentPos).getId());
+                intent.putExtra("productId", mDates2.get(parentPos).getProducts().get(childPos).getId());
                 startActivity(intent);
             }
 
             @Override
-            public void onSelectedClick(int pos, boolean isSelectAll) {
+            public void onSelectedClick(int parentPos, int childPos, boolean isSelectAll) {
 
             }
 
             @Override
-            public void onJianClicked(int pos) {
+            public void onJianClicked(int parentPos, int childPos) {
 
             }
 
             @Override
-            public void onJiaClicked(int pos) {
+            public void onJiaClicked(int parentPos, int childPos) {
 
             }
 
             @Override
-            public void onAddClicked(int pos) {//点击了添加购物车按钮（单一规格）
-
-                if (!hastoken){
+            public void onAddClicked(int parentPos, int childPos) {
+                if (!hastoken) {
                     goToLogin();
                     return;
                 }
-                ProductBean productBean = mDates.get(pos);
+
+                ProductBean productBean = mDates2.get(parentPos).getProducts().get(childPos);
                 long id = productBean.getId();
                 mPresenter.addProduct(1, new ProductParmsBean(id));
             }
 
             @Override
-            public void onMutiSizeClicked(int pos) {//点击了添加购物车按钮（多重规格）
-                ToastUtils.show(mContext, "多规格");
-                shoePOP();
-
+            public void onMutiSizeClicked(int parentPos, int childPos) {
+//                shoePOP();
+                mPresenter.getProductDetailById(mDates2.get(parentPos).getProducts().get(childPos).getId());
             }
         });
     }
 
     //热销列表
     @Override
-    public void getHotProducts(List<ProductBean> productList) {
-        if (productList == null || productList.size() == 0) {
-
+    public void getHotProducts(List<ProductBean> productList,List<ProducHeadBean> type) {
+        if (type == null || type.size() == 0) {
             mLLHotGoods.setVisibility(View.GONE);
             return;
         }
 
         mLLHotGoods.setVisibility(View.VISIBLE);
-        mDates.clear();
-        mDates.addAll(productList);
+        mDates2.clear();
+        mDates2.addAll(type);
+
+
         adapter.notifyDataSetChanged();
     }
 
@@ -239,10 +289,10 @@ public class HomePageFragment extends BaseFragment<HomePagePresenter> implements
                 public void OnBannerClick(int position) {
 
                     String value = bannerBeanList.get(position).getValue();
-                    if (value==null||value.equals("")){
+                    if (value == null || value.equals("")) {
                         return;
                     }
-                    switch (bannerBeanList.get(position).getType()){
+                    switch (bannerBeanList.get(position).getType()) {
 
 
                         case "productCategory"://跳转分类页面，根据id显示默认选中哪一个分类标签
@@ -253,7 +303,7 @@ public class HomePageFragment extends BaseFragment<HomePagePresenter> implements
                             break;
                         case "product"://跳转产品详情页面
                             long productId = NumberUtils.string2Long(value);
-                            if (productId!=0L) {
+                            if (productId != 0L) {
                                 Intent intentProduct = new Intent(mActivity, ProductDetailActivity.class);
                                 intentProduct.putExtra("productId", productId);
                                 startActivity(intentProduct);
@@ -261,20 +311,20 @@ public class HomePageFragment extends BaseFragment<HomePagePresenter> implements
                             break;
                         case "weburl"://跳转url页面
                             Intent intentWeb = new Intent(mActivity, WebActivity.class);
-                            intentWeb.putExtra("title",bannerBeanList.get(position).getTitle());
+                            intentWeb.putExtra("title", bannerBeanList.get(position).getTitle());
                             intentWeb.putExtra("weburl", value);
                             startActivity(intentWeb);
                             break;
                         case "search"://跳转搜索页面
                             Intent intentSearch = new Intent(mActivity, SearchActivity.class);
-                            intentSearch.putExtra("search",value);
+                            intentSearch.putExtra("search", value);
                             startActivity(intentSearch);
                             break;
                         case "promotion"://热销活动页面
                             long l = NumberUtils.string2Long(value);
-                            if (l!=0L){
+                            if (l != 0L) {
                                 Intent intent = new Intent(mActivity, HotActivity.class);
-                                intent.putExtra("mId",l);
+                                intent.putExtra("mId", l);
                                 startActivity(intent);
                             }
                             break;
@@ -292,6 +342,7 @@ public class HomePageFragment extends BaseFragment<HomePagePresenter> implements
             return;
         }
         mLLYh.setVisibility(View.VISIBLE);
+        mYHImg.removeAllViews();
         displayUI(activityBeans, mYHImg, mContext);
     }
 
@@ -304,6 +355,68 @@ public class HomePageFragment extends BaseFragment<HomePagePresenter> implements
         } else {
             ToastUtils.show(mContext, "加入购物车失败");
         }
+    }
+
+
+    //获取商品详情（用于多重规格的商品的展示）
+    @Override
+    public void getProductDetailById(ProductBean productBean) {
+        if (productBean == null) {
+            showErrorToast("获取商品信息错误");
+            return;
+        }
+
+        if (productBean == null) {
+            return;
+        }
+
+        isCanBuy = false;
+        if (productBean.getStock() == null) {//不限制库存
+            isCanBuy = true;
+        } else if (productBean.getStock() == 0) {
+            isCanBuy = false;
+        } else if (productBean.getStock() > 0) {
+            isCanBuy = true;
+        }
+
+        //是否可以购买
+        if (isCanBuy) {
+            mBtn_select.setClickable(true);
+            mBtn_select.setBackgroundResource(R.color.basicColor);
+        } else {
+            mBtn_select.setClickable(false);
+            mBtn_select.setBackgroundResource(R.color.defalute);
+        }
+
+        List<SpecificationsBean> specifications = productBean.getSpecifications();//商品规格
+        List<String> productImages = productBean.getProductImages();//banner图片
+        String name = productBean.getName();//商品名称
+        String introduction = productBean.getIntroduction();//商品描述
+        String memo = productBean.getMemo();//备注
+        double price = productBean.getPrice();//价格
+        String unit = productBean.getUnit();//单位
+        double unitPrice = productBean.getUnitPrice();
+        String image = productBean.getImage();
+        String packaging = productBean.getPackaging();
+        long id = productBean.getId();
+        buyId = id;
+
+        ImageLoaders.displayImage(mImg_productImg, image);
+        mTxt_productName.setText(name);
+        mTxt_productMsg.setText(memo);
+        mTxt_price.setText("¥" + unitPrice + "/"+unit);
+        mTxt_package.setText(packaging);
+        mTxt_productPrice.setText("" + price + "");
+
+        if (specifications == null || specifications.size() == 0) {
+//            carId = mId;
+        } else {
+            specificationsBeanList.clear();
+            specificationsBeanList.addAll(specifications);
+            productDetailAdapter.notifyDataSetChanged();
+        }
+
+        shoePOP();
     }
 
     private void displayUI(final List<HomePageActivityBean> mDatas, YhFlowLayout yhFlowLayout, final Context context) {
@@ -322,7 +435,7 @@ public class HomePageFragment extends BaseFragment<HomePagePresenter> implements
 //            specificationValuesBean.setKind(i%2);
 
             if (specificationValuesBean.getSize().equals("small")) {
-                mTxtTag.getLayoutParams().width = (screenWidth - ScreenUtil.dip2px(context, 30))/2;
+                mTxtTag.getLayoutParams().width = (screenWidth - ScreenUtil.dip2px(context, 30)) / 2;
                 ImageLoaders.displayConnerImg(mTxtTag, specificationValuesBean.getSmallMobileImage(), ScreenUtil.dip2px(context, 5));
             } else {
                 mTxtTag.getLayoutParams().width = screenWidth - ScreenUtil.dip2px(context, 20);
@@ -333,8 +446,8 @@ public class HomePageFragment extends BaseFragment<HomePagePresenter> implements
             mTxtTag.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Intent intent = new Intent(mActivity,HotActivity.class);
-                    intent.putExtra("mId",mDatas.get(finalI).getId());
+                    Intent intent = new Intent(mActivity, HotActivity.class);
+                    intent.putExtra("mId", mDatas.get(finalI).getId());
                     startActivity(intent);
                 }
             });
@@ -379,6 +492,8 @@ public class HomePageFragment extends BaseFragment<HomePagePresenter> implements
         mImg_jia = pickVIew.findViewById(R.id.mImg_jia);
         //数量
         mTxt_num = pickVIew.findViewById(R.id.mTxt_num);
+        //选好了
+        mBtn_select = pickVIew.findViewById(R.id.mBtn_select);
 
         popupWindow = PopupWindowHelper.createPopupWindow(pickVIew, ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
         popupWindow.setAnimationStyle(R.style.slide_up_in_down_out);
@@ -391,29 +506,53 @@ public class HomePageFragment extends BaseFragment<HomePagePresenter> implements
             }
         });
 
-        //多选标签
-        for (int i = 0; i < 5; i++) {
-            specificationsBeanList.add(new SpecificationsBean());
-        }
         productDetailAdapter = new ProductDetailAdapter(mContext, specificationsBeanList);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(mContext);
         mRv_mutle.setAdapter(productDetailAdapter);
         mRv_mutle.setLayoutManager(linearLayoutManager);
 
-
-        //点击加号
-        mImg_jian.setOnClickListener(new View.OnClickListener() {
+        productDetailAdapter.setOnItemClickListener(new ProductDetailAdapter.OnItemClickListener() {
             @Override
-            public void onClick(View v) {
+            public void onItemClick(int parentPos, String specParam) {
+                mPresenter.getProductBySize(buyId, specParam);
 
             }
         });
 
-        //点击减号
+        //点击加号
         mImg_jia.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                String s = mTxt_num.getText().toString().trim();
+                int i = NumberUtils.string2Int(s);
+                i++;
+                mTxt_num.setText(i + "");
+            }
+        });
 
+        //点击减号
+        mImg_jian.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String s = mTxt_num.getText().toString().trim();
+                int i = NumberUtils.string2Int(s);
+                if (i <= 1) {
+                    ToastUtils.show(mContext, "已经是最少了");
+                    return;
+                } else {
+                    i--;
+                    mTxt_num.setText(i + "");
+                }
+            }
+        });
+
+        //点击选好了
+        mBtn_select.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String s = mTxt_num.getText().toString().trim();
+                int i = NumberUtils.string2Int(s);
+                mPresenter.addProduct(i, new ProductParmsBean(buyId));
             }
         });
     }

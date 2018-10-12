@@ -154,11 +154,15 @@ public class AddNewAddressActivity extends BaseActivity<AddNewAddressPresenter> 
     //删除会员地址结果
     @Override
     public void deleteAddress(boolean b) {
-
+        if (b) {
+            showErrorToast("删除成功");
+        } else {
+            showErrorToast("删除失败");
+        }
     }
 
 
-    @OnClick({R.id.mEd_myAddress, R.id.mTxt_keep, R.id.mLL_checked,R.id.mTxt_deleteAddress})
+    @OnClick({R.id.mEd_myAddress, R.id.mTxt_keep, R.id.mLL_checked, R.id.mTxt_deleteAddress})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.mEd_myAddress:
@@ -199,7 +203,7 @@ public class AddNewAddressActivity extends BaseActivity<AddNewAddressPresenter> 
                 break;
 
             case R.id.mTxt_deleteAddress: //删除地址
-
+                mPresenter.deleteAddress(myAddressBean.getId());
                 break;
         }
     }

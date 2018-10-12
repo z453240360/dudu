@@ -113,7 +113,11 @@ public class OrderFragment extends BaseFragment<OrderFragmentPresenter> implemen
 
     @Override
     public void showErrorMsg(String msg, String type) {
-        showErrorMsg(msg,type);
+        showErrorToast(msg);
+    }
+
+    public void initFresh(){
+        isDataInitiated= true;
     }
 
     //初始化列表
@@ -126,7 +130,7 @@ public class OrderFragment extends BaseFragment<OrderFragmentPresenter> implemen
         adapter.setOnItemClickListener(new MultiAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(int pos, int orderId, String sn) {//订单点击
-
+                initFresh();
                 Bundle bundle = new Bundle();
                 bundle.putString("sn",sn);
                 bundle.putInt("snId",orderId);
@@ -135,16 +139,19 @@ public class OrderFragment extends BaseFragment<OrderFragmentPresenter> implemen
 
             @Override
             public void cancelOrder(int id, int postion) {//取消订单
+                initFresh();
                 mPresenter.cancelOrder(id);
             }
 
             @Override
             public void payOrder(String sn, int postion) {//支付订单
+                initFresh();
                 mPresenter.payOrder(sn);
             }
 
             @Override
             public void disOrder(int id, int postion) {//评价订单
+                initFresh();
                 Bundle b = new Bundle();
                 List<OrderList.OrderItemsBean> orderItems = mDates.get(postion).getOrderItems();
                 List<OrderItemCommentParamsBean> commentBeans = new ArrayList<>();
@@ -153,20 +160,25 @@ public class OrderFragment extends BaseFragment<OrderFragmentPresenter> implemen
 
                     String name = productInfo.getName();
                     int id1 = productInfo.getId();
+
                     OrderItemCommentParamsBean commentBean = new OrderItemCommentParamsBean();
                     commentBean.setProductName(name);
                     commentBean.setSupport(true);
-                    commentBean.setProductId((long) id);
+                    commentBean.setProductId((long) id1);
+
                     commentBeans.add(commentBean);
                 }
 
-                b.putLong("orderId",mDates.get(id).getId());
+                b.putLong("orderId",(long)mDates.get(postion).getId());
                 b.putSerializable("list", (Serializable) commentBeans);
+
+
                 startActivity(CommentOrderActivity.class,b);
             }
 
             @Override
             public void againOrder(int id, int postion) {//再次购买
+                initFresh();
                 PayBean2 payBean = new PayBean2();
                 List<PayParamsFatherBean> payParamsFatherBeans = new ArrayList<>();
 
@@ -235,6 +247,9 @@ public class OrderFragment extends BaseFragment<OrderFragmentPresenter> implemen
     @Override
     public void cancelOrder(int id) {
         ToastUtils.show(mContext,"取消订单成功");
+        page=1;
+        mDates.clear();
+        mPresenter.getOrder(postion, page, pageSize);
     }
 
 
@@ -254,7 +269,12 @@ public class OrderFragment extends BaseFragment<OrderFragmentPresenter> implemen
 
     //再次购买（批量添加购物车）
     @Override
-    public void againOrder(int id) {
+    public void againOrder(boolean id) {
+        if (id){
+            ToastUtils.show(mContext,"已经为您添加到购物车");
+        }else {
+            ToastUtils.show(mContext,"下单失败");
+        }
 
     }
 

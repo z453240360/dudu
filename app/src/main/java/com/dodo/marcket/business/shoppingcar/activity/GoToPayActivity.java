@@ -1,6 +1,8 @@
 package com.dodo.marcket.business.shoppingcar.activity;
 
 import android.annotation.SuppressLint;
+import android.content.Intent;
+import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.support.v7.widget.LinearLayoutManager;
@@ -216,14 +218,21 @@ public class GoToPayActivity extends BaseActivity<GoToPayPresenter> implements G
         switch (view.getId()) {
             case R.id.mLL_showAddress1://跳转我的地址页面
             case R.id.mLL_showAddress2:
-                startActivity(MyAddressActivity.class);
+                Bundle bundle = new Bundle();
+                bundle.putBoolean("needBackResult",false);
+                startActivityForResult(MyAddressActivity.class,bundle,100);
                 break;
 
             case R.id.mLL_give: //赠品
 //                mPresenter.payOrder("SO20180920161894");//支付
+
                 break;
 
             case R.id.mLL_coupon://优惠券选择
+                if (disCountBeanList.size()==0){
+                    showErrorToast("您没有可以使用的优惠券");
+                    return;
+                }
                 showDiscountPop(discountPopWindow);
                 break;
 
@@ -467,7 +476,7 @@ public class GoToPayActivity extends BaseActivity<GoToPayPresenter> implements G
         }
 
         onLineMoney = onlineDiscount;
-        mTxtPoint.setText(""+userPoint+"积分");
+        mTxtPoint.setText(""+(int)userPoint+"积分");
         mTxtRealPay.setText("¥" + productAmount + "");
         mTxtPostMoney.setText("+ ¥ " + freight);
         mTxtPayOnlineMoney.setText("- ¥ " + onlineDiscount);
@@ -565,6 +574,12 @@ public class GoToPayActivity extends BaseActivity<GoToPayPresenter> implements G
     public void makeOrderId(MakeOrderBean s) {
         if (s != null) {
             String sn = s.getSn();
+            if (sn==null||sn.equals("")){
+
+                String msg = s.getMsg();
+                showErrorToast(msg);
+                return;
+            }
             mPresenter.payOrder(sn);
         }
     }
@@ -637,7 +652,11 @@ public class GoToPayActivity extends BaseActivity<GoToPayPresenter> implements G
 
                 if (lowLimit<productAmount){//满足条件可以使用优惠券
 
-                    goToPayParamsBean.setAnHaos(disCountBeans);//设置优惠券
+                    List<String> mList = new ArrayList<>();
+                    for (int i = 0; i < disCountBeans.size(); i++) {
+                        mList.add(disCountBeans.get(i).getAnhao());
+                    }
+                    goToPayParamsBean.setAnHaos(mList);//设置优惠券
                     mTxtCoupon.setText("满"+disCountBean.getLowLimit()+"减"+disCountBean.getAmount());
                     mTxtDiscountMoney.setText("- ¥ "+dicCount);
                     initTotalPrice();
@@ -782,6 +801,7 @@ public class GoToPayActivity extends BaseActivity<GoToPayPresenter> implements G
                     mTxtPayOnlineMoney.setText("- ¥ 0");
                 }else {
                     onLineMoney = onlineDiscount;
+                    mTxtPayOnlineMoney.setText("- ¥ "+onlineDiscount);
                 }
 
                 initTotalPrice();
@@ -799,6 +819,38 @@ public class GoToPayActivity extends BaseActivity<GoToPayPresenter> implements G
                 payWindow.dismiss();
             }
         });
+    }
+
+    //接收页面跳转返回值
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (resultCode==RESULT_OK) {
+            switch (requestCode) {
+                case 100:
+                    MyAddressBean receiverInfo = (MyAddressBean) data.getSerializableExtra("address");
+
+                    mLLShowAddress1.setVisibility(View.GONE);
+                    mLLShowAddress2.setVisibility(View.VISIBLE);
+                    try {
+                        String address = receiverInfo.getAddress();
+                        String consignee = receiverInfo.getConsignee();
+                        String phone = receiverInfo.getPhone();
+                        MyAddressBean.AreaInfoBean areaInfo = receiverInfo.getAreaInfo();
+                        mTxtGoToPayAddress.setText(areaInfo.getName() + address);
+                        mTxtGoToPayAddressName.setText(consignee);
+                        mTxtGoToPayAddressPhone.setText(phone);
+
+                        goToPayParamsBean.setReceiverId(receiverInfo.getId());//设置地址参数
+                    } catch (Exception e) {
+                        mLLShowAddress1.setVisibility(View.VISIBLE);
+                        mLLShowAddress2.setVisibility(View.GONE);
+                        goToPayParamsBean.setReceiverId(0L);//设置地址参数
+                    }
+
+                    break;
+            }
+        }
     }
 
 
@@ -837,6 +889,8 @@ public class GoToPayActivity extends BaseActivity<GoToPayPresenter> implements G
                         // 该笔订单真实的支付结果，需要依赖服务端的异步通知。
                         Toast.makeText(mActivity, "支付失败", Toast.LENGTH_SHORT).show();
                     }
+
+                    finish();
                     break;
                 }
                 case SDK_AUTH_FLAG: {

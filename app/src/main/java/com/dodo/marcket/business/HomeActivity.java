@@ -239,4 +239,15 @@ public class HomeActivity extends BaseActivity<HomePresenter> implements HomeCon
                 break;
         }
     }
+
+    //
+    public void initHasToken(){
+        mTxtCarNum.setVisibility(View.INVISIBLE);
+        needToken = (String) SharedPreferencesUtil.get(mContext, Constant.token, "");
+        if (needToken.equals("")){
+            hastoken = false;
+        }else {
+            hastoken = true;
+        }
+    }
 }

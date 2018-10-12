@@ -12,14 +12,7 @@ public class CommentParamsBean implements Serializable{
     private int productScore;//商品分
     private String comment;//评论
     private List<OrderItemCommentParamsBean> orderItemComments;
-
-    public List<OrderItemCommentParamsBean> getOrderItemCommentParams() {
-        return orderItemComments;
-    }
-
-    public void setOrderItemCommentParams(List<OrderItemCommentParamsBean> orderItemCommentParams) {
-        this.orderItemComments = orderItemCommentParams;
-    }
+    private List<OrderItemCommentParamsBean> orderItemCommentParams;
 
     public long getOrderId() {
         return orderId;
@@ -51,5 +44,21 @@ public class CommentParamsBean implements Serializable{
 
     public void setComment(String comment) {
         this.comment = comment;
+    }
+
+    public List<OrderItemCommentParamsBean> getOrderItemComments() {
+        return orderItemComments;
+    }
+
+    public void setOrderItemComments(List<OrderItemCommentParamsBean> orderItemComments) {
+        this.orderItemComments = orderItemComments;
+    }
+
+    public List<OrderItemCommentParamsBean> getOrderItemCommentParams() {
+        return orderItemCommentParams;
+    }
+
+    public void setOrderItemCommentParams(List<OrderItemCommentParamsBean> orderItemCommentParams) {
+        this.orderItemCommentParams = orderItemCommentParams;
     }
 }

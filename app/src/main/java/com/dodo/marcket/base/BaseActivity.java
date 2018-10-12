@@ -216,7 +216,12 @@ public abstract class BaseActivity<T extends BasePresenter> extends AppCompatAct
             hastoken = false;
         }else {
             hastoken = true;
+            if (mPresenter!=null) {
+                mPresenter.setToken();
+            }
         }
+
+
     }
 
 

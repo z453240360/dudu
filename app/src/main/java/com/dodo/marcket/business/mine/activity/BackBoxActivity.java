@@ -67,7 +67,7 @@ public class BackBoxActivity extends BaseActivity<BackBoxPresenter> implements B
 
     @Override
     public void showErrorMsg(String msg, String type) {
-
+        showErrorToast(msg);
     }
 
     private void initRv() {

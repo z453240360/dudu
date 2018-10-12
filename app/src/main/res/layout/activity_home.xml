@@ -71,7 +71,8 @@
                 style="@style/menu_tab"
                 android:tag="1"
                 android:text="购物车"
-                app:rbDrawableTop="@drawable/selector_gouwuche_bg" />
+                app:rbDrawableTop="@drawable/selector_gouwuche_bg"
+                />
 
             <com.dodo.marcket.wedget.MyRadioButton
                 android:id="@+id/rb_mime"

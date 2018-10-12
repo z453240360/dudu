@@ -23,7 +23,7 @@ public class ProductBean {
      * unitPrice : 1                                          单价
      * weight : 1                                             重量
      */
-
+    private String type;
     private int cartNumber;
     private long id;
     private String image;
@@ -42,6 +42,15 @@ public class ProductBean {
     private String introduction="";//介绍
     private List<String> productImages; //商品图片中中图
     private List<SpecificationsBean> specifications;//规格
+
+
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
+    }
 
     public String getFullName() {
         return fullName;

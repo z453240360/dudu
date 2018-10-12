@@ -30,6 +30,7 @@ public class MyAddressActivity extends BaseActivity<MyAddressPresenter> implemen
     private List<MyAddressBean> mDatas = new ArrayList<>();
     private AddressAdapter addressAdapter;
     private LinearLayoutManager manager;
+    private boolean needBackResult= false;
 
     @Override
     public int getLayoutId() {
@@ -44,6 +45,11 @@ public class MyAddressActivity extends BaseActivity<MyAddressPresenter> implemen
     @Override
     public void loadData() {
         mTitle.setTitle("我的地址");
+
+        Bundle extras = getIntent().getExtras();
+        needBackResult = extras.getBoolean("needBackResult", false);//点击地址，是否需要返回地址值
+
+
         initRv();
 
     }
@@ -61,7 +67,7 @@ public class MyAddressActivity extends BaseActivity<MyAddressPresenter> implemen
 
     @Override
     public void showErrorMsg(String msg, String type) {
-
+        showErrorToast(msg);
     }
 
     @Override
@@ -114,6 +120,16 @@ public class MyAddressActivity extends BaseActivity<MyAddressPresenter> implemen
                 bundle.putSerializable("addressBean",areaId);
 
                 startActivity(AddNewAddressActivity.class,bundle);
+            }
+
+            @Override
+            public void onViewClick(int pos, MyAddressBean myAddressBean) {//选择地址
+                if (needBackResult) {
+                    Intent intent = new Intent();
+                    intent.putExtra("address", myAddressBean);
+                    setResult(100, intent);
+                    finish();
+                }
             }
         });
     }

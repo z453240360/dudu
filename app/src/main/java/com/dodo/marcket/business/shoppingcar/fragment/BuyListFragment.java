@@ -124,7 +124,7 @@ public class BuyListFragment extends BaseFragment<BuyListFragmentPresenter> impl
 
     @Override
     public void showErrorMsg(String msg, String type) {
-
+        showErrorToast(msg);
     }
 
     //初始化列表

@@ -217,7 +217,7 @@ public interface ApiService {
 
     //订单----再次购买（批量添加购物车）
     @POST(Api.url)
-    Observable<BResponse<List<OrderList>>> againOrder(@Body RequestBody verifyCode);
+    Observable<BResponse<Boolean>> againOrder(@Body RequestBody verifyCode);
 
     //订单----提交订单评价
     @POST(Api.url)

@@ -34,7 +34,7 @@ public abstract class BasePresenter<T extends BaseView> {
     protected Context mContext;
     protected T mView;
     protected ApiModel apiModel;
-    protected String mToken;
+    public static String mToken;
     //销毁时退出异步任务
     protected CompositeSubscription mSubscriptions;
     public final PublishSubject<ActivityLifeCycleEvent> lifecycleSubject = PublishSubject.create();
@@ -54,6 +54,11 @@ public abstract class BasePresenter<T extends BaseView> {
 
     public void onStart() {
         lifecycleSubject.onNext(ActivityLifeCycleEvent.CREATE);
+    }
+
+    public void onResume() {
+        lifecycleSubject.onNext(ActivityLifeCycleEvent.RESUME);
+
     }
 
 
@@ -111,5 +116,9 @@ public abstract class BasePresenter<T extends BaseView> {
         }
 
         return parts;
+    }
+
+    public void setToken(){
+        mToken = (String) SharedPreferencesUtil.get(mContext, Constant.token, "");
     }
 }

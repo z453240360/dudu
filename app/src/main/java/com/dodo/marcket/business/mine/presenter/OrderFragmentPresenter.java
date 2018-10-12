@@ -29,7 +29,7 @@ public class OrderFragmentPresenter extends BasePresenter<OrderFragment> impleme
         orderParamsBean.setPageSize(pageSize);
         orderParamsBean.setStatus(orderStatus);
         String name = "order.list";
-        addSubscription(apiModel.getOrderList(ParamsUtils.getParams(new Gson().toJson(orderParamsBean),name,mToken)), new ResponseSubscriber<List<OrderList>>(mContext) {
+        addSubscription(apiModel.getOrderList(ParamsUtils.getParams(new Gson().toJson(orderParamsBean),name,mToken)), new ResponseSubscriber<List<OrderList>>(mContext,"asd") {
             @Override
             public void apiSuccess(List<OrderList> s) {
                 mView.getOrderList(s);
@@ -48,7 +48,7 @@ public class OrderFragmentPresenter extends BasePresenter<OrderFragment> impleme
         OptionOrderParamsBean bean = new OptionOrderParamsBean();
         bean.setId(id);
         String name = "order.cancel";
-        addSubscription(apiModel.cancelOrder(ParamsUtils.getParams(new Gson().toJson(bean),name,mToken)), new ResponseSubscriber<CancelOrderBean>(mContext) {
+        addSubscription(apiModel.cancelOrder(ParamsUtils.getParams(new Gson().toJson(bean),name,mToken)), new ResponseSubscriber<CancelOrderBean>(mContext,"sd") {
             @Override
             public void apiSuccess(CancelOrderBean s) {
                 mView.cancelOrder(1);
@@ -67,7 +67,7 @@ public class OrderFragmentPresenter extends BasePresenter<OrderFragment> impleme
         OptionOrderParamsBean bean = new OptionOrderParamsBean();
         bean.setSn(sn);
         String name = "order.pay";
-        addSubscription(apiModel.payOrder(ParamsUtils.getParams(new Gson().toJson(bean),name,mToken)), new ResponseSubscriber<AliPayBean>(mContext) {
+        addSubscription(apiModel.payOrder(ParamsUtils.getParams(new Gson().toJson(bean),name,mToken)), new ResponseSubscriber<AliPayBean>(mContext,"sd") {
             @Override
             public void apiSuccess(AliPayBean s) {
                 mView.payOrder(s);
@@ -84,10 +84,10 @@ public class OrderFragmentPresenter extends BasePresenter<OrderFragment> impleme
     @Override
     public void againOrder(PayBean2 payBeans) {
         String name = "cart.addProducts";
-        addSubscription(apiModel.againOrder(ParamsUtils.getParams(new Gson().toJson(payBeans),name,mToken)), new ResponseSubscriber<List<OrderList>>(mContext) {
+        addSubscription(apiModel.againOrder(ParamsUtils.getParams(new Gson().toJson(payBeans),name,mToken)), new ResponseSubscriber<Boolean>(mContext,"asd") {
             @Override
-            public void apiSuccess(List<OrderList> s) {
-                mView.againOrder(1);
+            public void apiSuccess(Boolean s) {
+                mView.againOrder(s);
             }
 
             @Override

@@ -45,6 +45,7 @@
 
 
             <ImageView
+                android:visibility="gone"
                 android:id="@+id/mImg_salesOut"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"

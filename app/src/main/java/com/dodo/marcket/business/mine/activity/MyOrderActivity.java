@@ -63,7 +63,7 @@ public class MyOrderActivity extends BaseActivity<MyOrderPresenter> implements M
 
     @Override
     public void showErrorMsg(String msg, String type) {
-
+        showErrorToast(msg);
     }
 
     /**

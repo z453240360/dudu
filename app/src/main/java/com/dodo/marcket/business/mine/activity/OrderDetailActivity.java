@@ -4,6 +4,7 @@ import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.support.v4.widget.NestedScrollView;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
@@ -18,11 +19,9 @@ import com.dodo.marcket.R;
 import com.dodo.marcket.base.BaseActivity;
 import com.dodo.marcket.bean.AliPayBean;
 import com.dodo.marcket.bean.AuthResult;
-import com.dodo.marcket.bean.CommentBean;
 import com.dodo.marcket.bean.OrderDetailBean;
 import com.dodo.marcket.bean.OrderItemCommentParamsBean;
 import com.dodo.marcket.bean.PayResult;
-import com.dodo.marcket.bean.params.CommentParamsBean;
 import com.dodo.marcket.bean.params.PayBean2;
 import com.dodo.marcket.bean.params.PayParamsBean;
 import com.dodo.marcket.bean.params.PayParamsFatherBean;
@@ -41,6 +40,7 @@ import java.util.List;
 import java.util.Map;
 
 import butterknife.BindView;
+import butterknife.ButterKnife;
 import butterknife.OnClick;
 
 public class OrderDetailActivity extends BaseActivity<OrderDetailPresenter> implements OrderDetailContract.View {
@@ -92,6 +92,10 @@ public class OrderDetailActivity extends BaseActivity<OrderDetailPresenter> impl
     TextView mTxtOrderPayReal4;
     @BindView(R.id.mLL_4)
     LinearLayout mLL4;
+    @BindView(R.id.mLL_noDate)
+    LinearLayout mLLNoDate;
+    @BindView(R.id.mScroll)
+    NestedScrollView mScroll;
     private String sn;
     private int snId;
     private List<OrderDetailBean.OrderItemsBean> orderItems = new ArrayList<>();
@@ -123,8 +127,6 @@ public class OrderDetailActivity extends BaseActivity<OrderDetailPresenter> impl
     @Override
     protected void onResume() {
         super.onResume();
-
-
     }
 
     @Override
@@ -139,7 +141,8 @@ public class OrderDetailActivity extends BaseActivity<OrderDetailPresenter> impl
 
     @Override
     public void showErrorMsg(String msg, String type) {
-
+        showErrorToast(msg);
+        mLLNoDate.setVisibility(View.VISIBLE);
     }
 
     private void initRv() {
@@ -153,6 +156,14 @@ public class OrderDetailActivity extends BaseActivity<OrderDetailPresenter> impl
     //获取订单详情
     @Override
     public void getOrderDitail(OrderDetailBean od) {
+        if (od == null) {
+            mLLNoDate.setVisibility(View.VISIBLE);
+            mScroll.setVisibility(View.GONE);
+            return;
+        }
+
+        mLLNoDate.setVisibility(View.GONE);
+        mScroll.setVisibility(View.VISIBLE);
         double amount = od.getAmount();//调整金额:正数要向客户收钱,负数要退钱给客户
         String createDate = od.getCreateDate();//订单时间
         String msg = od.getMsg();//保存订单返信息
@@ -205,15 +216,19 @@ public class OrderDetailActivity extends BaseActivity<OrderDetailPresenter> impl
             wxPay(s);
         } else if (paymentMethonCode.equals("alipay")) {//支付宝支付
             aliPayres(s.getAliPayResult().getOrderInfo());
-        }else {
+        } else {
             showErrorToast("货到付款");
             finish();
         }
     }
 
     @Override
-    public void againOrder(int id) {
-
+    public void againOrder(boolean id) {
+        if (id) {
+            ToastUtils.show(mContext, "已经为您添加到购物车");
+        } else {
+            ToastUtils.show(mContext, "下单失败");
+        }
     }
 
     //更具订单状态初始化底部view
@@ -316,20 +331,14 @@ public class OrderDetailActivity extends BaseActivity<OrderDetailPresenter> impl
                     commentBeans.add(commentBean);
                 }
 
-                b.putLong("orderId",snId);
+                b.putLong("orderId", snId);
                 b.putSerializable("list", (Serializable) commentBeans);
-                startActivity(CommentOrderActivity.class,b);
+                startActivity(CommentOrderActivity.class, b);
                 break;
 
 
         }
     }
-
-
-
-
-
-
 
 
     /** 商户私钥，pkcs8格式 */
@@ -416,19 +425,26 @@ public class OrderDetailActivity extends BaseActivity<OrderDetailPresenter> impl
         payThread.start();
     }
 
-    public void wxPay(AliPayBean aliPayBean){
+    public void wxPay(AliPayBean aliPayBean) {
         AliPayBean.WxPayResult wxPayResult = aliPayBean.getWxPayResult();
         String appId = wxPayResult.getAppId();
-        final IWXAPI msgApi = WXAPIFactory.createWXAPI(mContext, Constant.APP_ID,false);
+        final IWXAPI msgApi = WXAPIFactory.createWXAPI(mContext, Constant.APP_ID, true);
         msgApi.registerApp(appId);
         PayReq request = new PayReq();
         request.appId = appId;
         request.partnerId = wxPayResult.getPartnerId();
-        request.prepayId= wxPayResult.getPrepayId();
-        request.packageValue =  wxPayResult.getPackageValue();
-        request.nonceStr= wxPayResult.getNonceStr();
-        request.timeStamp=wxPayResult.getTimeStamp();
-        request.sign= wxPayResult.getSign();
+        request.prepayId = wxPayResult.getPrepayId();
+        request.packageValue = wxPayResult.getPackageValue();
+        request.nonceStr = wxPayResult.getNonceStr();
+        request.timeStamp = wxPayResult.getTimeStamp();
+        request.sign = wxPayResult.getSign();
         msgApi.sendReq(request);
+    }
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        // TODO: add setContentView(...) invocation
+        ButterKnife.bind(this);
     }
 }

@@ -66,7 +66,7 @@ public class MyBackBoxActivity extends BaseActivity<BackMoneyPresenter> implemen
 
     @Override
     public void showErrorMsg(String msg, String type) {
-
+        showErrorToast(msg);
     }
 
     //我的退框单列表

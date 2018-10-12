@@ -79,7 +79,7 @@ public class DisCountFragment extends BaseFragment<DisCountFragmentPresenter> im
 
     @Override
     public void showErrorMsg(String msg, String type) {
-
+        showErrorToast(msg);
     }
 
 

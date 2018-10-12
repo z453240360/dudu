@@ -19,7 +19,7 @@ public class OrderFragmentContract {
         void getOrderList(List<OrderList> orderLists);
         void cancelOrder(int id);
         void payOrder(AliPayBean id);
-        void againOrder(int id);
+        void againOrder(boolean id);
     }
 
     public interface Presenter {

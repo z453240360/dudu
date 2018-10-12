@@ -29,8 +29,10 @@ public abstract class BaseFragment<T extends BasePresenter> extends Fragment {
     public String token;
     public String dumpcartId;
     public String disctCode;
-    private String needToken;
+    public static String needToken;
     public static boolean hastoken;
+    public static boolean isFreshOrder = false;
+
 
     @Nullable
     @Override

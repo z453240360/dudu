@@ -9,7 +9,7 @@ import java.util.PropertyResourceBundle;
 public class GoToPayParamsBean {
     private long receiverId = 0L;
     private List<CartItemParam> cartItemParam;//商品列表
-    private List<DisCountBean> anHaos;
+    private List<String> anHaos;
     private String receiverDate;//收货时间
     private Long paymentMethodId = 0L;//支付方式ID
     private double usePoint;//用户积分
@@ -28,7 +28,7 @@ public class GoToPayParamsBean {
         this.cartItemParam = cartItemParam;
     }
 
-    public void setAnHaos(List<DisCountBean> anHaos) {
+    public void setAnHaos(List<String> anHaos) {
         this.anHaos = anHaos;
     }
 
@@ -73,7 +73,7 @@ public class GoToPayParamsBean {
         return cartItemParam;
     }
 
-    public List<DisCountBean> getAnHaos() {
+    public List<String> getAnHaos() {
         return anHaos;
     }
 

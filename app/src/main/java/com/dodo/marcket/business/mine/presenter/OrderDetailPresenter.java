@@ -82,10 +82,10 @@ public class OrderDetailPresenter extends BasePresenter<OrderDetailActivity> imp
     @Override
     public void againOrder(PayBean2 payBeans) {
         String name = "cart.addProducts";
-        addSubscription(apiModel.againOrder(ParamsUtils.getParams(new Gson().toJson(payBeans),name,mToken)), new ResponseSubscriber<List<OrderList>>(mContext) {
+        addSubscription(apiModel.againOrder(ParamsUtils.getParams(new Gson().toJson(payBeans),name,mToken)), new ResponseSubscriber<Boolean>(mContext) {
             @Override
-            public void apiSuccess(List<OrderList> s) {
-                mView.againOrder(1);
+            public void apiSuccess(Boolean s) {
+                mView.againOrder(s);
             }
 
             @Override

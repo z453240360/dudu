@@ -291,7 +291,7 @@ public class ClassifyFragment extends BaseFragment<ClassifyFragmentPresenter> im
             mLLBottomView.setVisibility(View.GONE);
             return;
         }
-        mLLBottomView.setVisibility(View.VISIBLE);
+
         double boxAmount = payBean.getBoxAmount();//筐的金额
         double productAmount = payBean.getProductAmount();//总价格
         double freight = payBean.getFreight();//运费
@@ -312,6 +312,7 @@ public class ClassifyFragment extends BaseFragment<ClassifyFragmentPresenter> im
             mLLCarPost.setVisibility(View.VISIBLE);
             mTxtCarPostMoney.setText("" + freight);
         }
+        mLLBottomView.setVisibility(View.VISIBLE);
     }
 
     //清空购物车
