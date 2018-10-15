@@ -48,6 +48,8 @@ import com.dodo.marcket.business.shoppingcar.adapter.PayAdapter;
 import com.dodo.marcket.business.shoppingcar.constrant.GoToPayContract;
 import com.dodo.marcket.business.shoppingcar.presenter.GoToPayPresenter;
 import com.dodo.marcket.http.constant.Constant;
+import com.dodo.marcket.utils.MathUtils;
+import com.dodo.marcket.utils.NumberUtils;
 import com.dodo.marcket.utils.photo.PopupWindowHelper;
 import com.tencent.mm.opensdk.modelpay.PayReq;
 import com.tencent.mm.opensdk.openapi.IWXAPI;
@@ -219,8 +221,8 @@ public class GoToPayActivity extends BaseActivity<GoToPayPresenter> implements G
             case R.id.mLL_showAddress1://跳转我的地址页面
             case R.id.mLL_showAddress2:
                 Bundle bundle = new Bundle();
-                bundle.putBoolean("needBackResult",false);
-                startActivityForResult(MyAddressActivity.class,bundle,100);
+                bundle.putBoolean("needBackResult", false);
+                startActivityForResult(MyAddressActivity.class, bundle, 100);
                 break;
 
             case R.id.mLL_give: //赠品
@@ -229,7 +231,7 @@ public class GoToPayActivity extends BaseActivity<GoToPayPresenter> implements G
                 break;
 
             case R.id.mLL_coupon://优惠券选择
-                if (disCountBeanList.size()==0){
+                if (disCountBeanList.size() == 0) {
                     showErrorToast("您没有可以使用的优惠券");
                     return;
                 }
@@ -310,16 +312,20 @@ public class GoToPayActivity extends BaseActivity<GoToPayPresenter> implements G
         mCheckBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                if (isChecked){
-                    if (userPoint==0d){
+                if (isChecked) {
+                    if (userPoint == 0d) {
+                        mTxtPointMoney.setText("- ¥ " + 0);
 //                        showErrorToast("没有可用积分");
                         return;
                     }
-                    pointMoney = userPoint/100;
+                    pointMoney = userPoint / 100;
+
                     initTotalPrice();
 
-                }else {
+                } else {
+                    mTxtPointMoney.setText("- ¥ " + 0);
                     pointMoney = 0;
+                    goToPayParamsBean.setUsePoint(0d);
                     initTotalPrice();
                 }
             }
@@ -469,14 +475,22 @@ public class GoToPayActivity extends BaseActivity<GoToPayPresenter> implements G
         //用户积分
         userPoint = payBean.getUserPoint();
 
-        if (mCheckBox.isChecked()){
+        if (userPoint == 0D) {
+            mCheckBox.setChecked(false);
+            mCheckBox.setFocusable(false);
+        } else {
+            mCheckBox.setChecked(false);
+            mCheckBox.setFocusable(true);
+        }
+
+        if (mCheckBox.isChecked()) {
             pointMoney = userPoint / 100;
-        }else {
+        } else {
             pointMoney = 0;
         }
 
         onLineMoney = onlineDiscount;
-        mTxtPoint.setText(""+(int)userPoint+"积分");
+        mTxtPoint.setText("" + (int) userPoint + " 积分");
         mTxtRealPay.setText("¥" + productAmount + "");
         mTxtPostMoney.setText("+ ¥ " + freight);
         mTxtPayOnlineMoney.setText("- ¥ " + onlineDiscount);
@@ -532,7 +546,7 @@ public class GoToPayActivity extends BaseActivity<GoToPayPresenter> implements G
         selectDay = selectPostTimeBeanList.get(0).getSelectDay();
         selectTime = itemBeanList.get(0).getName();
 
-        mTxtArriveTime.setText(selectDay +" "+selectTime);
+        mTxtArriveTime.setText(selectDay + " " + selectTime);
     }
 
     //列出支付方式
@@ -574,7 +588,7 @@ public class GoToPayActivity extends BaseActivity<GoToPayPresenter> implements G
     public void makeOrderId(MakeOrderBean s) {
         if (s != null) {
             String sn = s.getSn();
-            if (sn==null||sn.equals("")){
+            if (sn == null || sn.equals("")) {
 
                 String msg = s.getMsg();
                 showErrorToast(msg);
@@ -592,7 +606,7 @@ public class GoToPayActivity extends BaseActivity<GoToPayPresenter> implements G
             wxPay(s);
         } else if (paymentMethonCode.equals("alipay")) {//支付宝支付
             aliPayres(s.getAliPayResult().getOrderInfo());
-        }else {
+        } else {
             showErrorToast("货到付款");
             finish();
         }
@@ -627,7 +641,7 @@ public class GoToPayActivity extends BaseActivity<GoToPayPresenter> implements G
         discountPopView = LayoutInflater.from(mActivity).inflate(R.layout.layout_discount_popview, null, false);
         View view_pop = discountPopView.findViewById(R.id.view_pop);
         mRv_discountPop = (RecyclerView) discountPopView.findViewById(R.id.mRv_discountPop);
-        ImageView mImg_chaPay = (ImageView)discountPopView.findViewById(R.id.mImg_chaPay);
+        ImageView mImg_chaPay = (ImageView) discountPopView.findViewById(R.id.mImg_chaPay);
 
         mImg_chaPay.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -650,18 +664,18 @@ public class GoToPayActivity extends BaseActivity<GoToPayPresenter> implements G
                 dicCount = disCountBean.getAmount();
                 double lowLimit = disCountBean.getLowLimit();
 
-                if (lowLimit<productAmount){//满足条件可以使用优惠券
+                if (lowLimit < productAmount) {//满足条件可以使用优惠券
 
                     List<String> mList = new ArrayList<>();
                     for (int i = 0; i < disCountBeans.size(); i++) {
                         mList.add(disCountBeans.get(i).getAnhao());
                     }
                     goToPayParamsBean.setAnHaos(mList);//设置优惠券
-                    mTxtCoupon.setText("满"+disCountBean.getLowLimit()+"减"+disCountBean.getAmount());
-                    mTxtDiscountMoney.setText("- ¥ "+dicCount);
+                    mTxtCoupon.setText("满" + disCountBean.getLowLimit() + "减" + disCountBean.getAmount());
+                    mTxtDiscountMoney.setText("- ¥ " + dicCount);
                     initTotalPrice();
 
-                }else {
+                } else {
                     showErrorToast("不满足使用条件");
                 }
 
@@ -681,9 +695,28 @@ public class GoToPayActivity extends BaseActivity<GoToPayPresenter> implements G
         });
     }
 
-    //计算总价格
+    //计算总价格(用户积分抵扣费用不能超过总价格)
     private void initTotalPrice() {
-        mTxtFinalMony.setText("¥" + (productAmount + boxAmount + freight - onLineMoney - pointMoney -dicCount) + "");
+
+        double totalPrice = productAmount + boxAmount + freight - onLineMoney - dicCount;//除了积分以外的总价格
+
+        if (totalPrice <= pointMoney) {
+            pointMoney = totalPrice;
+            mTxtPointMoney.setText("- ¥ " + pointMoney);
+            goToPayParamsBean.setUsePoint(pointMoney * 100);
+
+//            mTxtPoint.setText("(" + (userPoint + "-" + pointMoney * 100) + "） 积分");
+        } else {
+            goToPayParamsBean.setUsePoint(pointMoney * 100);
+            mTxtPointMoney.setText("- ¥ " + pointMoney);
+//            mTxtPoint.setText("(" + (userPoint  +"-" + pointMoney * 100) + "） 积分");
+        }
+
+//        if (userPoint == 0d) {
+//            mTxtPoint.setText(userPoint + " 积分");
+//        }
+
+        mTxtFinalMony.setText("¥" + (productAmount + boxAmount + freight - onLineMoney - pointMoney - dicCount) + "");
     }
 
     //初始化时间选择弹框
@@ -692,14 +725,14 @@ public class GoToPayActivity extends BaseActivity<GoToPayPresenter> implements G
         View view_pop = postTimePopView.findViewById(R.id.view_pop);
         RecyclerView mRv_day = (RecyclerView) postTimePopView.findViewById(R.id.mRv_day);
         RecyclerView mRv_time = (RecyclerView) postTimePopView.findViewById(R.id.mRv_time);
-        ImageView mImg_chaPay = (ImageView)postTimePopView.findViewById(R.id.mImg_chaPay);
-        mTxt_arriveTimePop = (TextView)postTimePopView.findViewById(R.id.mTxt_arriveTimePop);
+        ImageView mImg_chaPay = (ImageView) postTimePopView.findViewById(R.id.mImg_chaPay);
+        mTxt_arriveTimePop = (TextView) postTimePopView.findViewById(R.id.mTxt_arriveTimePop);
 
         mTxt_arriveTimePop.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mTxtArriveTime.setText(selectDay+ " "+selectTime);
-                goToPayParamsBean.setReceiverDate(selectDay+ " "+selectTime);
+                mTxtArriveTime.setText(selectDay + " " + selectTime);
+                goToPayParamsBean.setReceiverDate(selectDay + " " + selectTime);
                 postTimeWindow.dismiss();
             }
         });
@@ -773,7 +806,7 @@ public class GoToPayActivity extends BaseActivity<GoToPayPresenter> implements G
         payPopView = LayoutInflater.from(mActivity).inflate(R.layout.layout_pay_popview, null, false);
         View view_pop = payPopView.findViewById(R.id.view_pop);
         mRv_payPop = (RecyclerView) payPopView.findViewById(R.id.mRv_payPop);
-        ImageView mImg_chaPay = (ImageView)payPopView.findViewById(R.id.mImg_chaPay);
+        ImageView mImg_chaPay = (ImageView) payPopView.findViewById(R.id.mImg_chaPay);
 
         mImg_chaPay.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -796,12 +829,12 @@ public class GoToPayActivity extends BaseActivity<GoToPayPresenter> implements G
 
                 goToPayParamsBean.setPaymentMethodId(payMethodBeanList.get(parentPos).getId());//设置支付方式id
 
-                if (payMethodBeanList.get(parentPos).getId()==3){
+                if (payMethodBeanList.get(parentPos).getId() == 3) {
                     onLineMoney = 0;
                     mTxtPayOnlineMoney.setText("- ¥ 0");
-                }else {
+                } else {
                     onLineMoney = onlineDiscount;
-                    mTxtPayOnlineMoney.setText("- ¥ "+onlineDiscount);
+                    mTxtPayOnlineMoney.setText("- ¥ " + onlineDiscount);
                 }
 
                 initTotalPrice();
@@ -825,7 +858,7 @@ public class GoToPayActivity extends BaseActivity<GoToPayPresenter> implements G
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (resultCode==RESULT_OK) {
+        if (resultCode == RESULT_OK) {
             switch (requestCode) {
                 case 100:
                     MyAddressBean receiverInfo = (MyAddressBean) data.getSerializableExtra("address");
@@ -941,19 +974,19 @@ public class GoToPayActivity extends BaseActivity<GoToPayPresenter> implements G
         payThread.start();
     }
 
-    public void wxPay(AliPayBean aliPayBean){
+    public void wxPay(AliPayBean aliPayBean) {
         AliPayBean.WxPayResult wxPayResult = aliPayBean.getWxPayResult();
         String appId = wxPayResult.getAppId();
-        final IWXAPI msgApi = WXAPIFactory.createWXAPI(mContext, Constant.APP_ID,false);
+        final IWXAPI msgApi = WXAPIFactory.createWXAPI(mContext, Constant.APP_ID, false);
         msgApi.registerApp(appId);
         PayReq request = new PayReq();
         request.appId = appId;
         request.partnerId = wxPayResult.getPartnerId();
-        request.prepayId= wxPayResult.getPrepayId();
-        request.packageValue =  wxPayResult.getPackageValue();
-        request.nonceStr= wxPayResult.getNonceStr();
-        request.timeStamp=wxPayResult.getTimeStamp();
-        request.sign= wxPayResult.getSign();
+        request.prepayId = wxPayResult.getPrepayId();
+        request.packageValue = wxPayResult.getPackageValue();
+        request.nonceStr = wxPayResult.getNonceStr();
+        request.timeStamp = wxPayResult.getTimeStamp();
+        request.sign = wxPayResult.getSign();
         msgApi.sendReq(request);
         finish();
     }

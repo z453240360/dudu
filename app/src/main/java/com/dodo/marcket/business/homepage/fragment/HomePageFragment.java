@@ -147,6 +147,9 @@ public class HomePageFragment extends BaseFragment<HomePagePresenter> implements
     @Override
     public void showErrorMsg(String msg, String type) {
         showErrorToast(msg);
+        if (refreshLayout.isRefreshing()) {
+            refreshLayout.finishRefresh(false);//结束刷新（刷新失败）
+        }
     }
 
     @Override
@@ -174,16 +177,17 @@ public class HomePageFragment extends BaseFragment<HomePagePresenter> implements
     //下拉刷新
     private void initRefresh() {
 
-        refreshLayout.setEnableLoadmore(false);
+        refreshLayout.setEnableLoadMore(false);
         refreshLayout.setEnableFooterTranslationContent(false);
         refreshLayout.setOnRefreshListener(new OnRefreshListener() {
             @Override
             public void onRefresh(RefreshLayout refreshlayout) {
                 mPresenter.getBanner(2);//首页banner
-                mPresenter.getHotProduct();//获取热销商品信息
+
 //                mPresenter.getAdPosition(1);//弹窗广告
                 mPresenter.getAllPromotion();//首页获取活动模块信息
-                refreshLayout.finishRefresh();
+                mPresenter.getHotProduct();//获取热销商品信息
+
             }
         });
     }
@@ -196,7 +200,8 @@ public class HomePageFragment extends BaseFragment<HomePagePresenter> implements
         adapter = new HomeHotAdapter(mContext,mDates2);
         mRvMain.setLayoutManager(manager);
         mRvMain.setAdapter(adapter);
-
+        mRvMain.setHasFixedSize(true);
+        mRvMain.setNestedScrollingEnabled(false);
         adapter.setOnItemClickListener(new HomeHotAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(int parentPos, int childPos) {
@@ -243,6 +248,10 @@ public class HomePageFragment extends BaseFragment<HomePagePresenter> implements
     //热销列表
     @Override
     public void getHotProducts(List<ProductBean> productList,List<ProducHeadBean> type) {
+
+        if (refreshLayout.isRefreshing()) {
+            refreshLayout.finishRefresh();
+        }
         if (type == null || type.size() == 0) {
             mLLHotGoods.setVisibility(View.GONE);
             return;
@@ -268,11 +277,13 @@ public class HomePageFragment extends BaseFragment<HomePagePresenter> implements
                 dialog.show();
             }
         }
+
     }
 
     //首页banner
     @Override
     public void getBanner(final List<BannerBean> bannerBeanList) {
+
         if (bannerBeanList != null && bannerBeanList.size() != 0) {
             List<String> images = new ArrayList<>();
             for (int i = 0; i < bannerBeanList.size(); i++) {

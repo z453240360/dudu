@@ -32,6 +32,8 @@ import com.dodo.marcket.utils.NumberUtils;
 import com.dodo.marcket.utils.ToastUtils;
 import com.dodo.marcket.utils.photo.PopupWindowHelper;
 import com.dodo.marcket.wedget.ClearEditText;
+import com.jcodecraeer.xrecyclerview.ProgressStyle;
+import com.jcodecraeer.xrecyclerview.XRecyclerView;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -44,7 +46,7 @@ public class SearchActivity extends BaseActivity<SearchPresenter> implements Sea
     @BindView(R.id.mEd_search)
     ClearEditText mEdSearch;
     @BindView(R.id.mRv_search)
-    RecyclerView mRvSearch;
+    XRecyclerView mRvSearch;
     @BindView(R.id.mLL_noDate)
     LinearLayout mLLNoDate;
 
@@ -72,6 +74,7 @@ public class SearchActivity extends BaseActivity<SearchPresenter> implements Sea
     private long buyId;
 
     private PopupWindow popupWindow;
+    private String search;
 
 
     @Override
@@ -90,11 +93,13 @@ public class SearchActivity extends BaseActivity<SearchPresenter> implements Sea
         initRv();
         initPickView();
 
-        String search = getIntent().getStringExtra("search");
+        search = getIntent().getStringExtra("search");
 
         if (search != null && !search.equals("")) {
             mEdSearch.setText(search);
-            mPresenter.searchProduct(search, page, pageSize);
+            mPresenter.searchProduct(search, page, pageSize,"sD");
+        }else {
+
         }
 
         //搜索框文字改变及时请求
@@ -117,7 +122,7 @@ public class SearchActivity extends BaseActivity<SearchPresenter> implements Sea
                 page = 1;
                 mDates.clear();
                 adapter.notifyDataSetChanged();
-                mPresenter.searchProduct(s.toString(), page, pageSize);
+                mPresenter.searchProduct(s.toString(), page, pageSize,"");
             }
         });
 
@@ -136,7 +141,7 @@ public class SearchActivity extends BaseActivity<SearchPresenter> implements Sea
                     page = 1;
                     mDates.clear();
                     adapter.notifyDataSetChanged();
-                    mPresenter.searchProduct(mEdSearch.getText().toString().trim(), page, pageSize);
+                    mPresenter.searchProduct(mEdSearch.getText().toString().trim(), page, pageSize,"ss");
                     return true;
 
                 }
@@ -150,6 +155,7 @@ public class SearchActivity extends BaseActivity<SearchPresenter> implements Sea
 
     }
 
+    //初始化列表
     private void initRv() {
         manager = new LinearLayoutManager(mContext);
         adapter = new ProductAdapter(mContext, mDates);
@@ -157,6 +163,23 @@ public class SearchActivity extends BaseActivity<SearchPresenter> implements Sea
         mRvSearch.setLayoutManager(manager);
         mRvSearch.setAdapter(adapter);
 
+        mRvSearch.setRefreshProgressStyle(ProgressStyle.BallSpinFadeLoader);
+        mRvSearch.setLoadingMoreProgressStyle(ProgressStyle.SquareSpin);
+
+        mRvSearch.setLoadingListener(new XRecyclerView.LoadingListener() {
+            @Override
+            public void onRefresh() {
+                page=1;
+
+                mPresenter.searchProduct(mEdSearch.getText().toString().trim(), page, pageSize,"");
+            }
+
+            @Override
+            public void onLoadMore() {
+                page++;
+                mPresenter.searchProduct(mEdSearch.getText().toString().trim(), page, pageSize,"");
+            }
+        });
 
         adapter.setOnItemClickListener(new ProductAdapter.OnItemClickListener() {
             @Override
@@ -218,11 +241,18 @@ public class SearchActivity extends BaseActivity<SearchPresenter> implements Sea
     @Override
     public void showErrorMsg(String msg, String type) {
         showErrorToast(msg);
+        if (mRvSearch!=null){
+            if (page==1){
+                mRvSearch.refreshComplete();
+            }else {
+                mRvSearch.loadMoreComplete();
+            }
+        }
     }
 
     @Override
     public void getSearchResult(List<ProductBean> productList) {
-        if (productList == null || productList.size() == 0) {
+        if (productList == null) {
             if (page==1){
                 mLLNoDate.setVisibility(View.VISIBLE);
             }
@@ -232,8 +262,15 @@ public class SearchActivity extends BaseActivity<SearchPresenter> implements Sea
         }
 
         if (page==1){
+            mRvSearch.refreshComplete();
             mDates.clear();
+            mDates.addAll(productList);
+        }else {
+            mDates.addAll(productList);
+            mRvSearch.loadMoreComplete();
         }
+
+
         page++;
 //        mDates.clear();
         mDates.addAll(productList);

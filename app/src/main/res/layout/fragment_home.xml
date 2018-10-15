@@ -11,12 +11,10 @@
         android:id="@+id/refreshLayout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        app:srlAccentColor="@android:color/white"
-        app:srlEnableAutoLoadmore="false"
-        app:srlEnableFooterTranslationContent="true"
-        app:srlPrimaryColor="@color/white">
+        app:srlEnableLoadMore="false">
 
-        <ScrollView
+        <android.support.v4.widget.NestedScrollView
+
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:scrollbars="none">
@@ -25,7 +23,10 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:orientation="vertical">
+                android:focusable="true"
+                android:focusableInTouchMode="true"
+                android:orientation="vertical"
+                app:layout_scrollFlags="scroll">
 
 
                 <com.youth.banner.Banner
@@ -33,74 +34,90 @@
                     android:layout_width="match_parent"
                     android:layout_height="200dp" />
 
-                <LinearLayout
-                    android:id="@+id/mLL_yh"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/dimen_10dp"
-                    android:background="@color/white"
-                    android:orientation="vertical"
-                    android:paddingBottom="@dimen/dimen_10dp"
-                    android:paddingLeft="@dimen/dimen_10dp"
-                    android:paddingRight="@dimen/dimen_10dp"
-                    android:visibility="gone">
-
-                    <com.dodo.marcket.wedget.YhFlowLayout
-                        android:id="@+id/mYH_img"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content" />
-                </LinearLayout>
-
 
                 <LinearLayout
-                    android:id="@+id/mLL_hotGoods"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="@dimen/dimen_10dp"
-                    android:layout_marginTop="@dimen/dimen_10dp"
-                    android:background="@color/white"
-                    android:orientation="vertical"
-                    android:visibility="gone">
+                    android:layout_height="match_parent"
+                    android:orientation="vertical">
 
                     <LinearLayout
+                        android:id="@+id/mLL_yh"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="@dimen/dimen_10dp"
-                        android:gravity="center|center_vertical"
-                        android:orientation="horizontal">
+                        android:background="@color/white"
+                        android:orientation="vertical"
+                        android:paddingBottom="@dimen/dimen_10dp"
+                        android:paddingLeft="@dimen/dimen_10dp"
+                        android:paddingRight="@dimen/dimen_10dp"
+                        android:visibility="gone">
 
-                        <TextView
-                            android:layout_width="@dimen/dimen_30dp"
-                            android:layout_height="1dp"
-                            android:background="@color/org_f39700" />
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginLeft="@dimen/dimen_10dp"
-                            android:layout_marginRight="@dimen/dimen_10dp"
-                            android:background="@color/white"
-                            android:text="热销商品"
-                            android:textColor="@color/org_f39700"
-                            android:textSize="@dimen/dimen_18sp"
-                            android:textStyle="bold" />
-
-                        <TextView
-                            android:layout_width="@dimen/dimen_30dp"
-                            android:layout_height="1dp"
-                            android:background="@color/org_f39700" />
-
+                        <com.dodo.marcket.wedget.YhFlowLayout
+                            android:id="@+id/mYH_img"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content" />
                     </LinearLayout>
 
-                    <android.support.v7.widget.RecyclerView
 
-                        android:id="@+id/mRv_main"
+                    <LinearLayout
+                        android:id="@+id/mLL_hotGoods"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="@dimen/dimen_10dp" />
+                        android:layout_marginBottom="@dimen/dimen_10dp"
+                        android:layout_marginTop="@dimen/dimen_10dp"
+                        android:background="@color/white"
+                        android:orientation="vertical"
+                        android:visibility="gone">
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="@dimen/dimen_10dp"
+                            android:gravity="center|center_vertical"
+                            android:orientation="horizontal">
+
+                            <TextView
+                                android:layout_width="@dimen/dimen_30dp"
+                                android:layout_height="1dp"
+                                android:background="@color/org_f39700" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginLeft="@dimen/dimen_10dp"
+                                android:layout_marginRight="@dimen/dimen_10dp"
+                                android:background="@color/white"
+                                android:text="热销商品"
+                                android:textColor="@color/org_f39700"
+                                android:textSize="@dimen/dimen_18sp"
+                                android:textStyle="bold" />
+
+                            <TextView
+                                android:layout_width="@dimen/dimen_30dp"
+                                android:layout_height="1dp"
+                                android:background="@color/org_f39700" />
+
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical">
+
+                            <android.support.v7.widget.RecyclerView
+
+                                android:id="@+id/mRv_main"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="@dimen/dimen_10dp" />
+
+                        </LinearLayout>
+
+                    </LinearLayout>
                 </LinearLayout>
 
+
             </LinearLayout>
-        </ScrollView>
+        </android.support.v4.widget.NestedScrollView>
     </com.scwang.smartrefresh.layout.SmartRefreshLayout>
 </LinearLayout>

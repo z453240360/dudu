@@ -20,7 +20,7 @@ public class SearchContract {
     }
 
     public interface Presenter {
-        void searchProduct(String goodsKeys,int page,int pageSize);
+        void searchProduct(String goodsKeys,int page,int pageSize,String msg);
         void addProduct(int quantity, ProductParmsBean productParmsBean);
         void getProductDetailById(long id);
         void getProductBySize(long productId,String specParam);

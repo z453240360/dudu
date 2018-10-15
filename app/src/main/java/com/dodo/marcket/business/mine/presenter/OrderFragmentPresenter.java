@@ -23,13 +23,13 @@ public class OrderFragmentPresenter extends BasePresenter<OrderFragment> impleme
 
     //获取订单列表
     @Override
-    public void getOrder(int orderStatus,int page,int pageSize) {
+    public void getOrder(int orderStatus,int page,int pageSize,String msg) {
         OrderParamsBean orderParamsBean = new OrderParamsBean();
         orderParamsBean.setPageNumber(page);
         orderParamsBean.setPageSize(pageSize);
         orderParamsBean.setStatus(orderStatus);
         String name = "order.list";
-        addSubscription(apiModel.getOrderList(ParamsUtils.getParams(new Gson().toJson(orderParamsBean),name,mToken)), new ResponseSubscriber<List<OrderList>>(mContext,"asd") {
+        addSubscription(apiModel.getOrderList(ParamsUtils.getParams(new Gson().toJson(orderParamsBean),name,mToken)), new ResponseSubscriber<List<OrderList>>(mContext,msg) {
             @Override
             public void apiSuccess(List<OrderList> s) {
                 mView.getOrderList(s);

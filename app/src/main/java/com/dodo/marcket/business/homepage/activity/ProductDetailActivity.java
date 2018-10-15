@@ -1,13 +1,22 @@
 package com.dodo.marcket.business.homepage.activity;
 
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.os.Bundle;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
+import android.webkit.JsResult;
+import android.webkit.WebChromeClient;
+import android.webkit.WebSettings;
+import android.webkit.WebView;
+import android.webkit.WebViewClient;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.dodo.marcket.R;
 import com.dodo.marcket.base.BaseActivity;
@@ -15,7 +24,6 @@ import com.dodo.marcket.base.CustomLinearLayoutManager;
 import com.dodo.marcket.bean.ProductBean;
 import com.dodo.marcket.bean.ProductParmsBean;
 import com.dodo.marcket.bean.SpecificationsBean;
-import com.dodo.marcket.bean.basebean.MyMessageEvent;
 import com.dodo.marcket.business.HomeActivity;
 import com.dodo.marcket.business.homepage.adapter.ProductDetailAdapter;
 import com.dodo.marcket.business.homepage.constrant.ProductDetailContract;
@@ -27,8 +35,6 @@ import com.dodo.marcket.utils.ToastUtils;
 import com.youth.banner.Banner;
 import com.youth.banner.BannerConfig;
 import com.youth.banner.Transformer;
-
-import org.greenrobot.eventbus.EventBus;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -75,6 +81,8 @@ public class ProductDetailActivity extends BaseActivity<ProductDetailPresenter> 
     ImageView mImgJia;
     @BindView(R.id.mLL_guige)
     LinearLayout mLLGuige;
+    @BindView(R.id.mWebView)
+    WebView mWebView;
     private List<SpecificationsBean> specificationsList = new ArrayList<>();
     private ProductDetailAdapter adapter;
     private CustomLinearLayoutManager manager;
@@ -129,9 +137,9 @@ public class ProductDetailActivity extends BaseActivity<ProductDetailPresenter> 
         super.onResume();
 
         needToken = (String) SharedPreferencesUtil.get(mContext, Constant.token, "");
-        if (needToken.equals("")){
+        if (needToken.equals("")) {
             hastoken = false;
-        }else {
+        } else {
             hastoken = true;
         }
 
@@ -170,13 +178,13 @@ public class ProductDetailActivity extends BaseActivity<ProductDetailPresenter> 
         switch (view.getId()) {
             case R.id.mImg_jia://点击减号
 
-                if (!hastoken){
+                if (!hastoken) {
                     goToLogin();
                     return;
                 }
 
 
-                if (!isCanBuy){
+                if (!isCanBuy) {
                     return;
                 }
                 cartNumber++;
@@ -184,13 +192,13 @@ public class ProductDetailActivity extends BaseActivity<ProductDetailPresenter> 
                 break;
             case R.id.mImg_jian://点击加号
 
-                if (!hastoken){
+                if (!hastoken) {
                     goToLogin();
                     return;
                 }
 
 
-                if (!isCanBuy){
+                if (!isCanBuy) {
                     return;
                 }
                 if (cartNumber <= 1) {
@@ -201,13 +209,13 @@ public class ProductDetailActivity extends BaseActivity<ProductDetailPresenter> 
                 break;
             case R.id.mTxt_pay://点击加入购物车
 
-                if (!hastoken){
+                if (!hastoken) {
                     goToLogin();
                     return;
                 }
 
 
-                if (!isCanBuy){
+                if (!isCanBuy) {
                     return;
                 }
                 mPresenter.updateNum(cartNumber, new ProductParmsBean(mId), 1);
@@ -215,14 +223,14 @@ public class ProductDetailActivity extends BaseActivity<ProductDetailPresenter> 
 
             case R.id.ll_img://点击购物车图标
 
-                if (!hastoken){
+                if (!hastoken) {
                     goToLogin();
                     return;
                 }
 
                 Bundle bundle = new Bundle();
-                bundle.putInt("fromWhere",1);
-                startActivity(HomeActivity.class,bundle);
+                bundle.putInt("fromWhere", 1);
+                startActivity(HomeActivity.class, bundle);
                 break;
 
         }
@@ -240,15 +248,15 @@ public class ProductDetailActivity extends BaseActivity<ProductDetailPresenter> 
             isCanBuy = true;
         } else if (productBean.getStock() == 0) {
             isCanBuy = false;
-        } else if (productBean.getStock() > 0){
+        } else if (productBean.getStock() > 0) {
             isCanBuy = true;
         }
 
         //是否可以购买
-        if (isCanBuy){
+        if (isCanBuy) {
             mTxtPay.setClickable(true);
             mTxtPay.setBackgroundResource(R.color.basicColor);
-        }else {
+        } else {
             mTxtPay.setClickable(false);
             mTxtPay.setBackgroundResource(R.color.defalute);
         }
@@ -280,16 +288,38 @@ public class ProductDetailActivity extends BaseActivity<ProductDetailPresenter> 
         mTxtProductName.setText(name);
         mTxtProductMsg.setText(memo);
 
-        if (TextUtils.equals(introduction, "")) {
-            mTxtDesc.setText("暂无商品描述");
-        } else {
-            mTxtDesc.setText(introduction);
-        }
+//        if (TextUtils.equals(introduction, "")) {
+//            mTxtDesc.setText("暂无商品描述");
+//        } else {
+//            mTxtDesc.setText(introduction);
+//        }
 
 
+        mWebView.loadData(introduction, "text/html", "UTF-8");
+        mWebView.setWebChromeClient(webChromeClient);
+        mWebView.setWebViewClient(webViewClient);
+
+        WebSettings webSettings = mWebView.getSettings();
+        webSettings.setJavaScriptEnabled(true);//允许使用js
+
+        /**
+         * LOAD_CACHE_ONLY: 不使用网络，只读取本地缓存数据
+         * LOAD_DEFAULT: （默认）根据cache-control决定是否从网络上取数据。
+         * LOAD_NO_CACHE: 不使用缓存，只从网络获取数据.
+         * LOAD_CACHE_ELSE_NETWORK，只要本地有，无论是否过期，或者no-cache，都使用缓存中的数据。
+         */
+        webSettings.setCacheMode(WebSettings.LOAD_NO_CACHE);//不使用缓存，只从网络获取数据.
+        webSettings.setUseWideViewPort(true);
+        webSettings.setLoadWithOverviewMode(true);
+        //支持屏幕缩放
+        webSettings.setSupportZoom(true);
+        webSettings.setBuiltInZoomControls(true);
+        webSettings.setDisplayZoomControls(false);
         if (specifications == null || specifications.size() == 0) {
 //            carId = mId;
+            mRvSize.setVisibility(View.GONE);
         } else {
+            mRvSize.setVisibility(View.VISIBLE);
             specificationsList.clear();
             specificationsList.addAll(specifications);
             adapter.notifyDataSetChanged();
@@ -327,4 +357,70 @@ public class ProductDetailActivity extends BaseActivity<ProductDetailPresenter> 
     }
 
 
+    //WebChromeClient主要辅助WebView处理Javascript的对话框、网站图标、网站title、加载进度等
+    private WebChromeClient webChromeClient=new WebChromeClient(){
+        //不支持js的alert弹窗，需要自己监听然后通过dialog弹窗
+        @Override
+        public boolean onJsAlert(WebView webView, String url, String message, JsResult result) {
+            AlertDialog.Builder localBuilder = new AlertDialog.Builder(webView.getContext());
+            localBuilder.setMessage(message).setPositiveButton("确定",null);
+            localBuilder.setCancelable(false);
+            localBuilder.create().show();
+
+            //注意:
+            //必须要这一句代码:result.confirm()表示:
+            //处理结果为确定状态同时唤醒WebCore线程
+            //否则不能继续点击按钮
+            result.confirm();
+            return true;
+        }
+
+        //获取网页标题
+        @Override
+        public void onReceivedTitle(WebView view, String title) {
+            super.onReceivedTitle(view, title);
+            Log.i("ansen","网页标题:"+title);
+        }
+
+        //加载进度回调
+        @Override
+        public void onProgressChanged(WebView view, int newProgress) {
+//            progressBar.setProgress(newProgress);
+        }
+    };
+
+
+
+    //WebViewClient主要帮助WebView处理各种通知、请求事件
+    private WebViewClient webViewClient=new WebViewClient(){
+        @Override
+        public void onPageFinished(WebView view, String url) {//页面加载完成
+//            progressBar.setVisibility(View.GONE);
+        }
+
+        @Override
+        public void onPageStarted(WebView view, String url, Bitmap favicon) {//页面开始加载
+//            progressBar.setVisibility(View.VISIBLE);
+        }
+
+        @Override
+        public boolean shouldOverrideUrlLoading(WebView view, String url) {
+            Log.i("ansen","拦截url:"+url);
+            if(url.equals("http://www.google.com/")){
+                return true;//表示我已经处理过了
+            }
+            return super.shouldOverrideUrlLoading(view, url);
+        }
+
+    };
+
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+
+        //释放资源
+        mWebView.destroy();
+        mWebView=null;
+    }
 }

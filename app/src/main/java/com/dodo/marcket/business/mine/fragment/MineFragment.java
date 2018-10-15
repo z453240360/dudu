@@ -214,7 +214,7 @@ public class MineFragment extends BaseFragment<MineFragmentPresenter> implements
         String username = userInfoBean.getUsername();
         String memberRank = userInfoBean.getMemberRank();
         boolean isHasSalesman = userInfoBean.isIsHasSalesman();
-
+        int point = userInfoBean.getPoint();
         int noPayOrderNumber = userInfoBean.getNoPayOrderNumber();//待付款订单数量
         int voucherNumber = userInfoBean.getVoucherNumber();//优惠券数量
         int noRecevedOrder = userInfoBean.getNoRecevedOrder();//待收货订单数量
@@ -248,6 +248,7 @@ public class MineFragment extends BaseFragment<MineFragmentPresenter> implements
         //用户名
         mTxtUserName.setText(username);
 
+        mTxtPoint.setText(point+" 积分");
         //会员等级
         if (TextUtils.isEmpty(memberRank)) {
             mTxtMemberRank.setVisibility(View.GONE);

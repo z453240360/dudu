@@ -20,14 +20,14 @@ public class SearchPresenter extends BasePresenter<SearchActivity> implements Se
 
 
     @Override
-    public void searchProduct(String goodsKeys,int page,int pageSize) {
+    public void searchProduct(String goodsKeys,int page,int pageSize,String msg) {
 
         PhoneBean phoneBean = new PhoneBean();
         phoneBean.setKey(goodsKeys);
         phoneBean.setPageNumber(page);
         phoneBean.setPageSize(pageSize);
         String name = "product.search";
-        addSubscription(apiModel.searchGoods(ParamsUtils.getParams(phoneBean,name,mToken)), new ResponseSubscriber<List<ProductBean>>(mContext,"ae") {
+        addSubscription(apiModel.searchGoods(ParamsUtils.getParams(phoneBean,name,mToken)), new ResponseSubscriber<List<ProductBean>>(mContext,msg) {
 
             @Override
             public void apiSuccess(List<ProductBean> s) {

@@ -160,10 +160,9 @@
                 android:descendantFocusability="blocksDescendants"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/dimen_10dp"
                 android:orientation="vertical">
-
                 <android.support.v7.widget.RecyclerView
+                    android:layout_marginTop="@dimen/dimen_10dp"
                     android:id="@+id/mRv_size"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content" />
@@ -178,7 +177,7 @@
                 android:gravity="center_vertical"
                 android:orientation="vertical"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="match_parent">
 
                 <TextView
                     android:layout_weight="1"
@@ -206,6 +205,10 @@
                     android:textSize="@dimen/dimen_12sp"
                     />
 
+                <WebView
+                    android:id="@+id/mWebView"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"/>
             </LinearLayout>
 
         </LinearLayout>
@@ -262,7 +265,7 @@
                     android:textColor="@color/white"
                     android:visibility="invisible"
                     android:gravity="center"
-                    tools:text="99"
+                    tools:text=""
                     android:paddingLeft="@dimen/dimen_5dp"
                     android:paddingRight="@dimen/dimen_5dp"
                     android:layout_width="wrap_content"

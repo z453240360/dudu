@@ -131,7 +131,7 @@ public class ClassifyFragment extends BaseFragment<ClassifyFragmentPresenter> im
             mLLBottomView.setVisibility(View.VISIBLE);
             mPresenter.getProducts();//获取购物车商品
             mPresenter.getCarNum();//获取购物车数量
-        }else {
+        } else {
             mLLBottomView.setVisibility(View.GONE);
         }
     }
@@ -203,11 +203,21 @@ public class ClassifyFragment extends BaseFragment<ClassifyFragmentPresenter> im
             return;
         }
 
+
+        for (int i = 0; i < firstClassfyBeanList.size(); i++) {
+            List<FirstClassfyBean.SubProductCategoryBean> subProductCategory = firstClassfyBeanList.get(i).getSubProductCategory();
+            if (subProductCategory == null || subProductCategory.size() == 0) {
+                firstClassfyBeanList.remove(i);
+            }
+        }
+
+
         mDates.clear();
         mDates.addAll(firstClassfyBeanList);
         mDates.get(0).setFirstSelected(true);
         mDates.get(0).setShowList(false);
         List<FirstClassfyBean.SubProductCategoryBean> subProductCategory = mDates.get(0).getSubProductCategory();
+
         if (subProductCategory.size() > 0) {
             subProductCategory.get(0).setSelected(true);
         }
@@ -234,7 +244,7 @@ public class ClassifyFragment extends BaseFragment<ClassifyFragmentPresenter> im
         double freeFreight = productBeans.getFreeFreight();
         mTxtSendPrice.setVisibility(View.VISIBLE);
         minPrice = productBeans.getMinPrice();
-        mTxtSendPrice.setText("满"+minPrice+"起送,"+"满"+freeFreight+"免运费");
+        mTxtSendPrice.setText("满" + minPrice + "起送," + "满" + freeFreight + "免运费");
         carList.clear();
         carList.addAll(cartItems);
         carPopAdapter.notifyDataSetChanged();
@@ -251,7 +261,7 @@ public class ClassifyFragment extends BaseFragment<ClassifyFragmentPresenter> im
                 for (int j = 0; j < subProductCategory.size(); j++) {
 
                     int id = subProductCategory.get(j).getId();
-                    BuyListFragment buyListFragment = new BuyListFragment(this,id);
+                    BuyListFragment buyListFragment = new BuyListFragment(this, id);
                     fragmentList.add(buyListFragment);
                 }
             }
@@ -295,7 +305,7 @@ public class ClassifyFragment extends BaseFragment<ClassifyFragmentPresenter> im
         double boxAmount = payBean.getBoxAmount();//筐的金额
         double productAmount = payBean.getProductAmount();//总价格
         double freight = payBean.getFreight();//运费
-        mTxtSendPrice.setText("满"+minPrice+"起送");
+        mTxtSendPrice.setText("满" + minPrice + "起送");
         if (minPrice >= productAmount) {//低于购买价格，不允许购买
             mTxtPay.setBackgroundResource(R.color.defalute);
             mTxtPay.setClickable(false);
@@ -318,7 +328,7 @@ public class ClassifyFragment extends BaseFragment<ClassifyFragmentPresenter> im
     //清空购物车
     @Override
     public void clearShoppingCar(boolean b) {
-        if (popupWindow!=null){
+        if (popupWindow != null) {
             popupWindow.dismiss();
         }
         mPresenter.getProducts();
@@ -440,12 +450,12 @@ public class ClassifyFragment extends BaseFragment<ClassifyFragmentPresenter> im
     }
 
 
-    public void initProducts(){
+    public void initProducts() {
         mPresenter.getProducts();//获取购物车商品
         mPresenter.getCarNum();//获取购物车数量
     }
 
-    @OnClick({R.id.mLL_search, R.id.ll_img,R.id.mTxt_pay})
+    @OnClick({R.id.mLL_search, R.id.ll_img, R.id.mTxt_pay})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.mLL_search://跳转搜索页面
@@ -458,14 +468,14 @@ public class ClassifyFragment extends BaseFragment<ClassifyFragmentPresenter> im
 
             case R.id.mTxt_pay://去结算
 
-                if (carList.size()==0){
+                if (carList.size() == 0) {
                     showErrorMsg("购物车空空如也", "");
                     return;
                 }
-                List<PayParamsFatherBean>  payList = new ArrayList<>();
+                List<PayParamsFatherBean> payList = new ArrayList<>();
 
                 for (int i = 0; i < carList.size(); i++) {
-                    if (carList.get(i).getProductInfo().isSelect()){
+                    if (carList.get(i).getProductInfo().isSelect()) {
                         long id = carList.get(i).getProductInfo().getId();//产品ID
                         int quantity = carList.get(i).getQuantity();//数量
                         PayParamsBean payParamsBean = new PayParamsBean();

@@ -21,7 +21,7 @@ public class BuyListFragmentContract {
     }
 
     public interface Presenter {
-        void getProductList(long id,int page,int pageSize);
+        void getProductList(long id,int page,int pageSize,String msg);
         void addProduct(int quantity, ProductParmsBean productParmsBean);
         void getProductDetailById(long id);
         void getProductBySize(long productId,String specParam);

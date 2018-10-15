@@ -20,6 +20,7 @@ import com.dodo.marcket.business.homepage.presenter.HotPresenter;
 import com.dodo.marcket.utils.ImageLoaders;
 import com.dodo.marcket.utils.ScreenUtil;
 import com.dodo.marcket.utils.ToastUtils;
+import com.dodo.marcket.wedget.MyWebView;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -35,6 +36,8 @@ public class HotActivity extends BaseActivity<HotPresenter> implements HotContra
     RecyclerView mRvHot;
     @BindView(R.id.mLL_noDate)
     LinearLayout mLLNoDate;
+    @BindView(R.id.mWeb)
+    MyWebView mWeb;
     private LinearLayoutManager manager;
     private ProductAdapter adapter;
     private List<ProductBean> mDates = new ArrayList<>();
@@ -104,7 +107,7 @@ public class HotActivity extends BaseActivity<HotPresenter> implements HotContra
 
             @Override
             public void onAddClicked(int pos) {
-                if (!hastoken){
+                if (!hastoken) {
                     goToLogin();
                     return;
                 }
@@ -118,7 +121,7 @@ public class HotActivity extends BaseActivity<HotPresenter> implements HotContra
             @Override
             public void onMutiSizeClicked(int pos) {
 
-                if (!hastoken){
+                if (!hastoken) {
                     goToLogin();
                     return;
                 }
@@ -136,27 +139,31 @@ public class HotActivity extends BaseActivity<HotPresenter> implements HotContra
             mImgHot.setVisibility(View.GONE);
             mLLNoDate.setVisibility(View.VISIBLE);
             return;
-        }else {
+        } else {
             mLLNoDate.setVisibility(View.GONE);
         }
 
+        String introduction = hotBean.getIntroduction();
+        if (!introduction.equals("")){
+            mWeb.loadData(introduction, "text/html", "UTF-8");
+        }
 
 
         if (hotBean.getSize().equals("small")) {
             if (hotBean.getSmallMobileImage().equals("")) {
                 mImgHot.setVisibility(View.GONE);
 
-            }else {
+            } else {
                 ImageLoaders.displayConnerImg(mImgHot, hotBean.getSmallMobileImage(), ScreenUtil.dip2px(mContext, 5));
-                mImgHot.setVisibility(View.VISIBLE);
+                mImgHot.setVisibility(View.GONE);
             }
         } else {
             if (hotBean.getSmallMobileImage().equals("")) {
                 mImgHot.setVisibility(View.GONE);
 
-            }else {
+            } else {
                 ImageLoaders.displayConnerImg(mImgHot, hotBean.getMobileImage(), ScreenUtil.dip2px(mContext, 5));
-                mImgHot.setVisibility(View.VISIBLE);
+                mImgHot.setVisibility(View.GONE);
             }
 
         }
@@ -165,7 +172,7 @@ public class HotActivity extends BaseActivity<HotPresenter> implements HotContra
         if (productList == null || productList.size() == 0) {
             mLLNoDate.setVisibility(View.VISIBLE);
             return;
-        }else {
+        } else {
             mLLNoDate.setVisibility(View.GONE);
         }
 
@@ -187,5 +194,4 @@ public class HotActivity extends BaseActivity<HotPresenter> implements HotContra
     public void getProductDetailById(ProductBean productBean) {
 
     }
-
 }

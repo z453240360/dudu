@@ -30,6 +30,8 @@ import com.dodo.marcket.utils.ImageLoaders;
 import com.dodo.marcket.utils.NumberUtils;
 import com.dodo.marcket.utils.ToastUtils;
 import com.dodo.marcket.utils.photo.PopupWindowHelper;
+import com.jcodecraeer.xrecyclerview.ProgressStyle;
+import com.jcodecraeer.xrecyclerview.XRecyclerView;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -45,7 +47,7 @@ public class BuyListFragment extends BaseFragment<BuyListFragmentPresenter> impl
 
     public static BuyListFragment buyListFragment;
     @BindView(R.id.mRv_buyList)
-    RecyclerView mRvBuyList;
+    XRecyclerView mRvBuyList;
     @BindView(R.id.mLL_noDate)
     LinearLayout mLLNoDate;
     @BindView(R.id.mLL_mother)
@@ -108,7 +110,7 @@ public class BuyListFragment extends BaseFragment<BuyListFragmentPresenter> impl
     public void loadData() {
         initRv();
         initPickView();
-        mPresenter.getProductList(mId, page, pageSize);
+        mPresenter.getProductList(mId, page, pageSize,"显示加载框");
     }
 
 
@@ -125,6 +127,11 @@ public class BuyListFragment extends BaseFragment<BuyListFragmentPresenter> impl
     @Override
     public void showErrorMsg(String msg, String type) {
         showErrorToast(msg);
+        if (page==1){
+            mRvBuyList.refreshComplete();
+        }else {
+            mRvBuyList.loadMoreComplete();
+        }
     }
 
     //初始化列表
@@ -134,6 +141,23 @@ public class BuyListFragment extends BaseFragment<BuyListFragmentPresenter> impl
         adapter = new ProductAdapter(mContext, mDates);
         mRvBuyList.setLayoutManager(manager);
         mRvBuyList.setAdapter(adapter);
+        mRvBuyList.setRefreshProgressStyle(ProgressStyle.BallSpinFadeLoader);
+        mRvBuyList.setLoadingMoreProgressStyle(ProgressStyle.SquareSpin);
+
+        mRvBuyList.setLoadingListener(new XRecyclerView.LoadingListener() {
+            @Override
+            public void onRefresh() {
+                page=1;
+
+                mPresenter.getProductList(mId, page, pageSize,"");
+            }
+
+            @Override
+            public void onLoadMore() {
+                page++;
+                mPresenter.getProductList(mId, page, pageSize,"");
+            }
+        });
 
         adapter.setOnItemClickListener(new ProductAdapter.OnItemClickListener() {
             @Override
@@ -186,17 +210,20 @@ public class BuyListFragment extends BaseFragment<BuyListFragmentPresenter> impl
     //获取商品列表
     @Override
     public void getProductList(List<ProductBean> list) {
-        if (list == null || list.size() == 0) {
-            if (mDates.size() == 0) {
+
+        if (page==1){
+            mDates.clear();
+            mRvBuyList.refreshComplete();
+        }else {
+            mRvBuyList.loadMoreComplete();
+        }
+
+        if (list == null) {
                 mLLNoDate.setVisibility(View.VISIBLE);
                 mRvBuyList.setVisibility(View.GONE);
-            } else {
-                mRvBuyList.setVisibility(View.VISIBLE);
-                mLLNoDate.setVisibility(View.GONE);
-            }
-
             return;
         }
+
         mDates.addAll(list);
 
         if (mDates.size() == 0) {
@@ -206,7 +233,11 @@ public class BuyListFragment extends BaseFragment<BuyListFragmentPresenter> impl
             mRvBuyList.setVisibility(View.VISIBLE);
             mLLNoDate.setVisibility(View.GONE);
         }
-
+        if (list.size()<10){
+            if (page>1){
+//                ToastUtils.show(mContext, "已经是最多了");
+            }
+        }
         adapter.notifyDataSetChanged();
     }
 

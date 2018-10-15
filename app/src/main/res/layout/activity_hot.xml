@@ -11,9 +11,15 @@
         android:id="@+id/toolbar"
         layout="@layout/layout_toolbar" />
     <ImageView
+        android:visibility="gone"
         android:id="@+id/mImg_hot"
         android:layout_width="match_parent"
         android:layout_height="@dimen/dimen_100dp" />
+
+   <com.dodo.marcket.wedget.MyWebView
+       android:id="@+id/mWeb"
+       android:layout_width="match_parent"
+       android:layout_height="wrap_content"/>
     <LinearLayout
         android:visibility="gone"
         android:orientation="vertical"

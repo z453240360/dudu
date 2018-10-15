@@ -130,7 +130,7 @@ public class ShoppingCartFragment extends BaseFragment<ShoppingCartFragmentPrese
         mLLStatus.getLayoutParams().height = StatusBarUtils.getStatusBarHeight(mContext);
     }
 
-    private void initBottomView(){
+    private void initBottomView() {
         isShowPay = false;
         if (isShowPay) {
             mLLShowPrice.setVisibility(View.GONE);
@@ -166,7 +166,7 @@ public class ShoppingCartFragment extends BaseFragment<ShoppingCartFragmentPrese
                 } else {
                     mImgHuishou.setImageResource(R.mipmap.xuanzhong2);
                 }
-
+                initBottomPrice();
 
             }
 
@@ -203,6 +203,8 @@ public class ShoppingCartFragment extends BaseFragment<ShoppingCartFragmentPrese
                     mImgHuishou.setImageResource(R.mipmap.xuanzhong1);
                     adapter.setSelectAll(true);
                 }
+
+                initBottomPrice();
                 break;
 
             case R.id.mTxt_pay://去支付
@@ -309,7 +311,11 @@ public class ShoppingCartFragment extends BaseFragment<ShoppingCartFragmentPrese
         List<PayParamsFatherBean> payList = adapter.getPayList();
         if (payList.size() == 0) {
 //            showErrorMsg("您没有选择结算的商品", "");
-        }else {
+            mTxtCarTotalMoney.setText("" + 0);
+            mTxtCarBoxMoney.setText("" + 0);
+                mTxtHuishou.setBackgroundResource(R.color.defalute);
+                mTxtHuishou.setClickable(false);
+        } else {
             mPresenter.payProducts(payList);
         }
     }
@@ -348,7 +354,7 @@ public class ShoppingCartFragment extends BaseFragment<ShoppingCartFragmentPrese
         mPresenter.getProducts();
         homeActivity.updateCarNum();
         initBottomPrice();//重新计算价格
-        if (mDates.size()==0){
+        if (mDates.size() == 0) {
             initBottomView();
         }
     }
@@ -366,26 +372,26 @@ public class ShoppingCartFragment extends BaseFragment<ShoppingCartFragmentPrese
     @Override
     public void getPayMsg(GoToPayBean payBean) {
 
-        if (payBean==null){
+        if (payBean == null) {
             return;
         }
         double boxAmount = payBean.getBoxAmount();//筐的金额
         double productAmount = payBean.getProductAmount();//总价格
         double freight = payBean.getFreight();//运费
 
-        if (minPrice>=productAmount){//低于购买价格，不允许购买
+        if (minPrice >= productAmount) {//低于购买价格，不允许购买
             mTxtHuishou.setBackgroundResource(R.color.defalute);
             mTxtHuishou.setClickable(false);
-        }else {
+        } else {
             mTxtHuishou.setBackgroundResource(R.color.basicColor);
             mTxtHuishou.setClickable(true);
         }
-        mTxtSendPrice.setText("满"+minPrice+"起送");
-        mTxtCarTotalMoney.setText(""+productAmount);
-        mTxtCarBoxMoney.setText(""+boxAmount);
-        if ((freight-0)<=0){
+        mTxtSendPrice.setText("满" + minPrice + "起送");
+        mTxtCarTotalMoney.setText("" + productAmount);
+        mTxtCarBoxMoney.setText("" + boxAmount);
+        if ((freight - 0) <= 0) {
             mLLCarPost.setVisibility(View.GONE);
-        }else {
+        } else {
             mLLCarPost.setVisibility(View.VISIBLE);
             mTxtCarPostMoney.setText("" + freight);
         }

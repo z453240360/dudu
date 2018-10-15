@@ -42,7 +42,7 @@ public class MultiAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
     private static final String DELIVER2 = "配送中";//配送中
     private static final String FINISH2 = "已完成";//已完成
     private static final String CANCEL2 = "已取消";//已取消
-
+    private static final String CANCEL22 = "已退款";//已取消
 
     public MultiAdapter(Context context, List<OrderList> datas) {
         this.mContext = context;
@@ -71,6 +71,7 @@ public class MultiAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
             case FINISH2 + "":
                 return FINISH;//已完成
             case CANCEL2 + "":
+            case CANCEL22 + "":
                 return CANCEL;//已取消
         }
         return FINISH;
@@ -90,7 +91,7 @@ public class MultiAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
             case CANCEL://已取消
                 return new CancelHolder(mInflater.inflate(R.layout.item_money, parent, false));
         }
-        return new FinishHolder(mInflater.inflate(R.layout.item_finish, parent, false));
+        return new CancelHolder(mInflater.inflate(R.layout.item_money, parent, false));
     }
 
     @Override
@@ -140,7 +141,7 @@ public class MultiAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
                         }
                     }
                 });
-
+                dealwithHolder.mTxtOrderStatus.setText(orderStatus);
                 dealwithHolder.mTxtOrderNumber.setText(sn);
                 dealwithHolder.mTxtOrderTime.setText(createDate);
                 dealwithHolder.mTxtOrderPrice.setText("¥" + amount + "");
@@ -206,7 +207,7 @@ public class MultiAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
                 sendHolder.mTxtOrderSum.setText("x " + size + "");
                 sendHolder.mRvOrderImg.setAdapter(adapter);
                 sendHolder.mRvOrderImg.setLayoutManager(manager);
-
+                sendHolder.mTxtOrderStatus.setText(orderStatus);
                 sendHolder.mRvOrderImg.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
@@ -238,7 +239,7 @@ public class MultiAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
                         }
                     }
                 });
-
+                deliverHolder.mTxtOrderStatus.setText(orderStatus);
                 deliverHolder.mTxtOrderNumber.setText(sn);//订单号
                 deliverHolder.mTxtOrderTime.setText(createDate);//日期
                 deliverHolder.mTxtOrderPrice.setText("¥ " + payAmount + "");//实付
@@ -280,7 +281,7 @@ public class MultiAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
                         }
                     }
                 });
-
+                finishHolder.mTxtOrderStatus.setText(orderStatus);
                 finishHolder.mTxtOrderSum.setText("x " + size + "");
                 finishHolder.mTxtOrderNumber.setText(sn);//订单号
                 finishHolder.mTxtOrderTime.setText(createDate);//日期
@@ -331,6 +332,7 @@ public class MultiAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
                         }
                     }
                 });
+                cancelHolder.mTxtOrderStatus.setText(orderStatus);
                 cancelHolder.mTxtOrderSum.setText("x " + size + "");
                 cancelHolder.mTxtOrderNumber.setText(sn);//订单号
                 cancelHolder.mTxtOrderTime.setText(createDate);//日期

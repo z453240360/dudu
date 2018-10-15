@@ -26,13 +26,13 @@ public class BuyListFragmentPresenter extends BasePresenter<BuyListFragment> imp
      * @param pageSize
      */
     @Override
-    public void getProductList(long id, int page, int pageSize) {
+    public void getProductList(long id, int page, int pageSize,String msg) {
         PhoneBean phoneBean = new PhoneBean();
         phoneBean.setId(id);
         phoneBean.setPageNumber(page);
         phoneBean.setPageSize(pageSize);
         String name = "product.getProductByCategoryId";
-        addSubscription(apiModel.getProductByCategoryId(ParamsUtils.getParams(phoneBean,name)), new ResponseSubscriber<List<ProductBean>>(mContext,"获取商品") {
+        addSubscription(apiModel.getProductByCategoryId(ParamsUtils.getParams(phoneBean,name)), new ResponseSubscriber<List<ProductBean>>(mContext,msg) {
 
             @Override
             public void apiSuccess(List<ProductBean> s) {

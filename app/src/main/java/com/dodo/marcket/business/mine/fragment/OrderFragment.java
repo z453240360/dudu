@@ -35,6 +35,8 @@ import com.dodo.marcket.business.mine.constrant.OrderFragmentContract;
 import com.dodo.marcket.business.mine.presenter.OrderFragmentPresenter;
 import com.dodo.marcket.http.constant.Constant;
 import com.dodo.marcket.utils.ToastUtils;
+import com.jcodecraeer.xrecyclerview.ProgressStyle;
+import com.jcodecraeer.xrecyclerview.XRecyclerView;
 import com.tencent.mm.opensdk.modelpay.PayReq;
 import com.tencent.mm.opensdk.openapi.IWXAPI;
 import com.tencent.mm.opensdk.openapi.WXAPIFactory;
@@ -53,7 +55,7 @@ public class OrderFragment extends BaseFragment<OrderFragmentPresenter> implemen
 
     public static OrderFragment orderFragment;
     @BindView(R.id.mRv_order)
-    RecyclerView mRvOrder;
+    XRecyclerView mRvOrder;
     Unbinder unbinder;
     @BindView(R.id.mLL_noDate)
     LinearLayout mLLNoDate;
@@ -126,6 +128,25 @@ public class OrderFragment extends BaseFragment<OrderFragmentPresenter> implemen
         manager = new LinearLayoutManager(mContext);
         mRvOrder.setAdapter(adapter);
         mRvOrder.setLayoutManager(manager);
+
+
+        mRvOrder.setRefreshProgressStyle(ProgressStyle.BallSpinFadeLoader);
+        mRvOrder.setLoadingMoreProgressStyle(ProgressStyle.SquareSpin);
+
+        mRvOrder.setLoadingListener(new XRecyclerView.LoadingListener() {
+            @Override
+            public void onRefresh() {
+                page=1;
+                mPresenter.getOrder(postion, page, pageSize,"");
+            }
+
+            @Override
+            public void onLoadMore() {
+                page++;
+                mPresenter.getOrder(postion, page, pageSize,"");
+            }
+        });
+
 
         adapter.setOnItemClickListener(new MultiAdapter.OnItemClickListener() {
             @Override
@@ -222,19 +243,29 @@ public class OrderFragment extends BaseFragment<OrderFragmentPresenter> implemen
     //获取网络数据
     public void getDate() {
         if (isViewInitiated && isVisibleToUser && isDataInitiated) {
-            mPresenter.getOrder(postion, page, pageSize);
+            mPresenter.getOrder(postion, page, pageSize,"sd");
         }
     }
 
     //获取订单列表
     @Override
     public void getOrderList(List<OrderList> orderLists) {
+
+        if (page==1) {
+            mRvOrder.refreshComplete();
+        }else {
+            mRvOrder.loadMoreComplete();
+        }
+
         if (orderLists == null || orderLists.size() == 0) {
             if (page==1){
                 mLLNoDate.setVisibility(View.VISIBLE);
                 mRvOrder.setVisibility(View.GONE);
             }
             return;
+        }
+        if (page==1){
+            mDates.clear();
         }
         mLLNoDate.setVisibility(View.GONE);
         mRvOrder.setVisibility(View.VISIBLE);
@@ -249,7 +280,7 @@ public class OrderFragment extends BaseFragment<OrderFragmentPresenter> implemen
         ToastUtils.show(mContext,"取消订单成功");
         page=1;
         mDates.clear();
-        mPresenter.getOrder(postion, page, pageSize);
+        mPresenter.getOrder(postion, page, pageSize,"");
     }
 
 

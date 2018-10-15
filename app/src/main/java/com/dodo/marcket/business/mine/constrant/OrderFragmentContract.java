@@ -24,7 +24,7 @@ public class OrderFragmentContract {
 
     public interface Presenter {
 
-        void getOrder(int orderStatus,int page,int pageSize);
+        void getOrder(int orderStatus,int page,int pageSize,String msg);
         void cancelOrder(int id);
         void payOrder(String sn);
         void againOrder(PayBean2 payParamsBean);
