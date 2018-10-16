@@ -7,7 +7,9 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".business.homepage.activity.ProductDetailActivity">
-
+    <include
+        android:id="@+id/toolbar"
+        layout="@layout/layout_toolbar" />
 
     <ScrollView
         android:layout_weight="1"
@@ -55,6 +57,20 @@
                     android:textColor="#888888"
                     android:textSize="@dimen/dimen_12sp"
                     />
+
+                <TextView
+                    android:id="@+id/mTxt_unitPrice"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/dimen_10dp"
+                    android:layout_marginTop="@dimen/dimen_10dp"
+                    android:ellipsize="end"
+                    android:lines="1"
+                    tools:text="产品信息描述。可能有很多子"
+                    android:textColor="#888888"
+                    android:textSize="@dimen/dimen_12sp"
+                    />
+
 
                 <LinearLayout
                     android:layout_marginLeft="@dimen/dimen_10dp"

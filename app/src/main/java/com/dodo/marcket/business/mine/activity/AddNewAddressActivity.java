@@ -132,7 +132,6 @@ public class AddNewAddressActivity extends BaseActivity<AddNewAddressPresenter> 
         } else {
             Toasty.info(mContext, "添加地址失败").show();
         }
-
     }
 
     //获取子区域的地址

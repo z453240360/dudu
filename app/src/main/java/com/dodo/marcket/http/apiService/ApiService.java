@@ -126,7 +126,7 @@ public interface ApiService {
 
     //个人中心---我的退框单
     @POST(Api.url)
-    Observable<BResponse<List<MyBackBoxBean>>> getMyBackBoxList(@Body RequestBody verifyCode);
+    Observable<BResponse<MyBackBoxBean>> getMyBackBoxList(@Body RequestBody verifyCode);
 
 
     //个人中心---生成退框单

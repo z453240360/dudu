@@ -60,6 +60,8 @@ public class ShoppingCartAdapter extends RecyclerView.Adapter<ShoppingCartAdapte
 
 //        final ProductBean productBean = mDatas.get(position).getProductInfo();
         CartItemsBean cartItemsBean = mDatas.get(position);
+        String promotionName = cartItemsBean.getPromotionName();
+
         final CartItemsBean.ProductInfoBean productBean = cartItemsBean.getProductInfo();
         boolean isCanBuy = false;
         if (productBean.getStock() == null) {
@@ -149,6 +151,13 @@ public class ShoppingCartAdapter extends RecyclerView.Adapter<ShoppingCartAdapte
         }else {
             holder.mImgSalesOut.setVisibility(View.VISIBLE);
         }
+
+        if (promotionName.equals("")){
+            holder.mLLHuodong.setVisibility(View.GONE);
+        }else {
+            holder.mLLHuodong.setVisibility(View.VISIBLE);
+            holder.mTxtHuodong2.setText(promotionName);
+        }
     }
 
 
@@ -160,6 +169,9 @@ public class ShoppingCartAdapter extends RecyclerView.Adapter<ShoppingCartAdapte
         ImageView mImgSelect;
         @BindView(R.id.mLL_select)
         LinearLayout mLLSelect;
+        @BindView(R.id.mLL_huodong)
+        LinearLayout mLLHuodong;
+
         @BindView(R.id.mImg_productImg)
         ImageView mImgProductImg;
         @BindView(R.id.mImg_salesOut)
@@ -188,7 +200,8 @@ public class ShoppingCartAdapter extends RecyclerView.Adapter<ShoppingCartAdapte
         ImageView mImgAdd;
         @BindView(R.id.mImg_addCar)
         CircleImageView mImgAddCar;
-
+        @BindView(R.id.mTxt_huodong2)
+        TextView mTxtHuodong2;
         public MyViewHolder(View itemView) {
             super(itemView);
             ButterKnife.bind(this, itemView);

@@ -11,6 +11,7 @@ import com.dodo.marcket.bean.MyBackBoxBean;
 import com.dodo.marcket.business.mine.adapter.MyBackBoxAdapter;
 import com.dodo.marcket.business.mine.constrant.BackMoneyContract;
 import com.dodo.marcket.business.mine.presenter.BackMoneyPresenter;
+import com.jcodecraeer.xrecyclerview.XRecyclerView;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -24,10 +25,10 @@ public class MyBackBoxActivity extends BaseActivity<BackMoneyPresenter> implemen
 
 
     @BindView(R.id.mRv_myBackBox)
-    RecyclerView mRvMyBackBox;
+    XRecyclerView mRvMyBackBox;
     @BindView(R.id.mLL_noDate)
     LinearLayout mLLNoDate;
-    private List<MyBackBoxBean> mDatas = new ArrayList<>();
+    private List<MyBackBoxBean.ListBean> mDatas = new ArrayList<>();
     private LinearLayoutManager manager;
     private MyBackBoxAdapter adapter;
     private int pageNumber = 1;
@@ -67,21 +68,38 @@ public class MyBackBoxActivity extends BaseActivity<BackMoneyPresenter> implemen
     @Override
     public void showErrorMsg(String msg, String type) {
         showErrorToast(msg);
+        if (pageNumber==1){
+            mRvMyBackBox.refreshComplete();
+        }else {
+            mRvMyBackBox.loadMoreComplete();
+        }
     }
 
     //我的退框单列表
     @Override
-    public void myBackBoxList(List<MyBackBoxBean> backBoxBeanList) {
-        if (backBoxBeanList == null || backBoxBeanList.size() == 0) {
+    public void myBackBoxList(MyBackBoxBean backBoxBean) {
+        if (pageNumber==1){
+            mRvMyBackBox.refreshComplete();
+        }else {
+            mRvMyBackBox.loadMoreComplete();
+        }
+
+        if (backBoxBean == null) {
             mLLNoDate.setVisibility(View.VISIBLE);
             return;
         }
-        mLLNoDate.setVisibility(View.GONE);
 
+        List<MyBackBoxBean.ListBean> list = backBoxBean.getList();
+        if (list==null||list.size()==0){
+            mLLNoDate.setVisibility(View.VISIBLE);
+            return;
+        }
+
+        mLLNoDate.setVisibility(View.GONE);
         if (pageNumber == 1) {
             mDatas.clear();
         }
-        mDatas.addAll(backBoxBeanList);
+        mDatas.addAll(list);
         adapter.notifyDataSetChanged();
     }
 
@@ -91,6 +109,20 @@ public class MyBackBoxActivity extends BaseActivity<BackMoneyPresenter> implemen
         adapter = new MyBackBoxAdapter(mContext, mDatas);
         mRvMyBackBox.setAdapter(adapter);
         mRvMyBackBox.setLayoutManager(manager);
+
+        mRvMyBackBox.setLoadingListener(new XRecyclerView.LoadingListener() {
+            @Override
+            public void onRefresh() {
+                pageNumber = 1;
+                mPresenter.getMyBackBoxList(pageNumber,pageSize);
+            }
+
+            @Override
+            public void onLoadMore() {
+                pageNumber++;
+                mPresenter.getMyBackBoxList(pageNumber,pageSize);
+            }
+        });
     }
 
 }

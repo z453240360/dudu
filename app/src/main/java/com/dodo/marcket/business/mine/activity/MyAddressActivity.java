@@ -48,8 +48,6 @@ public class MyAddressActivity extends BaseActivity<MyAddressPresenter> implemen
 
         Bundle extras = getIntent().getExtras();
         needBackResult = extras.getBoolean("needBackResult", false);//点击地址，是否需要返回地址值
-
-
         initRv();
 
     }

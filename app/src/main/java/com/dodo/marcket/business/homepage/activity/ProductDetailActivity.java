@@ -58,6 +58,8 @@ public class ProductDetailActivity extends BaseActivity<ProductDetailPresenter> 
     TextView mTxtProductPrice;
     @BindView(R.id.mTxt_desc)
     TextView mTxtDesc;
+    @BindView(R.id.mTxt_unitPrice)
+    TextView mTxtUnitPrice;
 
     @BindView(R.id.mTxt_carNum)
     TextView mTxtCarNum;
@@ -103,6 +105,7 @@ public class ProductDetailActivity extends BaseActivity<ProductDetailPresenter> 
 
     @Override
     public void loadData() {
+        mTitle.setTitle("商品详情");
         Intent intent = getIntent();
         mId = intent.getLongExtra("productId", 0L);
         initBanner();
@@ -287,12 +290,12 @@ public class ProductDetailActivity extends BaseActivity<ProductDetailPresenter> 
         mTxtProductPrice.setText(price + "");
         mTxtProductName.setText(name);
         mTxtProductMsg.setText(memo);
-
-//        if (TextUtils.equals(introduction, "")) {
-//            mTxtDesc.setText("暂无商品描述");
-//        } else {
-//            mTxtDesc.setText(introduction);
-//        }
+        mTxtUnitPrice.setText("¥ "+productBean.getUnitPrice()+"/"+unit);
+        if (TextUtils.equals(introduction, "")) {
+            mTxtDesc.setText("暂无商品描述");
+        } else {
+            mTxtDesc.setVisibility(View.GONE);
+        }
 
 
         mWebView.loadData(introduction, "text/html", "UTF-8");

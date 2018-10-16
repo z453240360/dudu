@@ -14,7 +14,7 @@ import java.util.List;
 public class BackMoneyContract {
 
     public interface View extends BaseView {
-        void myBackBoxList(List<MyBackBoxBean> backBoxBeanList);
+        void myBackBoxList(MyBackBoxBean backBoxBeanList);
     }
 
     public interface Presenter {

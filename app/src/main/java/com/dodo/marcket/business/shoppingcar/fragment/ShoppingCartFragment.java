@@ -270,7 +270,7 @@ public class ShoppingCartFragment extends BaseFragment<ShoppingCartFragmentPrese
             mTxtCarEdit.setVisibility(View.GONE);
             return;
         }
-        mLLBottomView.setVisibility(View.VISIBLE);
+//        mLLBottomView.setVisibility(View.VISIBLE);
         mLLNoDate.setVisibility(View.GONE);
         mRvFirstList.setVisibility(View.VISIBLE);
         mTxtCarEdit.setVisibility(View.GONE);
@@ -297,7 +297,7 @@ public class ShoppingCartFragment extends BaseFragment<ShoppingCartFragmentPrese
             return;
         }
         mTxtCarEdit.setVisibility(View.VISIBLE);
-        mLLBottomView.setVisibility(View.VISIBLE);
+//        mLLBottomView.setVisibility(View.VISIBLE);
         mRvFirstList.setVisibility(View.VISIBLE);
         mDates.clear();
         mDates.addAll(cartItems);
@@ -373,8 +373,12 @@ public class ShoppingCartFragment extends BaseFragment<ShoppingCartFragmentPrese
     public void getPayMsg(GoToPayBean payBean) {
 
         if (payBean == null) {
+            mLLBottomView.setVisibility(View.GONE);
             return;
         }
+
+        mLLBottomView.setVisibility(View.VISIBLE);
+
         double boxAmount = payBean.getBoxAmount();//筐的金额
         double productAmount = payBean.getProductAmount();//总价格
         double freight = payBean.getFreight();//运费

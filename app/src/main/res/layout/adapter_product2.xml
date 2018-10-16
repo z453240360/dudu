@@ -114,6 +114,21 @@
                     android:text="泡沫箱"
                     android:textColor="@color/basicColor"
                     android:textSize="@dimen/dimen_10sp" />
+
+                <TextView
+                    android:layout_marginLeft="@dimen/dimen_10dp"
+                    android:id="@+id/mTxt_packageWe"
+                    android:gravity="center_vertical"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/shape_lunkuo_line"
+                    android:paddingBottom="2dp"
+                    android:paddingLeft="@dimen/dimen_5dp"
+                    android:paddingRight="@dimen/dimen_5dp"
+                    android:paddingTop="2dp"
+                    android:text="泡沫箱"
+                    android:textColor="@color/basicColor"
+                    android:textSize="@dimen/dimen_10sp" />
             </LinearLayout>
             <TextView
                 android:layout_weight="1"

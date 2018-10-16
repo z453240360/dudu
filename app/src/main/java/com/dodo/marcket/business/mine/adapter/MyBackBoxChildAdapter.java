@@ -6,11 +6,11 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.dodo.marcket.R;
 import com.dodo.marcket.bean.MyBackBoxBean;
-import com.dodo.marcket.utils.MathUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -22,14 +22,13 @@ import butterknife.ButterKnife;
  * 我的退框单列表页面
  */
 
-public class MyBackBoxAdapter extends RecyclerView.Adapter<MyBackBoxAdapter.MyViewHolder> {
-
+public class MyBackBoxChildAdapter extends RecyclerView.Adapter<MyBackBoxChildAdapter.MyViewHolder> {
 
     private Context mContext;
     private LayoutInflater mInflater;
-    private List<MyBackBoxBean.ListBean> mDatas = new ArrayList<>();
+    private List<MyBackBoxBean.ListBean.ItemsBean> mDatas = new ArrayList<>();
 
-    public MyBackBoxAdapter(Context context, List<MyBackBoxBean.ListBean> datas) {
+    public MyBackBoxChildAdapter(Context context, List<MyBackBoxBean.ListBean.ItemsBean> datas) {
         this.mInflater = LayoutInflater.from(context);
         mDatas = datas;
         this.mContext = context;
@@ -42,51 +41,50 @@ public class MyBackBoxAdapter extends RecyclerView.Adapter<MyBackBoxAdapter.MyVi
 
     @Override
     public MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View view = mInflater.inflate(R.layout.adapter_mybackbox, parent, false);
+        View view = mInflater.inflate(R.layout.adapter_mybackboxchild, parent, false);
         MyViewHolder myViewHolder = new MyViewHolder(view);
         return myViewHolder;
     }
 
     @Override
     public void onBindViewHolder(final MyViewHolder holder, final int position) {
-        MyBackBoxBean.ListBean bean = mDatas.get(position);
-        String sn = bean.getSn();
-        double totlePrice = bean.getTotlePrice();
-        String createDate = bean.getCreateDate();
-        String status = bean.getStatus();
-        int totleQty = bean.getTotleQty();
+        MyBackBoxBean.ListBean.ItemsBean itemsBean = mDatas.get(position);
+        String orderDate = itemsBean.getOrderDate();
+        int orderId = itemsBean.getOrderId();
+        String orderSn = itemsBean.getOrderSn();
 
-        holder.mTxtBackBoxStatus.setText(status);
-        holder.mTxtBackBoxNumber.setText(sn);
-        holder.mTxtBackBoxTime.setText(createDate);
-        holder.mTxtTotalPrice.setText(MathUtils.round(totlePrice,2)+"");
-        List<MyBackBoxBean.ListBean.ItemsBean> items = bean.getItems();
-        if (items != null && items.size() != 0) {
-            MyBackBoxChildAdapter adapter = new MyBackBoxChildAdapter(mContext, items);
+        holder.mTxtBackBoxNumber.setText(orderSn);
+        holder.mTxtBackBoxTime.setText(orderDate);
+
+        List<MyBackBoxBean.ListBean.ItemsBean.BoxsBean> boxs = itemsBean.getBoxs();
+        if (boxs != null && boxs.size() != 0) {
+            MyBackBoxChild2Adapter adapter = new MyBackBoxChild2Adapter(mContext,boxs);
             LinearLayoutManager manager = new LinearLayoutManager(mContext);
-            holder.mRvMyBackBoxChild.setLayoutManager(manager);
-            holder.mRvMyBackBoxChild.setAdapter(adapter);
+            holder.mRvBackBoxList.setLayoutManager(manager);
+            holder.mRvBackBoxList.setAdapter(adapter);
         }
-
-
+        if (position==mDatas.size()-1){
+            holder.mTxtLine.setVisibility(View.GONE);
+        }else {
+            holder.mTxtLine.setVisibility(View.VISIBLE);
+        }
     }
 
 
     public class MyViewHolder extends RecyclerView.ViewHolder {
+
         @BindView(R.id.mTxt_backBoxNumber)
         TextView mTxtBackBoxNumber;
-        @BindView(R.id.mTxt_backBoxStatus)
-        TextView mTxtBackBoxStatus;
         @BindView(R.id.mTxt_backBoxTime)
         TextView mTxtBackBoxTime;
-        @BindView(R.id.mRv_myBackBoxChild)
-        RecyclerView mRvMyBackBoxChild;
-        @BindView(R.id.mTxt_totalPrice)
-        TextView mTxtTotalPrice;
+        @BindView(R.id.mRv_backBoxList)
+        RecyclerView mRvBackBoxList;
+        @BindView(R.id.mTxt_line)
+        TextView mTxtLine;
 
         public MyViewHolder(View itemView) {
             super(itemView);
-            ButterKnife.bind(this,itemView);
+            ButterKnife.bind(this, itemView);
         }
     }
 

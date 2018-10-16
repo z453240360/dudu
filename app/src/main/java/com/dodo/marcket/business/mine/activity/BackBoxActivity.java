@@ -10,9 +10,12 @@ import android.widget.TextView;
 import com.dodo.marcket.R;
 import com.dodo.marcket.base.BaseActivity;
 import com.dodo.marcket.bean.BackBoxBean;
+import com.dodo.marcket.bean.params.BackBoxParams;
 import com.dodo.marcket.business.mine.adapter.BackBoxAdapter;
 import com.dodo.marcket.business.mine.constrant.BackBoxContract;
 import com.dodo.marcket.business.mine.presenter.BackBoxPresenter;
+import com.dodo.marcket.utils.ToastUtils;
+import com.dodo.marcket.wedget.toasty.Toasty;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -50,7 +53,6 @@ public class BackBoxActivity extends BaseActivity<BackBoxPresenter> implements B
     public void loadData() {
         mTitle.setTitle("申请退筐");
         initRv();
-
         mPresenter.getBackBoxList();
     }
 
@@ -77,6 +79,7 @@ public class BackBoxActivity extends BaseActivity<BackBoxPresenter> implements B
         mRvBackBox.setAdapter(adapter);
     }
 
+    //申请退框列表
     @Override
     public void getBackBoxList(List<BackBoxBean> s) {
 
@@ -91,10 +94,23 @@ public class BackBoxActivity extends BaseActivity<BackBoxPresenter> implements B
         adapter.notifyDataSetChanged();
     }
 
+    //生成退框结果
+    @Override
+    public void getBackResult() {
+        ToastUtils.show(mContext,"退框成功");
+        mPresenter.getBackBoxList();
+    }
+
 
     //生成退框单
     @OnClick(R.id.mTxt_backBox)
     public void onViewClicked() {
-//        mPresenter.getBackOrder();
+        List<BackBoxParams> selectOrder = adapter.getSelectOrder();
+
+        if (selectOrder.size() != 0) {
+            mPresenter.getBackOrder(selectOrder);
+        } else {
+            Toasty.info(mContext,"请勾选退筐").show();
+        }
     }
 }

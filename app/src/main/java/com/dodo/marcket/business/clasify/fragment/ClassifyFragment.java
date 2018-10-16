@@ -128,7 +128,7 @@ public class ClassifyFragment extends BaseFragment<ClassifyFragmentPresenter> im
         mPresenter.getFirstKind();//获取一级分类列表
 
         if (hastoken) {
-            mLLBottomView.setVisibility(View.VISIBLE);
+//            mLLBottomView.setVisibility(View.VISIBLE);
             mPresenter.getProducts();//获取购物车商品
             mPresenter.getCarNum();//获取购物车数量
         } else {
@@ -240,7 +240,7 @@ public class ClassifyFragment extends BaseFragment<ClassifyFragmentPresenter> im
             return;
         }
 
-        mLLBottomView.setVisibility(View.VISIBLE);
+
         double freeFreight = productBeans.getFreeFreight();
         mTxtSendPrice.setVisibility(View.VISIBLE);
         minPrice = productBeans.getMinPrice();

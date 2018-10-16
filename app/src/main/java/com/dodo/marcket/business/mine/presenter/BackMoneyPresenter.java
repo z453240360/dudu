@@ -24,10 +24,10 @@ public class BackMoneyPresenter extends BasePresenter<MyBackBoxActivity> impleme
             phoneBean.setPageNumber(pageNumber);
             phoneBean.setPageSize(pageSize);
             String name = "return.box.list";
-            addSubscription(apiModel.getMyBackBoxList(ParamsUtils.getParams(phoneBean,name,mToken)), new ResponseSubscriber<List<MyBackBoxBean>>(mContext) {
+            addSubscription(apiModel.getMyBackBoxList(ParamsUtils.getParams(phoneBean,name,mToken)), new ResponseSubscriber<MyBackBoxBean>(mContext) {
 
                 @Override
-                public void apiSuccess(List<MyBackBoxBean> s) {
+                public void apiSuccess(MyBackBoxBean s) {
                     mView.myBackBoxList(s);
                 }
 

@@ -175,6 +175,8 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.MyViewHo
             holder.mImgSalesOut.setVisibility(View.VISIBLE);
         }
 
+        holder.mTxtPackageWe.setText(productBean.getWeight()+" "+productBean.getUnit());
+
     }
 
 
@@ -214,6 +216,9 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.MyViewHo
         ImageView mImgAdd;
         @BindView(R.id.mImg_addCar)
         CircleImageView mImgAddCar;
+
+        @BindView(R.id.mTxt_packageWe)
+        TextView mTxtPackageWe;
 
         public MyViewHolder(View itemView) {
             super(itemView);

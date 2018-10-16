@@ -40,6 +40,7 @@ import com.dodo.marcket.bean.SelectPostTimeBean;
 import com.dodo.marcket.bean.params.GoToPayParamsBean;
 import com.dodo.marcket.bean.params.PayParamsFatherBean;
 import com.dodo.marcket.business.clasify.adapter.DiscountPopAdapter;
+import com.dodo.marcket.business.clasify.adapter.GiftPopAdapter;
 import com.dodo.marcket.business.clasify.adapter.PayPopAdapter;
 import com.dodo.marcket.business.clasify.adapter.TimePop1Adapter;
 import com.dodo.marcket.business.clasify.adapter.TimePop2Adapter;
@@ -145,6 +146,7 @@ public class GoToPayActivity extends BaseActivity<GoToPayPresenter> implements G
     private List<DisCountBean> disCountBeanList = new ArrayList<>();
     private List<SelectPostTimeBean> selectPostTimeBeanList = new ArrayList<>();
     private List<SelectPostTimeBean.ItemBean> itemBeanList = new ArrayList<>();
+    private List<GoToPayBean.GiftItemInfosBean> giftList = new ArrayList<>();
     private PayAdapter proAdapter;
     private RecyclerView mRv_discountPop;
     private RecyclerView mRv_payPop;
@@ -167,6 +169,12 @@ public class GoToPayActivity extends BaseActivity<GoToPayPresenter> implements G
     private String selectTime;
     private String selectDay;
     private TextView mTxt_arriveTimePop;
+    private View giftPopView;
+    private ImageView giftCha;
+    private PopupWindow giftPopWindow;
+    private RecyclerView mRv_giftPop;
+    private GiftPopAdapter giftAdapter;
+
 
     @Override
     public int getLayoutId() {
@@ -187,6 +195,7 @@ public class GoToPayActivity extends BaseActivity<GoToPayPresenter> implements G
         initDiscountPop();//初始化优惠券弹框
         initPayPop();//初始化支付弹框
         initPostTimePop();//初始换送达时间弹框
+        initGiftPop();//初始化赠品
 
         //请求数据
         if (payList.size() > 0) {
@@ -221,13 +230,16 @@ public class GoToPayActivity extends BaseActivity<GoToPayPresenter> implements G
             case R.id.mLL_showAddress1://跳转我的地址页面
             case R.id.mLL_showAddress2:
                 Bundle bundle = new Bundle();
-                bundle.putBoolean("needBackResult", false);
+                bundle.putBoolean("needBackResult", true);
                 startActivityForResult(MyAddressActivity.class, bundle, 100);
                 break;
 
             case R.id.mLL_give: //赠品
-//                mPresenter.payOrder("SO20180920161894");//支付
-
+                if (giftList.size() == 0) {
+                    showErrorToast("没有赠品");
+                    return;
+                }
+                showDiscountPop(giftPopWindow);
                 break;
 
             case R.id.mLL_coupon://优惠券选择
@@ -444,10 +456,15 @@ public class GoToPayActivity extends BaseActivity<GoToPayPresenter> implements G
         if (giftItemInfos == null || giftItemInfos.size() == 0) {
             mTxtGive.setText("无赠品");
         } else {
-            String name = giftItemInfos.get(0).getName();
-            mTxtGive.setText(name);
-            int id = giftItemInfos.get(0).getId();
-            goToPayParamsBean.setGiftId(id + "");//设置赠品信息
+            giftList.clear();
+            giftList.addAll(giftItemInfos);
+            giftAdapter.notifyDataSetChanged();
+//            String name = giftItemInfos.get(0).getName();
+//            mTxtGive.setText(name);
+//            int id = giftItemInfos.get(0).getId();
+//            goToPayParamsBean.setGiftId(id + "");//设置赠品信息
+            mTxtGive.setText("您有 "+giftList.size()+" 种赠品可选");
+
         }
 
 
@@ -695,6 +712,51 @@ public class GoToPayActivity extends BaseActivity<GoToPayPresenter> implements G
         });
     }
 
+    //初始化赠品弹框
+    private void initGiftPop() {
+        giftPopView = LayoutInflater.from(mActivity).inflate(R.layout.layout_gift_popview, null, false);
+        View view_pop = giftPopView.findViewById(R.id.view_pop);
+        giftCha = giftPopView.findViewById(R.id.mImg_chaPay);
+        mRv_giftPop = giftPopView.findViewById(R.id.mRv_giftPop);
+
+        giftCha.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                giftPopWindow.dismiss();
+            }
+        });
+
+        LinearLayoutManager giftManager = new LinearLayoutManager(mContext);
+        giftAdapter = new GiftPopAdapter(mContext, giftList);
+        mRv_giftPop.setAdapter(giftAdapter);
+        mRv_giftPop.setLayoutManager(giftManager);
+        giftAdapter.setOnItemClickListener(new GiftPopAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClick(int pos, int id) {
+                giftList.get(pos).setSelect(true);
+                giftAdapter.notifyDataSetChanged();
+
+                String name = giftList.get(pos).getName();
+                mTxtGive.setText(name);
+                int giftId = giftList.get(pos).getId();
+                goToPayParamsBean.setGiftId(giftId + "");//设置赠品信息
+
+                giftPopWindow.dismiss();
+            }
+        });
+
+        giftPopWindow = PopupWindowHelper.createPopupWindow(giftPopView, ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
+        giftPopWindow.setAnimationStyle(R.style.slide_up_in_down_out);
+
+        //点击空白地方
+        view_pop.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                giftPopWindow.dismiss();
+            }
+        });
+    }
+
     //计算总价格(用户积分抵扣费用不能超过总价格)
     private void initTotalPrice() {
 
@@ -858,7 +920,7 @@ public class GoToPayActivity extends BaseActivity<GoToPayPresenter> implements G
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (resultCode == RESULT_OK) {
+        if (resultCode == 100) {
             switch (requestCode) {
                 case 100:
                     MyAddressBean receiverInfo = (MyAddressBean) data.getSerializableExtra("address");

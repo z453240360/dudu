@@ -5,11 +5,14 @@ package com.dodo.marcket.business.mine.presenter;
 import com.dodo.marcket.base.BasePresenter;
 import com.dodo.marcket.bean.BackBoxBean;
 import com.dodo.marcket.bean.basebean.PhoneBean;
+import com.dodo.marcket.bean.params.BackBoxParams;
+import com.dodo.marcket.bean.params.BackBoxParamsBean;
 import com.dodo.marcket.business.mine.activity.BackBoxActivity;
 import com.dodo.marcket.business.mine.constrant.BackBoxContract;
 import com.dodo.marcket.http.utils.APIException;
 import com.dodo.marcket.http.utils.ResponseSubscriber;
 import com.dodo.marcket.utils.ParamsUtils;
+import com.google.gson.Gson;
 
 import java.util.List;
 
@@ -38,14 +41,17 @@ public class BackBoxPresenter extends BasePresenter<BackBoxActivity> implements 
 
     //生成退筐单
     @Override
-    public void getBackOrder(List<BackBoxBean> backBoxList) {
-        PhoneBean phoneBean = new PhoneBean();
+    public void getBackOrder(List<BackBoxParams> backBoxList) {
+        BackBoxParamsBean paramsBean = new BackBoxParamsBean();
+
+        paramsBean.setReturnBoxParams(backBoxList);
+
         String name = "return.box.create";
-        addSubscription(apiModel.getBackOrder(ParamsUtils.getParams(phoneBean,name,mToken)), new ResponseSubscriber<List<BackBoxBean>>(mContext) {
+        addSubscription(apiModel.getBackOrder(ParamsUtils.getParams(new Gson().toJson(backBoxList),name,mToken)), new ResponseSubscriber<List<BackBoxBean>>(mContext) {
 
             @Override
             public void apiSuccess(List<BackBoxBean> s) {
-                mView.getBackBoxList(s);
+                mView.getBackResult();
             }
 
             @Override

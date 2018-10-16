@@ -1,12 +1,76 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
+    android:layout_height="@dimen/dimen_50dp"
+    android:gravity="center_vertical"
     android:orientation="vertical">
 
+
+
     <LinearLayout
+        android:id="@+id/mLL_img"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_alignParentRight="true"
+        android:gravity="right|center_vertical"
+        android:orientation="horizontal">
+
+        <ImageView
+            android:id="@+id/mImg_jian"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_marginRight="@dimen/dimen_5dp"
+            android:src="@mipmap/jian" />
+
+        <TextView
+            android:layout_marginRight="@dimen/dimen_5dp"
+            android:id="@+id/mTxt_backBoxNum"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="@dimen/dimen_5dp"
+            android:gravity="center_vertical"
+            android:text="1"
+            android:textColor="#20d994"
+            android:textSize="15sp" />
+
+        <ImageView
+            android:id="@+id/mImg_jia"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="@dimen/dimen_5dp"
+            android:layout_marginRight="@dimen/dimen_10dp"
+            android:src="@mipmap/jia" />
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/mTxt_boxQty"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_marginLeft="@dimen/dimen_10dp"
+        android:layout_marginRight="@dimen/dimen_10dp"
+        android:layout_toLeftOf="@id/mLL_img"
+        android:gravity="center_vertical|right"
+        android:textColor="#666666"
+        android:textSize="12sp"
+        tools:text="x12" />
+
+    <TextView
+        android:layout_marginRight="@dimen/dimen_15dp"
+        android:id="@+id/mTxt_boxPrice"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_marginLeft="@dimen/dimen_10dp"
+        android:layout_toLeftOf="@id/mTxt_boxQty"
+        android:gravity="center_vertical"
+        android:textColor="@color/black_333333"
+        android:textSize="12sp"
+        tools:text="¥9.9/个" />
+    <LinearLayout
+        android:layout_toLeftOf="@id/mTxt_boxPrice"
+        android:layout_alignParentLeft="true"
         android:layout_width="match_parent"
-        android:layout_height="40dp"
+        android:layout_height="match_parent"
         android:layout_marginLeft="@dimen/dimen_10dp"
         android:layout_marginRight="@dimen/dimen_10dp"
         android:gravity="center_vertical"
@@ -20,57 +84,16 @@
 
 
         <TextView
+            android:id="@+id/mTxt_boxName"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_marginLeft="@dimen/dimen_10dp"
-            android:gravity="center_vertical"
-            android:text="大框"
-            android:textColor="@color/black_333333"
-            android:textSize="15sp" />
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_marginLeft="@dimen/dimen_10dp"
-            android:gravity="center_vertical"
-            android:text="¥9.9/个"
-            android:textColor="@color/black_333333"
-            android:textSize="12sp" />
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_marginLeft="@dimen/dimen_10dp"
-            android:layout_marginRight="@dimen/dimen_10dp"
             android:layout_weight="1"
-            android:gravity="center_vertical|right"
-            android:text="x12"
-            android:textColor="#666666"
-            android:textSize="14sp" />
-
-        <ImageView
-            android:layout_marginRight="@dimen/dimen_5dp"
-            android:id="@+id/mImg_jian"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:src="@mipmap/jian" />
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_marginLeft="@dimen/dimen_10dp"
             android:gravity="center_vertical"
-            android:text="12"
-            android:textColor="#20d994"
-            android:textSize="15sp" />
+            android:textColor="@color/black_333333"
+            android:textSize="12sp"
+            tools:text="大框" />
 
-        <ImageView
-            android:layout_marginLeft="@dimen/dimen_5dp"
-            android:id="@+id/mImg_jia"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:src="@mipmap/jia" />
+
     </LinearLayout>
-
-
-</LinearLayout>
+</RelativeLayout>

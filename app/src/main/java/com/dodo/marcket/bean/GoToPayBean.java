@@ -308,6 +308,15 @@ public class GoToPayBean {
 
         private int id;
         private String name;
+        private boolean isSelect = false;
+
+        public boolean isSelect() {
+            return isSelect;
+        }
+
+        public void setSelect(boolean select) {
+            isSelect = select;
+        }
 
         public int getId() {
             return id;

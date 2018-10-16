@@ -8,6 +8,15 @@ public  class CartItemsBean {
 
     private ProductInfoBean productInfo;
     private int quantity;
+    private String promotionName;
+
+    public String getPromotionName() {
+        return promotionName;
+    }
+
+    public void setPromotionName(String promotionName) {
+        this.promotionName = promotionName;
+    }
 
     public ProductInfoBean getProductInfo() {
         return productInfo;
