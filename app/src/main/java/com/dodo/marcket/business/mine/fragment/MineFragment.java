@@ -223,7 +223,7 @@ public class MineFragment extends BaseFragment<MineFragmentPresenter> implements
         if (noPayOrderNumber==0){//待付款订单数量
             mTxtWaitPay.setVisibility(View.GONE);
         }else {
-            mTxtWaitPay.setVisibility(View.GONE);
+            mTxtWaitPay.setVisibility(View.VISIBLE);
             mTxtWaitPay.setText(noPayOrderNumber+"");
         }
 

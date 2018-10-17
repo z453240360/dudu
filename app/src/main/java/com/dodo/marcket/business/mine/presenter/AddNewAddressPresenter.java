@@ -53,6 +53,32 @@ public class AddNewAddressPresenter extends BasePresenter<AddNewAddressActivity>
         });
     }
 
+    //编辑
+    @Override
+    public void upDateAddress(int id, String consignee, String phone, String address, boolean isDefault, String province, AreaParamBean areaParam) {
+        PhoneBean phoneBean = new PhoneBean();
+        phoneBean.setConsignee(consignee);
+        phoneBean.setPhone(phone);
+        phoneBean.setAddress(address);
+        phoneBean.setDefault(isDefault);
+        phoneBean.setProvince(province);
+        phoneBean.setAreaParam(areaParam);
+
+        String name = "member.updateReceiver";
+        addSubscription(apiModel.addNewAddress(ParamsUtils.getParams(phoneBean,name,mToken)), new ResponseSubscriber<Boolean>(mContext) {
+
+            @Override
+            public void apiSuccess(Boolean s) {
+                mView.addAddress(s);
+            }
+
+            @Override
+            public void apiError(APIException e) {
+                mView.showErrorMsg(e.getMessage(),e.code);
+            }
+        });
+    }
+
     //根据id获取该地区的子区域,上海的id=792
     @Override
     public void getlistChildArea(long id) {

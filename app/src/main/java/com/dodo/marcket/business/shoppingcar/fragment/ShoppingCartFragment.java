@@ -2,9 +2,13 @@ package com.dodo.marcket.business.shoppingcar.fragment;
 
 
 import android.content.Intent;
+import android.graphics.Paint;
+import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -31,7 +35,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
+import butterknife.ButterKnife;
 import butterknife.OnClick;
+import butterknife.Unbinder;
 
 /**
  * 购物车Tab
@@ -77,6 +83,11 @@ public class ShoppingCartFragment extends BaseFragment<ShoppingCartFragmentPrese
     TextView mTxtSendPrice;
     @BindView(R.id.mLL_sendPrice)
     LinearLayout mLLSendPrice;
+    @BindView(R.id.mTxt_afterFinalMony)
+    TextView mTxtAfterFinalMony;
+    @BindView(R.id.mLL_realPrice)
+    LinearLayout mLLRealPrice;
+    Unbinder unbinder;
 
     private List<CartItemsBean> mDates = new ArrayList<>();
     private ShoppingCartAdapter adapter;
@@ -313,8 +324,8 @@ public class ShoppingCartFragment extends BaseFragment<ShoppingCartFragmentPrese
 //            showErrorMsg("您没有选择结算的商品", "");
             mTxtCarTotalMoney.setText("" + 0);
             mTxtCarBoxMoney.setText("" + 0);
-                mTxtHuishou.setBackgroundResource(R.color.defalute);
-                mTxtHuishou.setClickable(false);
+            mTxtHuishou.setBackgroundResource(R.color.defalute);
+            mTxtHuishou.setClickable(false);
         } else {
             mPresenter.payProducts(payList);
         }
@@ -382,7 +393,7 @@ public class ShoppingCartFragment extends BaseFragment<ShoppingCartFragmentPrese
         double boxAmount = payBean.getBoxAmount();//筐的金额
         double productAmount = payBean.getProductAmount();//总价格
         double freight = payBean.getFreight();//运费
-
+        double afterDiscountAmount = payBean.getAfterDiscountAmount();
         if (minPrice >= productAmount) {//低于购买价格，不允许购买
             mTxtHuishou.setBackgroundResource(R.color.defalute);
             mTxtHuishou.setClickable(false);
@@ -391,7 +402,16 @@ public class ShoppingCartFragment extends BaseFragment<ShoppingCartFragmentPrese
             mTxtHuishou.setClickable(true);
         }
         mTxtSendPrice.setText("满" + minPrice + "起送");
-        mTxtCarTotalMoney.setText("" + productAmount);
+
+        if (afterDiscountAmount==productAmount){
+            mLLRealPrice.setVisibility(View.GONE);
+        }else {
+            mLLRealPrice.setVisibility(View.VISIBLE);
+            mTxtAfterFinalMony.getPaint().setFlags(Paint.STRIKE_THRU_TEXT_FLAG | Paint.ANTI_ALIAS_FLAG); // 设置中划线并加清晰
+            mTxtAfterFinalMony.setText("" +productAmount);
+        }
+
+        mTxtCarTotalMoney.setText("" + afterDiscountAmount);
         mTxtCarBoxMoney.setText("" + boxAmount);
         if ((freight - 0) <= 0) {
             mLLCarPost.setVisibility(View.GONE);
@@ -416,4 +436,17 @@ public class ShoppingCartFragment extends BaseFragment<ShoppingCartFragmentPrese
         mPresenter.getProducts();//获取购物车商品
     }
 
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        // TODO: inflate a fragment view
+        View rootView = super.onCreateView(inflater, container, savedInstanceState);
+        unbinder = ButterKnife.bind(this, rootView);
+        return rootView;
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        unbinder.unbind();
+    }
 }

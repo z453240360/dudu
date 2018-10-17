@@ -22,6 +22,9 @@ public class AddNewAddressContract {
     }
 
     public interface Presenter {
+
+
+        void upDateAddress(int id,String consignee,String phone,String address,boolean isDefault,String province,AreaParamBean areaParam);
         void addAddress(int id,String consignee,String phone,String address,boolean isDefault,String province,AreaParamBean areaParam);
         void getlistChildArea(long id);
         void deleteAddress(long id);

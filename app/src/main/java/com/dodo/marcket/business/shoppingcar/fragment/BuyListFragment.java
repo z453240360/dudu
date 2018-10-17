@@ -84,7 +84,7 @@ public class BuyListFragment extends BaseFragment<BuyListFragmentPresenter> impl
         this.mId = id;
     }
 
-    public BuyListFragment(ClassifyFragment classifyFragment,int id) {
+    public BuyListFragment(ClassifyFragment classifyFragment, int id) {
         super();
         this.mId = id;
         this.classifyFragment = classifyFragment;
@@ -110,7 +110,7 @@ public class BuyListFragment extends BaseFragment<BuyListFragmentPresenter> impl
     public void loadData() {
         initRv();
         initPickView();
-        mPresenter.getProductList(mId, page, pageSize,"显示加载框");
+        mPresenter.getProductList(mId, page, pageSize, "显示加载框");
     }
 
 
@@ -127,9 +127,9 @@ public class BuyListFragment extends BaseFragment<BuyListFragmentPresenter> impl
     @Override
     public void showErrorMsg(String msg, String type) {
         showErrorToast(msg);
-        if (page==1){
+        if (page == 1) {
             mRvBuyList.refreshComplete();
-        }else {
+        } else {
             mRvBuyList.loadMoreComplete();
         }
     }
@@ -147,15 +147,15 @@ public class BuyListFragment extends BaseFragment<BuyListFragmentPresenter> impl
         mRvBuyList.setLoadingListener(new XRecyclerView.LoadingListener() {
             @Override
             public void onRefresh() {
-                page=1;
+                page = 1;
 
-                mPresenter.getProductList(mId, page, pageSize,"");
+                mPresenter.getProductList(mId, page, pageSize, "");
             }
 
             @Override
             public void onLoadMore() {
                 page++;
-                mPresenter.getProductList(mId, page, pageSize,"");
+                mPresenter.getProductList(mId, page, pageSize, "");
             }
         });
 
@@ -174,30 +174,42 @@ public class BuyListFragment extends BaseFragment<BuyListFragmentPresenter> impl
 
             @Override
             public void onJianClicked(int pos) {//减号
+                if (!hastoken) {
+                    goToLogin();
+                    return;
+                }
 
+                ProductParmsBean productParmsBean = new ProductParmsBean(mDates.get(pos).getId());
+                mPresenter.updateNum(-1, productParmsBean, pos);
             }
 
             @Override
             public void onJiaClicked(int pos) {//加号
+                if (!hastoken) {
+                    goToLogin();
+                    return;
+                }
 
+                ProductParmsBean productParmsBean = new ProductParmsBean(mDates.get(pos).getId());
+                mPresenter.updateNum(1, productParmsBean, pos);
             }
 
             @Override
             public void onAddClicked(int pos) {//单规格的加入购物车
 
-                if (!hastoken){
+                if (!hastoken) {
                     goToLogin();
                     return;
                 }
 
                 ProductBean productBean = mDates.get(pos);
                 long id = productBean.getId();
-                mPresenter.addProduct(1, new ProductParmsBean(id));
+                mPresenter.addProduct(1, new ProductParmsBean(id), pos);
             }
 
             @Override
             public void onMutiSizeClicked(int pos) {//多规格的添加购物车
-                if (!hastoken){
+                if (!hastoken) {
                     goToLogin();
                     return;
                 }
@@ -211,16 +223,16 @@ public class BuyListFragment extends BaseFragment<BuyListFragmentPresenter> impl
     @Override
     public void getProductList(List<ProductBean> list) {
 
-        if (page==1){
+        if (page == 1) {
             mDates.clear();
             mRvBuyList.refreshComplete();
-        }else {
+        } else {
             mRvBuyList.loadMoreComplete();
         }
 
         if (list == null) {
-                mLLNoDate.setVisibility(View.VISIBLE);
-                mRvBuyList.setVisibility(View.GONE);
+            mLLNoDate.setVisibility(View.VISIBLE);
+            mRvBuyList.setVisibility(View.GONE);
             return;
         }
 
@@ -233,8 +245,8 @@ public class BuyListFragment extends BaseFragment<BuyListFragmentPresenter> impl
             mRvBuyList.setVisibility(View.VISIBLE);
             mLLNoDate.setVisibility(View.GONE);
         }
-        if (list.size()<10){
-            if (page>1){
+        if (list.size() < 10) {
+            if (page > 1) {
 //                ToastUtils.show(mContext, "已经是最多了");
             }
         }
@@ -243,8 +255,17 @@ public class BuyListFragment extends BaseFragment<BuyListFragmentPresenter> impl
 
     //添加商品结果
     @Override
-    public void addProduct(boolean isAdd) {
+    public void addProduct(boolean isAdd, int pos) {
         if (isAdd) {
+            if (pos != -1) {
+                Integer stock = mDates.get(pos).getStock();
+                if (stock!=null){
+                    stock--;
+                    mDates.get(pos).setStock(stock);
+                    adapter.notifyDataSetChanged();
+                }
+
+            }
             ToastUtils.show(mContext, "加入购物车成功");
             classifyFragment.initProducts();
         } else {
@@ -298,7 +319,7 @@ public class BuyListFragment extends BaseFragment<BuyListFragmentPresenter> impl
         ImageLoaders.displayImage(mImg_productImg, image);
         mTxt_productName.setText(name);
         mTxt_productMsg.setText(memo);
-        mTxt_price.setText("¥" + unitPrice + "/"+unit);
+        mTxt_price.setText("¥" + unitPrice + "/" + unit);
         mTxt_package.setText(packaging);
         mTxt_productPrice.setText("" + price + "");
 
@@ -311,6 +332,20 @@ public class BuyListFragment extends BaseFragment<BuyListFragmentPresenter> impl
         }
 
         shoePOP();
+    }
+
+    //更新购物车数量
+    @Override
+    public void updateNum(int qty, boolean b, int pos) {
+        if (b) {
+            int quantity = mDates.get(pos).getCartNumber();
+            mDates.get(pos).setCartNumber((quantity + qty));
+            adapter.notifyDataSetChanged();
+//            initBottomPrice();//重新计算价格
+            classifyFragment.initProducts();
+        } else {
+            ToastUtils.show(mContext, "失败");
+        }
     }
 
 
@@ -411,7 +446,7 @@ public class BuyListFragment extends BaseFragment<BuyListFragmentPresenter> impl
             public void onClick(View v) {
                 String s = mTxt_num.getText().toString().trim();
                 int i = NumberUtils.string2Int(s);
-                mPresenter.addProduct(i, new ProductParmsBean(buyId));
+                mPresenter.addProduct(i, new ProductParmsBean(buyId), -1);
             }
         });
     }

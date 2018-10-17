@@ -59,14 +59,17 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.MyViewHo
         boolean isCanBuy = false;
         if (productBean.getStock() == null) {
             isCanBuy = true;
+            holder.mTxtStock.setText("库存：9999");
         } else if (productBean.getStock() == 0) {
             isCanBuy = false;
+            holder.mTxtStock.setText("库存：0");
         } else if (productBean.getStock() > 0){
             isCanBuy = true;
+            holder.mTxtStock.setText("库存："+productBean.getStock());
         }
 
 
-
+        //条目被点击
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -121,7 +124,6 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.MyViewHo
         holder.mImgAdd.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
                 int specificationNumber = productBean.getSpecificationNumber();
                 if (specificationNumber>=1){//多规格
                     if (mListener != null) {
@@ -166,17 +168,33 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.MyViewHo
         holder.mTxtPackage.setText(productBean.getPackaging());//包装
         ImageLoaders.displayImage(holder.mImgProductImg,productBean.getImage());
 
+
+
+        holder.mTxtPackageWe.setText("约 "+productBean.getWeight()+" "+productBean.getUnit());
+
+
+
         //是否显示已经售完
         if (isCanBuy){
             holder.mImgAdd.setVisibility(View.VISIBLE);
             holder.mImgSalesOut.setVisibility(View.GONE);
+//            //是否显示加减按钮
+//            if (productBean.getCartNumber()>0){
+//                holder.mLLShowNum.setVisibility(View.VISIBLE);
+//                holder.mImgAdd.setVisibility(View.GONE);
+//            }else {
+//                holder.mLLShowNum.setVisibility(View.GONE);
+//                holder.mImgAdd.setVisibility(View.VISIBLE);
+//            }
+
+
         }else {
             holder.mImgAdd.setVisibility(View.GONE);
+//            holder.mLLShowNum.setVisibility(View.GONE);
             holder.mImgSalesOut.setVisibility(View.VISIBLE);
         }
 
-        holder.mTxtPackageWe.setText(productBean.getWeight()+" "+productBean.getUnit());
-
+        holder.mTxtNum.setText(productBean.getCartNumber()+"");
     }
 
 
@@ -188,6 +206,12 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.MyViewHo
         ImageView mImgSelect;
         @BindView(R.id.mLL_select)
         LinearLayout mLLSelect;
+        @BindView(R.id.mLL_showNum)
+        LinearLayout mLLShowNum;
+
+        @BindView(R.id.mTxt_stock)
+        TextView mTxtStock;
+
         @BindView(R.id.mImg_productImg)
         ImageView mImgProductImg;
         @BindView(R.id.mImg_salesOut)

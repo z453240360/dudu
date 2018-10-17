@@ -70,6 +70,7 @@ public class AddNewAddressActivity extends BaseActivity<AddNewAddressPresenter> 
     private long addressId = -1;
     private boolean checked = false;
     private MyAddressBean myAddressBean;
+    private String fromWhere;
 
     @Override
     public int getLayoutId() {
@@ -86,20 +87,21 @@ public class AddNewAddressActivity extends BaseActivity<AddNewAddressPresenter> 
         Intent intent = getIntent();
 
         Bundle extras = intent.getExtras();
-        String fromWhere = extras.getString("fromWhere");
+        fromWhere = extras.getString("fromWhere");
         if (TextUtils.equals(fromWhere, "1")) {//来自编辑按钮
             mTitle.setTitle("编辑地址");
 
             mTxt_deleteAddress.setVisibility(View.VISIBLE);
 
             myAddressBean = (MyAddressBean) extras.getSerializable("addressBean");
-
+            addressId = myAddressBean.getAreaInfo().getId();
 
             mEdMyAddress.setText(myAddressBean.getAreaInfo().getName());
             mEdMyDoor.setText(myAddressBean.getAddress());
             mEdMyName.setText(myAddressBean.getConsignee());
             mEdMyPhone.setText(myAddressBean.getPhone());
             mCheckBox.setChecked(myAddressBean.isDefaultX());
+            
         } else {
             mTxt_deleteAddress.setVisibility(View.GONE);
             mTitle.setTitle("新增地址");
@@ -155,6 +157,7 @@ public class AddNewAddressActivity extends BaseActivity<AddNewAddressPresenter> 
     public void deleteAddress(boolean b) {
         if (b) {
             showErrorToast("删除成功");
+            finish();
         } else {
             showErrorToast("删除失败");
         }
@@ -187,8 +190,11 @@ public class AddNewAddressActivity extends BaseActivity<AddNewAddressPresenter> 
                     return;
                 }
 
-
-                mPresenter.addAddress(0, name, phone, doorAddress, mCheckBox.isChecked(), "上海市", new AreaParamBean(addressId));
+                if (fromWhere.equals("1")){
+                    mPresenter.upDateAddress(0, name, phone, doorAddress, mCheckBox.isChecked(), "上海市", new AreaParamBean(addressId));
+                }else {
+                    mPresenter.addAddress(0, name, phone, doorAddress, mCheckBox.isChecked(), "上海市", new AreaParamBean(addressId));
+                }
 
                 break;
             case R.id.mLL_checked:

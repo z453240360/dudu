@@ -2,6 +2,8 @@ package com.dodo.marcket.business.clasify.fragment;
 
 
 import android.content.Intent;
+import android.graphics.Paint;
+import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.widget.LinearLayoutManager;
@@ -40,7 +42,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
+import butterknife.ButterKnife;
 import butterknife.OnClick;
+import butterknife.Unbinder;
 
 
 public class ClassifyFragment extends BaseFragment<ClassifyFragmentPresenter> implements ClassifyFragmentContract.View {
@@ -87,6 +91,13 @@ public class ClassifyFragment extends BaseFragment<ClassifyFragmentPresenter> im
     LinearLayout mLLBottomView;
     @BindView(R.id.mTxt_carNum)
     TextView mTxtCarNum;
+    @BindView(R.id.mTxt_afterFinalMony)
+    TextView mTxtAfterFinalMony;
+    @BindView(R.id.mLL_realPrice)
+    LinearLayout mLLRealPrice;
+    @BindView(R.id.mLL_carMsg)
+    LinearLayout mLLCarMsg;
+    Unbinder unbinder;
 
 
     private List<FirstClassfyBean> mDates = new ArrayList<>();
@@ -305,6 +316,8 @@ public class ClassifyFragment extends BaseFragment<ClassifyFragmentPresenter> im
         double boxAmount = payBean.getBoxAmount();//筐的金额
         double productAmount = payBean.getProductAmount();//总价格
         double freight = payBean.getFreight();//运费
+        double afterDiscountAmount = payBean.getAfterDiscountAmount();//折后价格
+
         mTxtSendPrice.setText("满" + minPrice + "起送");
         if (minPrice >= productAmount) {//低于购买价格，不允许购买
             mTxtPay.setBackgroundResource(R.color.defalute);
@@ -314,8 +327,17 @@ public class ClassifyFragment extends BaseFragment<ClassifyFragmentPresenter> im
             mTxtPay.setClickable(true);
         }
 
-        mTxtCarTotalMoney.setText("" + productAmount);
+        if (afterDiscountAmount==productAmount){
+            mLLRealPrice.setVisibility(View.GONE);
+        }else {
+            mLLRealPrice.setVisibility(View.VISIBLE);
+            mTxtAfterFinalMony.getPaint().setFlags(Paint.STRIKE_THRU_TEXT_FLAG | Paint.ANTI_ALIAS_FLAG); // 设置中划线并加清晰
+            mTxtAfterFinalMony.setText("" +productAmount);
+        }
+        mTxtCarTotalMoney.setText("" + afterDiscountAmount);
         mTxtCarBoxMoney.setText("" + boxAmount);
+
+
         if ((freight - 0) <= 0) {
             mLLCarPost.setVisibility(View.GONE);
         } else {
@@ -499,4 +521,17 @@ public class ClassifyFragment extends BaseFragment<ClassifyFragmentPresenter> im
         }
     }
 
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        // TODO: inflate a fragment view
+        View rootView = super.onCreateView(inflater, container, savedInstanceState);
+        unbinder = ButterKnife.bind(this, rootView);
+        return rootView;
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        unbinder.unbind();
+    }
 }

@@ -16,7 +16,9 @@ public class GoToPayBean {
      * receiverInfo : null
      * userPoint : 0
      */
-
+    private double pointRmb;//积分换算比例
+    private double afterDiscountAmount;
+    private double discountAmount;
     private double boxAmount;
     private double freight;
     private double onlineDiscount;
@@ -27,6 +29,30 @@ public class GoToPayBean {
     private List<CartItemsBean> carts;
     private List<GiftItemInfosBean> giftItemInfos;
     private List<PaymentMethodsBean> paymentMethods;
+
+    public double getPointRmb() {
+        return pointRmb;
+    }
+
+    public void setPointRmb(double pointRmb) {
+        this.pointRmb = pointRmb;
+    }
+
+    public double getAfterDiscountAmount() {
+        return afterDiscountAmount;
+    }
+
+    public void setAfterDiscountAmount(double afterDiscountAmount) {
+        this.afterDiscountAmount = afterDiscountAmount;
+    }
+
+    public double getDiscountAmount() {
+        return discountAmount;
+    }
+
+    public void setDiscountAmount(double discountAmount) {
+        this.discountAmount = discountAmount;
+    }
 
     public double getBoxAmount() {
         return boxAmount;

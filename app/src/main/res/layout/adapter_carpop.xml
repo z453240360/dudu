@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    android:orientation="vertical"
-    xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+<LinearLayout android:orientation="vertical"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:tools="http://schemas.android.com/tools">
 
     <LinearLayout
         android:layout_marginRight="@dimen/dimen_10dp"
@@ -13,13 +14,13 @@
         android:layout_height="40dp">
 
         <TextView
-
+            android:lines="1"
             android:textSize="15sp"
             android:textColor="@color/black_333333"
             android:layout_weight="1"
             android:gravity="center_vertical"
             android:id="@+id/mTxt_carPopName"
-            android:text="绿色农庄新鲜大鸭腿"
+            tools:text="绿色农庄新鲜大鸭腿"
             android:layout_width="wrap_content"
             android:layout_height="match_parent" />
 
@@ -27,7 +28,7 @@
         <TextView
             android:gravity="center_vertical"
             android:textColor="#f39700"
-            android:text="￥ "
+            android:text="¥ "
             android:layout_width="wrap_content"
             android:layout_height="match_parent" />
 
@@ -35,7 +36,7 @@
             android:layout_marginRight="@dimen/dimen_10dp"
             android:gravity="center_vertical"
             android:textColor="#f39700"
-            android:text="99.9"
+            tools:text="99.9"
             android:id="@+id/mTxt_carPopPrice"
             android:layout_width="wrap_content"
             android:layout_height="match_parent" />
@@ -60,7 +61,7 @@
                 android:id="@+id/mTxt_num"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="100" />
+                tools:text="100" />
 
             <ImageView
                 android:id="@+id/mImg_jia"

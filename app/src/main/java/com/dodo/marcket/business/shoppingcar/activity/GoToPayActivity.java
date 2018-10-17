@@ -2,6 +2,7 @@ package com.dodo.marcket.business.shoppingcar.activity;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
+import android.graphics.Paint;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -49,8 +50,6 @@ import com.dodo.marcket.business.shoppingcar.adapter.PayAdapter;
 import com.dodo.marcket.business.shoppingcar.constrant.GoToPayContract;
 import com.dodo.marcket.business.shoppingcar.presenter.GoToPayPresenter;
 import com.dodo.marcket.http.constant.Constant;
-import com.dodo.marcket.utils.MathUtils;
-import com.dodo.marcket.utils.NumberUtils;
 import com.dodo.marcket.utils.photo.PopupWindowHelper;
 import com.tencent.mm.opensdk.modelpay.PayReq;
 import com.tencent.mm.opensdk.openapi.IWXAPI;
@@ -61,6 +60,7 @@ import java.util.List;
 import java.util.Map;
 
 import butterknife.BindView;
+import butterknife.ButterKnife;
 import butterknife.OnClick;
 
 /**
@@ -132,6 +132,12 @@ public class GoToPayActivity extends BaseActivity<GoToPayPresenter> implements G
     LinearLayout mLLSay;
     @BindView(R.id.mCheckBox)
     CheckBox mCheckBox;
+    @BindView(R.id.mTxt_youHuiMoney)
+    TextView mTxtYouHuiMoney;
+    @BindView(R.id.mTxt_afterFinalMony)
+    TextView mTxtAfterFinalMony;
+    @BindView(R.id.mLL_realPrice)
+    LinearLayout mLLRealPrice;
 
 
     private List<PayParamsFatherBean> payList;
@@ -174,6 +180,9 @@ public class GoToPayActivity extends BaseActivity<GoToPayPresenter> implements G
     private PopupWindow giftPopWindow;
     private RecyclerView mRv_giftPop;
     private GiftPopAdapter giftAdapter;
+    private double discountAmount;
+    private double afterDiscountAmount;
+    private double pointRmb;
 
 
     @Override
@@ -188,7 +197,7 @@ public class GoToPayActivity extends BaseActivity<GoToPayPresenter> implements G
 
     @Override
     public void loadData() {
-
+        mTxtAfterFinalMony.getPaint().setFlags(Paint.STRIKE_THRU_TEXT_FLAG | Paint.ANTI_ALIAS_FLAG); // 设置中划线并加清晰
         initGoToPayParams(); //初始化支付参数
         initTitle();
         initRv();//初始化商品列表
@@ -463,7 +472,7 @@ public class GoToPayActivity extends BaseActivity<GoToPayPresenter> implements G
 //            mTxtGive.setText(name);
 //            int id = giftItemInfos.get(0).getId();
 //            goToPayParamsBean.setGiftId(id + "");//设置赠品信息
-            mTxtGive.setText("您有 "+giftList.size()+" 种赠品可选");
+            mTxtGive.setText("您有 " + giftList.size() + " 种赠品可选");
 
         }
 
@@ -489,8 +498,17 @@ public class GoToPayActivity extends BaseActivity<GoToPayPresenter> implements G
         //总价格
         productAmount = payBean.getProductAmount();
 
+        //折扣金额
+        discountAmount = payBean.getDiscountAmount();
+
+        //折后金额
+        afterDiscountAmount = payBean.getAfterDiscountAmount();
+
         //用户积分
         userPoint = payBean.getUserPoint();
+
+        //积分换算比例
+        pointRmb = payBean.getPointRmb();
 
         if (userPoint == 0D) {
             mCheckBox.setChecked(false);
@@ -501,7 +519,11 @@ public class GoToPayActivity extends BaseActivity<GoToPayPresenter> implements G
         }
 
         if (mCheckBox.isChecked()) {
-            pointMoney = userPoint / 100;
+            if (pointRmb == 0d) {
+                pointMoney = 0;
+            } else {
+                pointMoney = userPoint / pointRmb;
+            }
         } else {
             pointMoney = 0;
         }
@@ -514,6 +536,8 @@ public class GoToPayActivity extends BaseActivity<GoToPayPresenter> implements G
         mTxtBoxMoney.setText("+ ¥ " + boxAmount);
         mTxtPointMoney.setText("- ¥ " + pointMoney);
         mTxtDiscountMoney.setText("- ¥ " + 0);
+        mTxtYouHuiMoney.setText("- ¥ " + discountAmount);
+        mTxtAfterFinalMony.setText("¥" + productAmount);
 
 
         initTotalPrice();
@@ -624,7 +648,6 @@ public class GoToPayActivity extends BaseActivity<GoToPayPresenter> implements G
         } else if (paymentMethonCode.equals("alipay")) {//支付宝支付
             aliPayres(s.getAliPayResult().getOrderInfo());
         } else {
-            showErrorToast("货到付款");
             finish();
         }
     }
@@ -760,16 +783,16 @@ public class GoToPayActivity extends BaseActivity<GoToPayPresenter> implements G
     //计算总价格(用户积分抵扣费用不能超过总价格)
     private void initTotalPrice() {
 
-        double totalPrice = productAmount + boxAmount + freight - onLineMoney - dicCount;//除了积分以外的总价格
+        double totalPrice = afterDiscountAmount + boxAmount + freight - onLineMoney - dicCount;//除了积分以外的总价格
 
         if (totalPrice <= pointMoney) {
             pointMoney = totalPrice;
             mTxtPointMoney.setText("- ¥ " + pointMoney);
-            goToPayParamsBean.setUsePoint(pointMoney * 100);
+            goToPayParamsBean.setUsePoint(pointMoney * pointRmb);
 
 //            mTxtPoint.setText("(" + (userPoint + "-" + pointMoney * 100) + "） 积分");
         } else {
-            goToPayParamsBean.setUsePoint(pointMoney * 100);
+            goToPayParamsBean.setUsePoint(pointMoney * pointRmb);
             mTxtPointMoney.setText("- ¥ " + pointMoney);
 //            mTxtPoint.setText("(" + (userPoint  +"-" + pointMoney * 100) + "） 积分");
         }
@@ -777,8 +800,15 @@ public class GoToPayActivity extends BaseActivity<GoToPayPresenter> implements G
 //        if (userPoint == 0d) {
 //            mTxtPoint.setText(userPoint + " 积分");
 //        }
+        double v = afterDiscountAmount + boxAmount + freight - onLineMoney - pointMoney - dicCount;
+        if (v == productAmount) {
+            mLLRealPrice.setVisibility(View.GONE);
+            mTxtFinalMony.setText("¥ " + v + "");
+        } else {
+            mLLRealPrice.setVisibility(View.VISIBLE);
+            mTxtFinalMony.setText("¥ " + v + "");
+        }
 
-        mTxtFinalMony.setText("¥" + (productAmount + boxAmount + freight - onLineMoney - pointMoney - dicCount) + "");
     }
 
     //初始化时间选择弹框
@@ -1051,6 +1081,13 @@ public class GoToPayActivity extends BaseActivity<GoToPayPresenter> implements G
         request.sign = wxPayResult.getSign();
         msgApi.sendReq(request);
         finish();
+    }
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        // TODO: add setContentView(...) invocation
+        ButterKnife.bind(this);
     }
 }
 

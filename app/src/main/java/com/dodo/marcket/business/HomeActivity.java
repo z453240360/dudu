@@ -156,8 +156,9 @@ public class HomeActivity extends BaseActivity<HomePresenter> implements HomeCon
         }
 
 
-        if (hastoken)
-        updateCarNum();
+        if (hastoken) {
+            updateCarNum();
+        }
     }
 
     @Override

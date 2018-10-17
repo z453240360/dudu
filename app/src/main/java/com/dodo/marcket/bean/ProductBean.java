@@ -42,7 +42,24 @@ public class ProductBean {
     private String introduction="";//介绍
     private List<String> productImages; //商品图片中中图
     private List<SpecificationsBean> specifications;//规格
+    private boolean isShowNum = false;//是否显示数量
+    private int showNum = 1;//自己添加购物车的数量
 
+    public int getShowNum() {
+        return showNum;
+    }
+
+    public void setShowNum(int showNum) {
+        this.showNum = showNum;
+    }
+
+    public boolean isShowNum() {
+        return isShowNum;
+    }
+
+    public void setShowNum(boolean showNum) {
+        isShowNum = showNum;
+    }
 
     public String getType() {
         return type;

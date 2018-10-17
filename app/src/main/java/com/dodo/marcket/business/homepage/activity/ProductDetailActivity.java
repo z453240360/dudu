@@ -16,7 +16,6 @@ import android.webkit.WebViewClient;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.dodo.marcket.R;
 import com.dodo.marcket.base.BaseActivity;
@@ -85,6 +84,14 @@ public class ProductDetailActivity extends BaseActivity<ProductDetailPresenter> 
     LinearLayout mLLGuige;
     @BindView(R.id.mWebView)
     WebView mWebView;
+    @BindView(R.id.mTxt_stock)
+    TextView mTxtStock;
+    @BindView(R.id.mTxt_package)
+    TextView mTxtPackage;
+    @BindView(R.id.mTxt_packageWe)
+    TextView mTxtPackageWe;
+    @BindView(R.id.ll_boxs)
+    LinearLayout llBoxs;
     private List<SpecificationsBean> specificationsList = new ArrayList<>();
     private ProductDetailAdapter adapter;
     private CustomLinearLayoutManager manager;
@@ -92,6 +99,7 @@ public class ProductDetailActivity extends BaseActivity<ProductDetailPresenter> 
     private long carId = -1;//最终加入购物车的值
     private int cartNumber = 1;
     private boolean isCanBuy = true;
+    private int canBuyNumber;
 
     @Override
     public int getLayoutId() {
@@ -179,7 +187,7 @@ public class ProductDetailActivity extends BaseActivity<ProductDetailPresenter> 
     @OnClick({R.id.mImg_jian, R.id.mImg_jia, R.id.mTxt_pay, R.id.ll_img})
     public void onViewClicked(View view) {
         switch (view.getId()) {
-            case R.id.mImg_jia://点击减号
+            case R.id.mImg_jia://点击jia号
 
                 if (!hastoken) {
                     goToLogin();
@@ -190,8 +198,13 @@ public class ProductDetailActivity extends BaseActivity<ProductDetailPresenter> 
                 if (!isCanBuy) {
                     return;
                 }
-                cartNumber++;
-                mTxtNum.setText(cartNumber + "");
+
+                if (cartNumber < canBuyNumber) {
+                    cartNumber++;
+                    mTxtNum.setText(cartNumber + "");
+                } else {
+                    ToastUtils.show(mContext, "超出库存");
+                }
                 break;
             case R.id.mImg_jian://点击加号
 
@@ -249,10 +262,16 @@ public class ProductDetailActivity extends BaseActivity<ProductDetailPresenter> 
         isCanBuy = false;
         if (productBean.getStock() == null) {//不限制库存
             isCanBuy = true;
+            mTxtStock.setText("库存：9999");
+            canBuyNumber = 9999;
         } else if (productBean.getStock() == 0) {
             isCanBuy = false;
+            canBuyNumber = 0;
+            mTxtStock.setText("库存：" + productBean.getStock());
         } else if (productBean.getStock() > 0) {
             isCanBuy = true;
+            canBuyNumber = productBean.getStock();
+            mTxtStock.setText("库存：" + productBean.getStock());
         }
 
         //是否可以购买
@@ -286,11 +305,21 @@ public class ProductDetailActivity extends BaseActivity<ProductDetailPresenter> 
             mBanner.start();
         }
 
+        String packaging = productBean.getPackaging();
+        if (packaging.equals("")){
+            mTxtPackage.setVisibility(View.GONE);
+        }else {
+            mTxtPackage.setText(packaging);
+            mTxtPackage.setVisibility(View.VISIBLE);
+        }
+
+        mTxtPackageWe.setText("约 " +productBean.getWeight()+" "+productBean.getUnit());
+
         mTxtNum.setText(cartNumber + "");
         mTxtProductPrice.setText(price + "");
         mTxtProductName.setText(name);
         mTxtProductMsg.setText(memo);
-        mTxtUnitPrice.setText("¥ "+productBean.getUnitPrice()+"/"+unit);
+        mTxtUnitPrice.setText("¥ " + productBean.getUnitPrice() + "/" + unit);
         if (TextUtils.equals(introduction, "")) {
             mTxtDesc.setText("暂无商品描述");
         } else {
@@ -339,6 +368,9 @@ public class ProductDetailActivity extends BaseActivity<ProductDetailPresenter> 
     public void updateNum(int qty, boolean b, int pos) {
         if (b) {
             ToastUtils.show(mContext, "加入购物车成功");
+            canBuyNumber = canBuyNumber - cartNumber;
+//            mTxtStock.setText(canBuyNumber);
+            mPresenter.getProductDetailById(mId);//获取商品详情
             mPresenter.getCarNum();
         } else {
             ToastUtils.show(mContext, "加入购物车失败");
@@ -361,12 +393,12 @@ public class ProductDetailActivity extends BaseActivity<ProductDetailPresenter> 
 
 
     //WebChromeClient主要辅助WebView处理Javascript的对话框、网站图标、网站title、加载进度等
-    private WebChromeClient webChromeClient=new WebChromeClient(){
+    private WebChromeClient webChromeClient = new WebChromeClient() {
         //不支持js的alert弹窗，需要自己监听然后通过dialog弹窗
         @Override
         public boolean onJsAlert(WebView webView, String url, String message, JsResult result) {
             AlertDialog.Builder localBuilder = new AlertDialog.Builder(webView.getContext());
-            localBuilder.setMessage(message).setPositiveButton("确定",null);
+            localBuilder.setMessage(message).setPositiveButton("确定", null);
             localBuilder.setCancelable(false);
             localBuilder.create().show();
 
@@ -382,7 +414,7 @@ public class ProductDetailActivity extends BaseActivity<ProductDetailPresenter> 
         @Override
         public void onReceivedTitle(WebView view, String title) {
             super.onReceivedTitle(view, title);
-            Log.i("ansen","网页标题:"+title);
+            Log.i("ansen", "网页标题:" + title);
         }
 
         //加载进度回调
@@ -393,9 +425,8 @@ public class ProductDetailActivity extends BaseActivity<ProductDetailPresenter> 
     };
 
 
-
     //WebViewClient主要帮助WebView处理各种通知、请求事件
-    private WebViewClient webViewClient=new WebViewClient(){
+    private WebViewClient webViewClient = new WebViewClient() {
         @Override
         public void onPageFinished(WebView view, String url) {//页面加载完成
 //            progressBar.setVisibility(View.GONE);
@@ -408,8 +439,8 @@ public class ProductDetailActivity extends BaseActivity<ProductDetailPresenter> 
 
         @Override
         public boolean shouldOverrideUrlLoading(WebView view, String url) {
-            Log.i("ansen","拦截url:"+url);
-            if(url.equals("http://www.google.com/")){
+            Log.i("ansen", "拦截url:" + url);
+            if (url.equals("http://www.google.com/")) {
                 return true;//表示我已经处理过了
             }
             return super.shouldOverrideUrlLoading(view, url);
@@ -424,6 +455,13 @@ public class ProductDetailActivity extends BaseActivity<ProductDetailPresenter> 
 
         //释放资源
         mWebView.destroy();
-        mWebView=null;
+        mWebView = null;
+    }
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        // TODO: add setContentView(...) invocation
+        ButterKnife.bind(this);
     }
 }
