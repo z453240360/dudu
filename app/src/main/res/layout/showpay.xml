@@ -1,27 +1,54 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    android:orientation="vertical"
-    xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent"
-    android:layout_height="match_parent">
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
 
     <TextView
+        android:visibility="gone"
         android:id="@+id/mTxt_title"
-        android:textSize="@dimen/dimen_18sp"
-        android:gravity="center"
-        android:textColor="@color/black_333333"
-        android:text="@string/app_name"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        android:background="@drawable/shape_lunkuo_paint5"
+        android:gravity="center"
+        android:padding="@dimen/dimen_10dp"
+        android:text="微信支付结果"
+        android:textColor="@color/white"
+        android:textSize="@dimen/dimen_14sp"
+        android:textStyle="bold" />
 
 
     <TextView
-        android:layout_marginTop="@dimen/dimen_10dp"
-        android:id="@+id/mTxt_msg"
-        android:textSize="@dimen/dimen_14sp"
-        android:gravity="center"
-        android:textColor="#555555"
-        android:text="@string/app_name"
+        android:visibility="gone"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        android:layout_height="0.5dp"
+        android:background="@color/lineColor" />
 
+    <TextView
+        android:id="@+id/mTxt_msg"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dimen_100dp"
+        android:background="@drawable/shape_lunkuo_paint5"
+        android:gravity="center"
+        android:text="@string/app_name"
+        android:textColor="#555555"
+        android:textSize="@dimen/dimen_14sp" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="0.5dp"
+        android:background="@color/lineColor" />
+
+    <TextView
+        android:id="@+id/mTxt_paySure"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/shape_lunkuo_paint6"
+        android:gravity="center"
+        android:padding="@dimen/dimen_10dp"
+        android:text="确定"
+        android:textColor="@color/white"
+
+        android:textSize="@dimen/dimen_14sp" />
 </LinearLayout>

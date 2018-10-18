@@ -1,10 +1,15 @@
 package com.dodo.marcket.http.convert;
 
+import android.content.Intent;
 import android.text.TextUtils;
 
+import com.dodo.marcket.base.App;
+import com.dodo.marcket.business.mine.activity.LoginActivity;
+import com.dodo.marcket.http.constant.Constant;
 import com.dodo.marcket.http.utils.BResponse;
 import com.dodo.marcket.http.utils.JSONUtils;
 import com.dodo.marcket.utils.LogUtils;
+import com.dodo.marcket.utils.SharedPreferencesUtil;
 import com.google.gson.TypeAdapter;
 import com.google.gson.stream.JsonReader;
 
@@ -81,8 +86,9 @@ public class JsonResponseBodyConverter<T> implements Converter<ResponseBody, T> 
             BResponse response = new BResponse();
             response.code = returnCode;
             response.msg = errorMsg;
-            if (TextUtils.equals(returnCode,"-41")){
-//                App.getContext().startActivity(new Intent(App.getContext(), LoginActivity.class));
+            if (TextUtils.equals(returnCode,"41")){
+                SharedPreferencesUtil.put(App.getContext(), Constant.token,"");
+                App.getContext().startActivity(new Intent(App.getContext(), LoginActivity.class));
             }
             return (T)response;
         } catch (JSONException e1) {

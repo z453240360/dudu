@@ -23,7 +23,7 @@ public class ProductDetailPresenter extends BasePresenter<ProductDetailActivity>
         PhoneBean phoneBean = new PhoneBean();
         phoneBean.setId(id);
         String name = "product.getProductDetailById";
-        addSubscription(apiModel.getProductDetailById(ParamsUtils.getParams(phoneBean,name)), new ResponseSubscriber<ProductBean>(mContext) {
+        addSubscription(apiModel.getProductDetailById(ParamsUtils.getParams(phoneBean,name)), new ResponseSubscriber<ProductBean>(mContext,"ws") {
 
             @Override
             public void apiSuccess(ProductBean s) {

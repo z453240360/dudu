@@ -22,7 +22,7 @@ public class HotPresenter extends BasePresenter<HotActivity> implements HotContr
         PhoneBean phoneBean = new PhoneBean();
         phoneBean.setId(id);
         String name = "promotion.getPromotionDetail";
-        addSubscription(apiModel.getPromotionDetail(ParamsUtils.getParams(phoneBean,name)), new ResponseSubscriber<HotBean>(mContext) {
+        addSubscription(apiModel.getPromotionDetail(ParamsUtils.getParams(phoneBean,name)), new ResponseSubscriber<HotBean>(mContext,"s") {
             @Override
             public void apiSuccess(HotBean s) {
                 mView.getProduct(s);

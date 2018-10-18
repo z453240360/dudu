@@ -100,7 +100,7 @@ public class CommentOrderActivity extends BaseActivity<CommentOrderPresenter> im
                     public void onRatingChange(float RatingCount) {
                         expressScore = RatingCount;
                         isPost = true;
-                        initSubmitView(isPost,isShop,isList,isMsg);
+                        initSubmitView(isPost, isShop, isList, isMsg);
                     }
                 }
         );
@@ -111,7 +111,7 @@ public class CommentOrderActivity extends BaseActivity<CommentOrderPresenter> im
                     public void onRatingChange(float RatingCount) {
                         productScore = RatingCount;
                         isShop = true;
-                        initSubmitView(isPost,isShop,isList,isMsg);
+                        initSubmitView(isPost, isShop, isList, isMsg);
                     }
                 }
         );
@@ -129,9 +129,9 @@ public class CommentOrderActivity extends BaseActivity<CommentOrderPresenter> im
 
             @Override
             public void afterTextChanged(Editable s) {
-                if (s.equals("")){
+                if (s.equals("")) {
                     isMsg = false;
-                }else {
+                } else {
                     isMsg = true;
                 }
 
@@ -167,7 +167,7 @@ public class CommentOrderActivity extends BaseActivity<CommentOrderPresenter> im
         });
     }
 
-    private void initSubmitView(boolean isPost,boolean isShop, boolean isList, boolean isMsg){
+    private void initSubmitView(boolean isPost, boolean isShop, boolean isList, boolean isMsg) {
 //        if (!isList){//没有评价商品
 //
 //        }else if (!isShop){//没有评价商店
@@ -180,29 +180,28 @@ public class CommentOrderActivity extends BaseActivity<CommentOrderPresenter> im
 //
 //        }
 
-        if (!isPost||!isShop){
+        if (!isPost || !isShop) {
             mTxtPingjia.setClickable(false);
             mTxtPingjia.setBackgroundResource(R.drawable.shape_lunkuo_paint4);
-        }else {
+        } else {
             mTxtPingjia.setClickable(true);
             mTxtPingjia.setBackgroundResource(R.drawable.shape_lunkuo_paint);
         }
     }
 
 
-
     //提交订单评价
     @Override
     public void discussOrder(int id) {
-        ToastUtils.show(mContext,"评价成功");
-
-        mPresenter.getDiscussOrder(orderId);
+        ToastUtils.show(mContext, "评价成功");
+        finish();
+//        mPresenter.getDiscussOrder(orderId);
     }
 
     //获取订单评价详情
     @Override
     public void getDiscussOrder(CommentParamsBean commentParamsBean) {
-        if (commentParamsBean==null){//说明没有订单评价
+        if (commentParamsBean == null) {//说明没有订单评价
             ratingbar1.setmClickable(true);
             ratingbar2.setmClickable(true);
             mTxtPingjia.setVisibility(View.VISIBLE);
@@ -212,7 +211,7 @@ public class CommentOrderActivity extends BaseActivity<CommentOrderPresenter> im
 
 
         List<OrderItemCommentParamsBean> orderItemCommentParams1 = commentParamsBean.getOrderItemComments();
-        if (orderItemCommentParams1==null||orderItemCommentParams1.size()==0){
+        if (orderItemCommentParams1 == null || orderItemCommentParams1.size() == 0) {
             ratingbar1.setmClickable(true);
             ratingbar2.setmClickable(true);
             mTxtPingjia.setVisibility(View.VISIBLE);
@@ -226,7 +225,11 @@ public class CommentOrderActivity extends BaseActivity<CommentOrderPresenter> im
         productScore = commentParamsBean.getProductScore();
         long orderId = commentParamsBean.getOrderId();
 
-        mEdMsg.setText(comment);
+        if (comment.equals("")) {
+            mEdMsg.setText("暂无评价");
+        } else {
+            mEdMsg.setText(comment);
+        }
         mEdMsg.setFocusable(false);
         ratingbar1.setStar(expressScore);
         ratingbar2.setStar(productScore);
@@ -236,7 +239,7 @@ public class CommentOrderActivity extends BaseActivity<CommentOrderPresenter> im
 
         List<OrderItemCommentParamsBean> orderItemCommentParams = commentParamsBean.getOrderItemCommentParams();
 
-        if (orderItemCommentParams==null||orderItemCommentParams.size()==0){
+        if (orderItemCommentParams == null || orderItemCommentParams.size() == 0) {
             return;
         }
 
@@ -253,25 +256,25 @@ public class CommentOrderActivity extends BaseActivity<CommentOrderPresenter> im
     @OnClick(R.id.mTxt_pingjia)
     public void onViewClicked() {//提交评价
 
-        if (expressScore==-1){
+        if (expressScore == -1) {
             showErrorToast("请对配送打分");
             return;
         }
 
-        if (productScore==-1){
+        if (productScore == -1) {
             showErrorToast("请对商品打分");
             return;
         }
 
 
         List<OrderItemCommentParamsBean> supportPro = adapter.getSupportPro();
-        if (supportPro==null||supportPro.size()==0){
+        if (supportPro == null || supportPro.size() == 0) {
             showErrorToast("商品异常");
             return;
         }
         comment = mEdMsg.getText().toString();//评价信息
 
-        if (!adapter.getCommetStatus()&&comment.equals("")){//有差评情况，须填写原因
+        if (!adapter.getCommetStatus() && comment.equals("")) {//有差评情况，须填写原因
             showErrorToast("请填写差评原因");
             return;
         }
@@ -285,7 +288,6 @@ public class CommentOrderActivity extends BaseActivity<CommentOrderPresenter> im
 
         mPresenter.discussOrder(commentParamsBean);//提交评价
     }
-
 
 
 }

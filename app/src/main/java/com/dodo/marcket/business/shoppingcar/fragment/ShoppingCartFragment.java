@@ -95,6 +95,7 @@ public class ShoppingCartFragment extends BaseFragment<ShoppingCartFragmentPrese
     private HomeActivity homeActivity;
     private boolean isShowPay = true;
     private double minPrice = 0;
+    private double freeFreight;
 
     public static ShoppingCartFragment getInstance() {
         if (shoppingCartFragment == null)
@@ -287,7 +288,8 @@ public class ShoppingCartFragment extends BaseFragment<ShoppingCartFragmentPrese
         mTxtCarEdit.setVisibility(View.GONE);
 
         double boxAmount = productBeans.getBoxAmount();//框的押金
-        double freeFreight = productBeans.getFreeFreight();//满多少减运费
+        //满多少减运费
+        freeFreight = productBeans.getFreeFreight();
         double freight = productBeans.getFreight();//不满200收20运费
         //minprice是订单最小金额，就是商品大于minprice才能下单，做批发的
         minPrice = productBeans.getMinPrice();
@@ -401,7 +403,7 @@ public class ShoppingCartFragment extends BaseFragment<ShoppingCartFragmentPrese
             mTxtHuishou.setBackgroundResource(R.color.basicColor);
             mTxtHuishou.setClickable(true);
         }
-        mTxtSendPrice.setText("满" + minPrice + "起送");
+        mTxtSendPrice.setText("满" + minPrice + "起送,满"+ freeFreight +"免运费");
 
         if (afterDiscountAmount==productAmount){
             mLLRealPrice.setVisibility(View.GONE);
@@ -433,20 +435,9 @@ public class ShoppingCartFragment extends BaseFragment<ShoppingCartFragmentPrese
     @Override
     public void onResume() {
         super.onResume();
-        mPresenter.getProducts();//获取购物车商品
+        if (hastoken) {
+            mPresenter.getProducts();//获取购物车商品
+        }
     }
 
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        // TODO: inflate a fragment view
-        View rootView = super.onCreateView(inflater, container, savedInstanceState);
-        unbinder = ButterKnife.bind(this, rootView);
-        return rootView;
-    }
-
-    @Override
-    public void onDestroyView() {
-        super.onDestroyView();
-        unbinder.unbind();
-    }
 }

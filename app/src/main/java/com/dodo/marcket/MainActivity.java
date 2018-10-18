@@ -6,6 +6,7 @@ import android.graphics.drawable.GradientDrawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -205,7 +206,7 @@ public class MainActivity extends BaseActivity implements BaseView, PermissionsL
 
                 break;
             case R.id.mBtn_6:
-                wxPay(testWxPay(ap));
+                showDialog();
                 break;
 
             case R.id.mBtn_7://评价
@@ -354,6 +355,33 @@ public class MainActivity extends BaseActivity implements BaseView, PermissionsL
 
     }
 
+    public void showDialog(){
+        View inflate = LayoutInflater.from(this).inflate(R.layout.showpay, null);
+        TextView mTxtTitle = inflate.findViewById(R.id.mTxt_title);
+        TextView mTxt_msg = inflate.findViewById(R.id.mTxt_msg);
+        TextView mTxt_paySure = inflate.findViewById(R.id.mTxt_paySure);
+
+
+        mTxt_paySure.getLayoutParams().width = ScreenUtil.getScreenWidth(this)/2+ScreenUtil.getScreenWidth(this)/4;
+
+        AlertDialog dialog = new AlertDialog.Builder(this, R.style.dialog).create();//创建对话框
+        dialog.setIcon(R.mipmap.ic_launcher);//设置对话框icon
+        dialog.setCancelable(false);
+        dialog.setCanceledOnTouchOutside(false);
+
+
+        mTxt_msg.setText("微信支付结果：");
+//            mTxtTitle.setText("提示");
+        mTxt_paySure.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
+
+        dialog.setView(inflate);
+        dialog.show();
+    }
 
 
 

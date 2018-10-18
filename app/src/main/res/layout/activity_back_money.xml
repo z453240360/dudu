@@ -36,6 +36,7 @@
             android:textSize="@dimen/dimen_16sp" />
     </LinearLayout>
     <com.jcodecraeer.xrecyclerview.XRecyclerView
+        android:descendantFocusability="blocksDescendants"
         android:id="@+id/mRv_myBackBox"
         android:layout_width="match_parent"
         android:layout_height="match_parent"/>

@@ -41,7 +41,7 @@
                     android:ellipsize="end"
                     android:lines="1"
                     android:textStyle="bold"
-                    android:text="绿色农庄新鲜大鸭腿"
+                    tools:text="绿色农庄新鲜大鸭腿"
                     android:textColor="@color/black_333333"
                     android:textSize="@dimen/dimen_16sp"
                     />
@@ -53,7 +53,7 @@
                     android:layout_marginTop="@dimen/dimen_10dp"
                     android:ellipsize="end"
                     android:lines="1"
-                    android:text="产品信息描述。可能有很多子"
+                    tools:text="产品信息描述。可能有很多子"
                     android:textColor="#888888"
                     android:textSize="@dimen/dimen_12sp"
                     />

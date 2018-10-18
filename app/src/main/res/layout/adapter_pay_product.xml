@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    xmlns:tools="http://schemas.android.com/tools"
     android:gravity="center_vertical"
     android:background="@color/white">
 
@@ -69,9 +69,9 @@
                 android:layout_marginTop="@dimen/dimen_10dp"
                 android:ellipsize="end"
                 android:lines="1"
-                android:text="绿色农庄新鲜大鸭腿"
+                tools:text="绿色农庄新鲜大鸭腿"
                 android:textColor="@color/black_333333"
-                android:textSize="@dimen/dimen_16sp"
+                android:textSize="@dimen/dimen_12sp"
                 android:textStyle="bold"
                 />
 
@@ -84,9 +84,9 @@
                 android:layout_marginLeft="@dimen/dimen_10dp"
                 android:ellipsize="end"
                 android:lines="1"
-                android:text="产品信息描述。可能有很多子"
+                tools:text="产品信息描述。可能有很多子"
                 android:textColor="#888888"
-                android:textSize="@dimen/dimen_12sp"
+                android:textSize="@dimen/dimen_10sp"
                 />
 
             <LinearLayout
@@ -109,7 +109,7 @@
                     android:paddingLeft="@dimen/dimen_5dp"
                     android:paddingRight="@dimen/dimen_5dp"
                     android:paddingTop="2dp"
-                    android:text="泡沫箱"
+                    tools:text="泡沫箱"
                     android:textColor="@color/basicColor"
                     android:textSize="@dimen/dimen_10sp" />
             </LinearLayout>
@@ -122,7 +122,7 @@
                 android:layout_marginLeft="@dimen/dimen_10dp"
                 android:ellipsize="end"
                 android:lines="1"
-                android:text="￥9.9/斤"
+                tools:text="￥9.9/斤"
                 android:textColor="#666666"
                 android:textSize="@dimen/dimen_12sp"/>
 
@@ -144,7 +144,7 @@
                     android:lines="1"
                     android:text="价格 ￥"
                     android:textColor="#f39700"
-                    android:textSize="@dimen/dimen_12sp" />
+                    android:textSize="@dimen/dimen_10sp" />
 
 
                 <TextView
@@ -155,9 +155,9 @@
                     android:layout_height="match_parent"
                     android:ellipsize="end"
                     android:lines="1"
-                    android:text="99.9"
+                    tools:text="99.9"
                     android:textColor="#f39700"
-                    android:textSize="@dimen/dimen_18sp" />
+                    android:textSize="@dimen/dimen_12sp" />
 
                 <LinearLayout
                     android:visibility="gone"
@@ -209,7 +209,7 @@
         <TextView
             android:id="@+id/mTxt_quality"
             android:layout_marginRight="@dimen/dimen_10dp"
-            android:textSize="15sp"
+            android:textSize="12sp"
             android:textColor="#666666"
             android:gravity="bottom"
             android:text="x1"

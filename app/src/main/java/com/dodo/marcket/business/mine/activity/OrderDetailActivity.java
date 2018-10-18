@@ -253,14 +253,14 @@ public class OrderDetailActivity extends BaseActivity<OrderDetailPresenter> impl
                 mTxtOrderDetailStatus.setText("待发货");
                 mLL1.setVisibility(View.VISIBLE);
                 mTxtReal1.setText("¥ " + od.getAmount());
-                mTxtOrderreal1.setText("¥ " + (payAmount + offsetAmount));
+                mTxtOrderreal1.setText("¥ " + (offsetAmount));
                 mTxtOrder11.setText("¥ " + payAmount);
                 break;
             case "3"://3=配送中
                 mTxtOrderDetailStatus.setText("配送中");
                 mLL1.setVisibility(View.VISIBLE);
                 mTxtReal1.setText("¥ " + od.getAmount());
-                mTxtOrderreal1.setText("¥ " + (payAmount + offsetAmount));
+                mTxtOrderreal1.setText("¥ " + (offsetAmount));
                 mTxtOrder11.setText("¥ " + payAmount);
                 break;
             case "4"://4=已完成
@@ -273,14 +273,14 @@ public class OrderDetailActivity extends BaseActivity<OrderDetailPresenter> impl
                 mTxtOrderDetailStatus.setText("已取消");
                 mLL4.setVisibility(View.VISIBLE);
                 mTxtOrderPrice4.setText("¥ " + od.getAmount());
-                mTxtOrder4.setText("¥ " + (payAmount + offsetAmount));
+                mTxtOrder4.setText("¥ " + (offsetAmount));
                 mTxtOrderPayReal4.setText("¥ " + payAmount);
                 break;
         }
     }
 
 
-    @OnClick({R.id.mTxt_orderCancel1, R.id.mTxt_cancel2, R.id.mTxt_orderPay2})
+    @OnClick({R.id.mTxt_orderCancel1, R.id.mTxt_cancel2, R.id.mTxt_orderPay2,R.id.mTxt_orderAgainOrder3,R.id.mTxt_orderCancel,R.id.mTxt_orderDiscuss3})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.mTxt_orderCancel1://取消订单

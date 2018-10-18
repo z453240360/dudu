@@ -3,7 +3,9 @@ package com.dodo.marcket.business.mine.fragment;
 
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -21,10 +23,15 @@ import com.dodo.marcket.business.mine.constrant.MineFragmentContract;
 import com.dodo.marcket.business.mine.presenter.MineFragmentPresenter;
 import com.dodo.marcket.http.constant.Constant;
 import com.dodo.marcket.utils.SharedPreferencesUtil;
+import com.dodo.marcket.utils.ToastUtils;
 import com.dodo.marcket.utils.statusbar.StatusBarUtils;
 import com.dodo.marcket.wedget.CircleImageView;
+import com.scwang.smartrefresh.layout.SmartRefreshLayout;
+import com.scwang.smartrefresh.layout.api.RefreshLayout;
+import com.scwang.smartrefresh.layout.listener.OnRefreshListener;
 
 import butterknife.BindView;
+import butterknife.ButterKnife;
 import butterknife.OnClick;
 import butterknife.Unbinder;
 
@@ -85,6 +92,9 @@ public class MineFragment extends BaseFragment<MineFragmentPresenter> implements
     @BindView(R.id.mTxt_waitCancel)
     TextView mTxtWaitCancel;
     Unbinder unbinder1;
+    @BindView(R.id.mRefresh)
+    SmartRefreshLayout mRefresh;
+    Unbinder unbinder2;
 
 
     public static MineFragment getInstance() {
@@ -106,7 +116,17 @@ public class MineFragment extends BaseFragment<MineFragmentPresenter> implements
     @Override
     public void loadData() {
         initTitle();
+
+        mRefresh.setOnRefreshListener(new OnRefreshListener() {
+            @Override
+            public void onRefresh(RefreshLayout refreshLayout) {
+                mPresenter.getUserMsg();//获取个人信息
+            }
+        });
+
         mPresenter.getUserMsg();//获取个人信息
+
+
     }
 
     private void initTitle() {
@@ -127,6 +147,9 @@ public class MineFragment extends BaseFragment<MineFragmentPresenter> implements
     @Override
     public void showErrorMsg(String msg, String type) {
         showErrorToast(msg);
+        if (mRefresh.isRefreshing()){
+            mRefresh.finishRefresh();
+        }
     }
 
     @Override
@@ -138,7 +161,7 @@ public class MineFragment extends BaseFragment<MineFragmentPresenter> implements
     }
 
 
-    @OnClick({R.id.mLL_salesMan, R.id.mLL_postAddress, R.id.mLL_allOrder, R.id.mLL_dealwith, R.id.mLL_send, R.id.mLL_deliver,R.id.mLL_cancel ,R.id.mLL_finish, R.id.mLL_discount, R.id.mLL_address, R.id.mLL_backMoney, R.id.mLL_backBox, R.id.mTxt_loginOut})
+    @OnClick({R.id.mLL_salesMan, R.id.mLL_postAddress, R.id.mLL_allOrder, R.id.mLL_dealwith, R.id.mLL_send, R.id.mLL_deliver, R.id.mLL_cancel, R.id.mLL_finish, R.id.mLL_discount, R.id.mLL_address, R.id.mLL_backMoney, R.id.mLL_backBox, R.id.mTxt_loginOut})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.mLL_salesMan://跳转业务员
@@ -149,34 +172,34 @@ public class MineFragment extends BaseFragment<MineFragmentPresenter> implements
                 break;
             case R.id.mLL_allOrder://查看所有订单
                 Bundle bundle1 = new Bundle();
-                bundle1.putInt("currentPage",0);
-                startActivity(MyOrderActivity.class,bundle1);
+                bundle1.putInt("currentPage", 0);
+                startActivity(MyOrderActivity.class, bundle1);
                 break;
             case R.id.mLL_dealwith://待处理
                 Bundle bundle2 = new Bundle();
-                bundle2.putInt("currentPage",1);
-                startActivity(MyOrderActivity.class,bundle2);
+                bundle2.putInt("currentPage", 1);
+                startActivity(MyOrderActivity.class, bundle2);
                 break;
             case R.id.mLL_send://待发送
                 Bundle bundle3 = new Bundle();
-                bundle3.putInt("currentPage",2);
-                startActivity(MyOrderActivity.class,bundle3);
+                bundle3.putInt("currentPage", 2);
+                startActivity(MyOrderActivity.class, bundle3);
                 break;
             case R.id.mLL_deliver://已发货
                 Bundle bundle4 = new Bundle();
-                bundle4.putInt("currentPage",3);
-                startActivity(MyOrderActivity.class,bundle4);
+                bundle4.putInt("currentPage", 3);
+                startActivity(MyOrderActivity.class, bundle4);
                 break;
             case R.id.mLL_finish://已完成
                 Bundle bundle5 = new Bundle();
-                bundle5.putInt("currentPage",4);
-                startActivity(MyOrderActivity.class,bundle5);
+                bundle5.putInt("currentPage", 4);
+                startActivity(MyOrderActivity.class, bundle5);
                 break;
 
             case R.id.mLL_cancel:
                 Bundle bundle6 = new Bundle();
-                bundle6.putInt("currentPage",5);
-                startActivity(MyOrderActivity.class,bundle6);
+                bundle6.putInt("currentPage", 5);
+                startActivity(MyOrderActivity.class, bundle6);
                 break;
 
             case R.id.mLL_discount://跳转优惠券
@@ -184,8 +207,8 @@ public class MineFragment extends BaseFragment<MineFragmentPresenter> implements
                 break;
             case R.id.mLL_address://跳转我的地址
                 Bundle bundle = new Bundle();
-                bundle.putBoolean("needBackResult",false);
-                startActivity(MyAddressActivity.class,bundle);
+                bundle.putBoolean("needBackResult", false);
+                startActivity(MyAddressActivity.class, bundle);
                 break;
             case R.id.mLL_backMoney://申请退框
                 startActivity(BackBoxActivity.class);
@@ -199,9 +222,9 @@ public class MineFragment extends BaseFragment<MineFragmentPresenter> implements
 
                 String o = (String) SharedPreferencesUtil.get(mContext, Constant.token, "");
 
-
                 ((HomeActivity) mActivity).selectRg(0);
                 ((HomeActivity) mActivity).initHasToken();
+
 
                 break;
         }
@@ -210,7 +233,14 @@ public class MineFragment extends BaseFragment<MineFragmentPresenter> implements
     //获取个人信息
     @Override
     public void getUserMsg(UserInfoBean userInfoBean) {
+        if (mRefresh.isRefreshing()){
+            mRefresh.finishRefresh();
+        }
 
+        if (userInfoBean==null){
+            ToastUtils.show(mContext,"获取个人信息出错");
+            return;
+        }
         String username = userInfoBean.getUsername();
         String memberRank = userInfoBean.getMemberRank();
         boolean isHasSalesman = userInfoBean.isIsHasSalesman();
@@ -220,25 +250,25 @@ public class MineFragment extends BaseFragment<MineFragmentPresenter> implements
         int noRecevedOrder = userInfoBean.getNoRecevedOrder();//待收货订单数量
         int hasPayOrder = userInfoBean.getHasPayOrder();//已完成订单数量
 
-        if (noPayOrderNumber==0){//待付款订单数量
-            mTxtWaitPay.setVisibility(View.GONE);
-        }else {
+        if (noPayOrderNumber == 0) {//待付款订单数量
+            mTxtWaitPay.setVisibility(View.INVISIBLE);
+        } else {
             mTxtWaitPay.setVisibility(View.VISIBLE);
-            mTxtWaitPay.setText(noPayOrderNumber+"");
+            mTxtWaitPay.setText(noPayOrderNumber + "");
         }
 
-        if (noRecevedOrder==0){//待收货订单数量
+        if (noRecevedOrder == 0) {//待收货订单数量
             mTxtWaitPost.setVisibility(View.GONE);
-        }else {
+        } else {
             mTxtWaitPost.setVisibility(View.GONE);
-            mTxtWaitPost.setText(noPayOrderNumber+"");
+            mTxtWaitPost.setText(noPayOrderNumber + "");
         }
 
-        if (hasPayOrder==0){//已完成订单数量
+        if (hasPayOrder == 0) {//已完成订单数量
             mTxtWaitFinish.setVisibility(View.GONE);
-        }else {
+        } else {
             mTxtWaitFinish.setVisibility(View.GONE);
-            mTxtWaitFinish.setText(noPayOrderNumber+"");
+            mTxtWaitFinish.setText(noPayOrderNumber + "");
         }
 
         mTxtWaitCancel.setVisibility(View.GONE);
@@ -248,7 +278,7 @@ public class MineFragment extends BaseFragment<MineFragmentPresenter> implements
         //用户名
         mTxtUserName.setText(username);
 
-        mTxtPoint.setText(point+" 积分");
+        mTxtPoint.setText(point + " 积分");
         //会员等级
         if (TextUtils.isEmpty(memberRank)) {
             mTxtMemberRank.setVisibility(View.GONE);
@@ -267,4 +297,17 @@ public class MineFragment extends BaseFragment<MineFragmentPresenter> implements
 
     }
 
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        // TODO: inflate a fragment view
+        View rootView = super.onCreateView(inflater, container, savedInstanceState);
+        unbinder2 = ButterKnife.bind(this, rootView);
+        return rootView;
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        unbinder2.unbind();
+    }
 }

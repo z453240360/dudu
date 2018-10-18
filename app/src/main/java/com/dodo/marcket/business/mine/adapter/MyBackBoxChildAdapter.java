@@ -63,11 +63,11 @@ public class MyBackBoxChildAdapter extends RecyclerView.Adapter<MyBackBoxChildAd
             holder.mRvBackBoxList.setLayoutManager(manager);
             holder.mRvBackBoxList.setAdapter(adapter);
         }
-        if (position==mDatas.size()-1){
-            holder.mTxtLine.setVisibility(View.GONE);
-        }else {
-            holder.mTxtLine.setVisibility(View.VISIBLE);
-        }
+//        if (position==mDatas.size()-1){
+//            holder.mTxtLine.setVisibility(View.GONE);
+//        }else {
+//            holder.mTxtLine.setVisibility(View.VISIBLE);
+//        }
     }
 
 

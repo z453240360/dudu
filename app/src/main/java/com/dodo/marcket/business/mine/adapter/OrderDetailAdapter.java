@@ -74,7 +74,13 @@ public class OrderDetailAdapter extends RecyclerView.Adapter<OrderDetailAdapter.
         }
 
         holder.mTxtProductPrice.setText(productBean.getPrice() + "");//销售价格
-        holder.mTxtPackage.setText(productBean.getPackaging());//包装
+        if (productBean.getPackaging().equals("")){
+            holder.mTxtPackage.setVisibility(View.GONE);
+        }else {
+            holder.mTxtPackage.setVisibility(View.VISIBLE);
+            holder.mTxtPackage.setText(productBean.getPackaging());//包装
+        }
+      
         ImageLoaders.displayImage(holder.mImgProductImg, productBean.getImage());
         holder.mTxtNumber.setText(" x " + productBean.getCartNumber());
 

@@ -202,7 +202,7 @@ public class MultiAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
                 sendHolder.mTxtOrderNumber.setText(sn);//订单号
                 sendHolder.mTxtOrderTime.setText(createDate);//日期
                 sendHolder.mTxtOrderPrice.setText("¥ " + payAmount + "");//实付
-                sendHolder.mTxtOrderPayReal.setText(("¥ " + payAmount + offsetAmount) + "");//实收
+                sendHolder.mTxtOrderPayReal.setText(("¥ " +  offsetAmount) + "");//实收
                 sendHolder.mTxtOrderPayReal2.setText("¥ " + amount);//应付
                 sendHolder.mTxtOrderSum.setText("x " + size + "");
                 sendHolder.mRvOrderImg.setAdapter(adapter);
@@ -243,7 +243,7 @@ public class MultiAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
                 deliverHolder.mTxtOrderNumber.setText(sn);//订单号
                 deliverHolder.mTxtOrderTime.setText(createDate);//日期
                 deliverHolder.mTxtOrderPrice.setText("¥ " + payAmount + "");//实付
-                deliverHolder.mTxtOrderPayReal.setText("¥ " + (payAmount + offsetAmount) + "");//实收
+                deliverHolder.mTxtOrderPayReal.setText("¥ " + ( offsetAmount) + "");//实收
                 deliverHolder.mTxtOrderPayReal2.setText("¥ " + amount);//应付
                 deliverHolder.mTxtOrderSum.setText("x " + size + "");
                 deliverHolder.mRvOrderImg.setAdapter(adapter);
@@ -337,7 +337,7 @@ public class MultiAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
                 cancelHolder.mTxtOrderNumber.setText(sn);//订单号
                 cancelHolder.mTxtOrderTime.setText(createDate);//日期
                 cancelHolder.mTxtOrderPrice.setText("¥ " + payAmount + "");//实付
-                cancelHolder.mTxtOrderPayReal.setText("¥ " + (payAmount + offsetAmount) + "");//实收
+                cancelHolder.mTxtOrderPayReal.setText("¥ " + (offsetAmount) + "");//实收
                 cancelHolder.mTxtOrderPayReal2.setText("¥ " + amount);//应付
 
                 cancelHolder.mRvOrderImg.setAdapter(adapter);

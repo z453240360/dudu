@@ -117,7 +117,13 @@ public class PayAdapter extends RecyclerView.Adapter<PayAdapter.MyViewHolder> {
         holder.mTxtPrice.setText("¥" + productBean.getUnitPrice() + "/" + productBean.getUnit());//单价
         holder.mTxtProductMsg.setText(productBean.getMemo());//描述
         holder.mTxtProductPrice.setText(productBean.getPrice() + "");//销售价格
-        holder.mTxtPackage.setText(productBean.getPackaging());//包装
+
+        if (productBean.getPackaging().equals("")){
+            holder.mTxtPackage.setVisibility(View.GONE);
+        }else {
+            holder.mTxtPackage.setVisibility(View.VISIBLE);
+            holder.mTxtPackage.setText(productBean.getPackaging());//包装
+        }
         ImageLoaders.displayImage(holder.mImgProductImg, productBean.getImage());
 
         //是否显示已经售完

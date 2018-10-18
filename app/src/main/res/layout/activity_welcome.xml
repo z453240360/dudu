@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    android:orientation="vertical"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".WelcomeActivity">
+
+
+    <TextView
+        android:id="@+id/mTxt_countTime"
+        android:textSize="@dimen/dimen_12sp"
+        android:textColor="@color/white"
+        android:background="@drawable/shape_lunkuo_circlecar2"
+        android:layout_marginTop="@dimen/dimen_10dp"
+        android:layout_marginRight="@dimen/dimen_10dp"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentRight="true"
+        android:text="3s"
+        android:gravity="center"
+        android:layout_width="25dp"
+        android:layout_height="25dp" />
+
+    <TextView
+        android:textSize="@dimen/dimen_16sp"
+        android:textColor="@color/black_333333"
+        android:gravity="center"
+        android:text="Welcome DuoDuoFresh"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+</RelativeLayout>

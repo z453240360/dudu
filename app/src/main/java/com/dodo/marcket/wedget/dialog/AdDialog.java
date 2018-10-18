@@ -34,7 +34,7 @@ public class AdDialog extends Dialog implements DialogInterface.OnKeyListener {
 
     public AdDialog(Context context) {
         this(context, R.style.dialog);
-        setCanceledOnTouchOutside(true);
+        setCanceledOnTouchOutside(false);
     }
 
     public AdDialog(Context context, int theme) {

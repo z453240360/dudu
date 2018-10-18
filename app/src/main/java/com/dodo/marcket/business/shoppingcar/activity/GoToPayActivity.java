@@ -50,6 +50,8 @@ import com.dodo.marcket.business.shoppingcar.adapter.PayAdapter;
 import com.dodo.marcket.business.shoppingcar.constrant.GoToPayContract;
 import com.dodo.marcket.business.shoppingcar.presenter.GoToPayPresenter;
 import com.dodo.marcket.http.constant.Constant;
+import com.dodo.marcket.utils.MathUtils;
+import com.dodo.marcket.utils.NumberUtils;
 import com.dodo.marcket.utils.photo.PopupWindowHelper;
 import com.tencent.mm.opensdk.modelpay.PayReq;
 import com.tencent.mm.opensdk.openapi.IWXAPI;
@@ -803,10 +805,10 @@ public class GoToPayActivity extends BaseActivity<GoToPayPresenter> implements G
         double v = afterDiscountAmount + boxAmount + freight - onLineMoney - pointMoney - dicCount;
         if (v == productAmount) {
             mLLRealPrice.setVisibility(View.GONE);
-            mTxtFinalMony.setText("¥ " + v + "");
+            mTxtFinalMony.setText("¥ " + MathUtils.round(v,2) + "");
         } else {
             mLLRealPrice.setVisibility(View.VISIBLE);
-            mTxtFinalMony.setText("¥ " + v + "");
+            mTxtFinalMony.setText("¥ " +  MathUtils.round(v,2) + "");
         }
 
     }

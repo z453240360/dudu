@@ -80,7 +80,7 @@ public class HomePagePresenter extends BasePresenter<HomePageFragment> implement
         PhoneBean phoneBean = new PhoneBean();
         phoneBean.setAdPositionId(adPositionId);
         String name = "ad.getAdPosition";
-        addSubscription(apiModel.getBanner(ParamsUtils.getParams(phoneBean,name,mToken)), new ResponseSubscriber<List<BannerBean>>(mContext) {
+        addSubscription(apiModel.getBanner(ParamsUtils.getParams(phoneBean,name,mToken)), new ResponseSubscriber<List<BannerBean>>(mContext,"we") {
             @Override
             public void apiSuccess(List<BannerBean> s) {
                 mView.getBanner(s);

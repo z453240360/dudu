@@ -113,6 +113,7 @@ public class ClassifyFragment extends BaseFragment<ClassifyFragmentPresenter> im
     private CarPopAdapter carPopAdapter;
     private double minPrice;
     private LinearLayout mLL_delete;
+    private double freeFreight;
 
 
     public static ClassifyFragment getInstance() {
@@ -252,7 +253,7 @@ public class ClassifyFragment extends BaseFragment<ClassifyFragmentPresenter> im
         }
 
 
-        double freeFreight = productBeans.getFreeFreight();
+        freeFreight = productBeans.getFreeFreight();
         mTxtSendPrice.setVisibility(View.VISIBLE);
         minPrice = productBeans.getMinPrice();
         mTxtSendPrice.setText("满" + minPrice + "起送," + "满" + freeFreight + "免运费");
@@ -318,7 +319,8 @@ public class ClassifyFragment extends BaseFragment<ClassifyFragmentPresenter> im
         double freight = payBean.getFreight();//运费
         double afterDiscountAmount = payBean.getAfterDiscountAmount();//折后价格
 
-        mTxtSendPrice.setText("满" + minPrice + "起送");
+        mTxtSendPrice.setText("满" + minPrice + "起送," + "满" + freeFreight + "免运费");
+//        mTxtSendPrice.setText("满" + minPrice + "起送");
         if (minPrice >= productAmount) {//低于购买价格，不允许购买
             mTxtPay.setBackgroundResource(R.color.defalute);
             mTxtPay.setClickable(false);

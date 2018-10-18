@@ -5,17 +5,33 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:background="@color/white"
+    android:background="@color/mainbackground"
     android:layout_height="match_parent"
     tools:context=".wxapi.WXPayEntryActivity">
-
+    <LinearLayout
+        android:background="@color/white"
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="44dp">
+        <TextView
+            android:textColor="@color/black"
+            android:gravity="center"
+            android:textSize="@dimen/dimen_16sp"
+            android:text="微信支付"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+    </LinearLayout>
 
     <TextView
+        android:visibility="gone"
+        android:layout_marginTop="@dimen/dimen_10dp"
+        android:background="@color/white"
+        android:gravity="center"
         android:textColor="@color/black_333333"
         android:id="@+id/mTxt_wxPay"
         android:textSize="18sp"
-        android:hint="显示微信支付结果"
+        android:hint="微信支付"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        android:layout_height="match_parent" />
 
 </LinearLayout>
