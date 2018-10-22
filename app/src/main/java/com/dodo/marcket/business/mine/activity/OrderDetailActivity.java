@@ -179,16 +179,6 @@ public class OrderDetailActivity extends BaseActivity<OrderDetailPresenter> impl
         mTxtOrderDetaiNum.setText(sn);
         mTxtOrderDetailTime.setText(createDate);
 
-
-        List<OrderDetailBean.OrderItemsBean> items = od.getOrderItems();
-        if (items != null) {
-            orderItems.clear();
-            orderItems.addAll(items);
-            adapter.notifyDataSetChanged();
-        } else {
-            mRvOrderDetailList.setVisibility(View.GONE);
-        }
-
         if (orderStatus.equals("待付款")) {//查询状态:0=全部,1=待付款,2=待发货,3=配送中,4=已完成,5=已取消
             initBottomView("1", od);
         } else if (orderStatus.equals("待发货")) {
@@ -200,6 +190,21 @@ public class OrderDetailActivity extends BaseActivity<OrderDetailPresenter> impl
         } else if (orderStatus.equals("已取消")) {
             initBottomView("5", od);
         }
+
+        List<OrderDetailBean.OrderItemsBean> items = od.getOrderItems();
+        if (items != null) {
+            orderItems.clear();
+            orderItems.addAll(items);
+            for (int i = 0; i < orderItems.size(); i++) {
+                orderItems.get(i).setOrderStatus(orderStatus);
+            }
+
+            adapter.notifyDataSetChanged();
+        } else {
+            mRvOrderDetailList.setVisibility(View.GONE);
+        }
+
+
 
     }
 
@@ -252,16 +257,18 @@ public class OrderDetailActivity extends BaseActivity<OrderDetailPresenter> impl
             case "2"://2=待发货
                 mTxtOrderDetailStatus.setText("待发货");
                 mLL1.setVisibility(View.VISIBLE);
-                mTxtReal1.setText("¥ " + od.getAmount());
+                mTxtReal1.setText("¥ " + payAmount);
                 mTxtOrderreal1.setText("¥ " + (offsetAmount));
-                mTxtOrder11.setText("¥ " + payAmount);
+                mTxtOrder11.setText("¥ " + od.getAmount());
                 break;
             case "3"://3=配送中
                 mTxtOrderDetailStatus.setText("配送中");
                 mLL1.setVisibility(View.VISIBLE);
-                mTxtReal1.setText("¥ " + od.getAmount());
+                mTxtReal1.setText("¥ " + payAmount);
                 mTxtOrderreal1.setText("¥ " + (offsetAmount));
-                mTxtOrder11.setText("¥ " + payAmount);
+                mTxtOrder11.setText("¥ " + od.getAmount());
+                mTxtOrderCancel1.setVisibility(View.GONE);
+
                 break;
             case "4"://4=已完成
                 mTxtOrderDetailStatus.setText("已完成");
@@ -272,9 +279,9 @@ public class OrderDetailActivity extends BaseActivity<OrderDetailPresenter> impl
             case "5"://5=已取消
                 mTxtOrderDetailStatus.setText("已取消");
                 mLL4.setVisibility(View.VISIBLE);
-                mTxtOrderPrice4.setText("¥ " + od.getAmount());
+                mTxtOrderPrice4.setText("¥ " + payAmount);
                 mTxtOrder4.setText("¥ " + (offsetAmount));
-                mTxtOrderPayReal4.setText("¥ " + payAmount);
+                mTxtOrderPayReal4.setText("¥ " + od.getAmount());
                 break;
         }
     }

@@ -700,6 +700,7 @@
                         android:textSize="14sp" />
 
                     <LinearLayout
+                        android:visibility="gone"
                         android:id="@+id/mLL_realPrice"
                         android:orientation="horizontal"
                         android:layout_width="match_parent"

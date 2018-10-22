@@ -238,6 +238,9 @@ public class HomeActivity extends BaseActivity<HomePresenter> implements HomeCon
             case 2:
                 rbMime.setChecked(true);
                 break;
+            case 3:
+
+                break;
         }
     }
 

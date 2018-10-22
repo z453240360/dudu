@@ -54,7 +54,7 @@ public class AddressAdapter extends RecyclerView.Adapter<AddressAdapter.MyViewHo
         holder.mTxtMyPhone.setText(myAddressBean.getPhone());
 
         //我的地址
-        holder.mTxtMyAddress.setText(myAddressBean.getAreaInfo().getName() + myAddressBean.getAddress());
+        holder.mTxtMyAddress.setText(myAddressBean.getProvince()+myAddressBean.getCity()+myAddressBean.getDistrict() + myAddressBean.getAddress());
 
         //点击编辑按钮
         holder.mTxtMyEdit.setOnClickListener(new View.OnClickListener() {

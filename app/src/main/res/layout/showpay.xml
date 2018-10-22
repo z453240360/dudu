@@ -46,7 +46,7 @@
         android:layout_height="wrap_content"
         android:background="@drawable/shape_lunkuo_paint6"
         android:gravity="center"
-        android:padding="@dimen/dimen_10dp"
+        android:padding="@dimen/dimen_15dp"
         android:text="确定"
         android:textColor="@color/white"
 

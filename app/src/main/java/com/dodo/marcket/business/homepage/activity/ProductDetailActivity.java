@@ -92,6 +92,8 @@ public class ProductDetailActivity extends BaseActivity<ProductDetailPresenter> 
     TextView mTxtPackageWe;
     @BindView(R.id.ll_boxs)
     LinearLayout llBoxs;
+    @BindView(R.id.mLL_noDate)
+    LinearLayout mLLNoDate;
     private List<SpecificationsBean> specificationsList = new ArrayList<>();
     private ProductDetailAdapter adapter;
     private CustomLinearLayoutManager manager;
@@ -119,7 +121,6 @@ public class ProductDetailActivity extends BaseActivity<ProductDetailPresenter> 
         initBanner();
         initRv();
         mTxtNum.setText(cartNumber + "");
-
 
         mPresenter.getProductDetailById(mId);//获取商品详情
 
@@ -256,9 +257,15 @@ public class ProductDetailActivity extends BaseActivity<ProductDetailPresenter> 
     @Override
     public void getProductDetailById(ProductBean productBean) {
         if (productBean == null) {
+            mLLNoDate.setVisibility(View.VISIBLE);
             return;
         }
 
+        if (productBean.getPrice()==0d||productBean.getName()==null||productBean.getName().equals("")){
+            mLLNoDate.setVisibility(View.VISIBLE);
+            return;
+        }
+        mLLNoDate.setVisibility(View.GONE);
         isCanBuy = false;
         if (productBean.getStock() == null) {//不限制库存
             isCanBuy = true;
@@ -306,14 +313,14 @@ public class ProductDetailActivity extends BaseActivity<ProductDetailPresenter> 
         }
 
         String packaging = productBean.getPackaging();
-        if (packaging.equals("")){
+        if (packaging.equals("")) {
             mTxtPackage.setVisibility(View.GONE);
-        }else {
+        } else {
             mTxtPackage.setText(packaging);
             mTxtPackage.setVisibility(View.VISIBLE);
         }
 
-        mTxtPackageWe.setText("约 " +productBean.getWeight()+" "+productBean.getUnit());
+        mTxtPackageWe.setText("约 " + productBean.getWeight() + " " + productBean.getUnit());
 
         mTxtNum.setText(cartNumber + "");
         mTxtProductPrice.setText(price + "");

@@ -5,11 +5,15 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.LinearLayout;
 
 import com.dodo.marcket.R;
 import com.dodo.marcket.base.BaseFragment;
 import com.dodo.marcket.bean.DisCountBean;
-import com.dodo.marcket.business.HomeActivity;
+import com.dodo.marcket.business.clasify.activity.ClasifyActivity;
 import com.dodo.marcket.business.mine.adapter.DisCountAdapter;
 import com.dodo.marcket.business.mine.constrant.DisCountFragmentContract;
 import com.dodo.marcket.business.mine.presenter.DisCountFragmentPresenter;
@@ -18,6 +22,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
+import butterknife.ButterKnife;
+import butterknife.Unbinder;
 
 
 @SuppressLint("ValidFragment")
@@ -27,6 +33,9 @@ public class DisCountFragment extends BaseFragment<DisCountFragmentPresenter> im
     public static DisCountFragment orderFragment;
     @BindView(R.id.mRv_discount)
     RecyclerView mRvDiscount;
+    @BindView(R.id.mLL_noDate)
+    LinearLayout mLLNoDate;
+    Unbinder unbinder;
 
     private int status;
     protected boolean isViewInitiated;
@@ -96,7 +105,7 @@ public class DisCountFragment extends BaseFragment<DisCountFragmentPresenter> im
 
             @Override
             public void onUseClic(int pos) {
-                startActivity(HomeActivity.class);
+                startActivity(ClasifyActivity.class);
             }
         });
     }
@@ -129,11 +138,26 @@ public class DisCountFragment extends BaseFragment<DisCountFragmentPresenter> im
     @Override
     public void getDisCount(List<DisCountBean> s) {
         if (s == null || s.size() == 0) {
+            mLLNoDate.setVisibility(View.VISIBLE);
             return;
         }
+        mLLNoDate.setVisibility(View.GONE);
+
+        for (int i = 0; i < s.size(); i++) {
+            s.get(i).setStatus(status + "");
+        }
+
 
         mDates.clear();
         mDates.addAll(s);
         adapter.notifyDataSetChanged();
     }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        isDataInitiated = true;
+        getDate();
+    }
+
 }

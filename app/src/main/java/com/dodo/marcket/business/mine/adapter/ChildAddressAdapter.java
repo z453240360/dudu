@@ -60,6 +60,11 @@ public class ChildAddressAdapter extends RecyclerView.Adapter<ChildAddressAdapte
 
         holder.mTxt_addAddress.setText(mDatas.get(position).getName());
 
+        if (mDatas.get(position).isSelect()){
+            holder.mTxt_addAddress.setTextColor(mContext.getResources().getColor(R.color.basicColor));
+        }else {
+            holder.mTxt_addAddress.setTextColor(mContext.getResources().getColor(R.color.black_333333));
+        }
     }
 
 
@@ -82,5 +87,19 @@ public class ChildAddressAdapter extends RecyclerView.Adapter<ChildAddressAdapte
     }
 
 
+    public void setItem(int pos){
+        if (mDatas.size()==0){
+            return;
+        }
+
+        for (int i = 0; i < mDatas.size(); i++) {
+            if (i==pos){
+                mDatas.get(i).setSelect(true);
+            }else {
+                mDatas.get(i).setSelect(false);
+            }
+        }
+        notifyDataSetChanged();
+    }
 
 }

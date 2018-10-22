@@ -152,7 +152,8 @@ public class ClassifyFragment extends BaseFragment<ClassifyFragmentPresenter> im
     public void onResume() {
         super.onResume();
         if (hastoken) {
-//            mLLBottomView.setVisibility(View.VISIBLE);
+            carList.clear();
+//            mLLBottomView.setVisibility(View.GONE);
             mPresenter.getProducts();//获取购物车商品
             mPresenter.getCarNum();//获取购物车数量
             initBottomPrice();
@@ -362,6 +363,7 @@ public class ClassifyFragment extends BaseFragment<ClassifyFragmentPresenter> im
         mTxtCarPostMoney.setText("0");
 //        mTxtSendPrice.setText("满"+minPrice+"起送");
         mPresenter.getCarNum();
+        carList.clear();
         initBottomPrice();//重新计算价格
     }
 
@@ -487,6 +489,10 @@ public class ClassifyFragment extends BaseFragment<ClassifyFragmentPresenter> im
                 break;
             case R.id.ll_img://弹出已经加入购物车弹窗
 //                mPresenter.getProducts();
+                if (carList.size()==0){
+                    showErrorMsg("请先选购商品", "");
+                    return;
+                }
                 shoePOP();
                 break;
 
@@ -523,17 +529,5 @@ public class ClassifyFragment extends BaseFragment<ClassifyFragmentPresenter> im
         }
     }
 
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        // TODO: inflate a fragment view
-        View rootView = super.onCreateView(inflater, container, savedInstanceState);
-        unbinder = ButterKnife.bind(this, rootView);
-        return rootView;
-    }
 
-    @Override
-    public void onDestroyView() {
-        super.onDestroyView();
-        unbinder.unbind();
-    }
 }

@@ -26,11 +26,20 @@ public class PhoneBean {
     private String address;
     private boolean isDefault;
     private String province;
+    private String city;
+    private String district;
     private String code;
     private String key;
     private String productId;
     private String specParam;
 
+    public void setCity(String city) {
+        this.city = city;
+    }
+
+    public void setDistrict(String district) {
+        this.district = district;
+    }
 
     public void setProductId(String productId) {
         this.productId = productId;

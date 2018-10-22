@@ -1,6 +1,7 @@
 package com.dodo.marcket.business.clasify.activity;
 
 import android.content.Intent;
+import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
@@ -39,6 +40,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
+import butterknife.ButterKnife;
+import butterknife.OnClick;
 
 public class SearchActivity extends BaseActivity<SearchPresenter> implements SearchContract.View {
 
@@ -49,6 +52,8 @@ public class SearchActivity extends BaseActivity<SearchPresenter> implements Sea
     XRecyclerView mRvSearch;
     @BindView(R.id.mLL_noDate)
     LinearLayout mLLNoDate;
+    @BindView(R.id.mTxt_search)
+    TextView mTxtSearch;
 
     private List<ProductBean> mDates = new ArrayList<>();
     private LinearLayoutManager manager;
@@ -97,8 +102,8 @@ public class SearchActivity extends BaseActivity<SearchPresenter> implements Sea
 
         if (search != null && !search.equals("")) {
             mEdSearch.setText(search);
-            mPresenter.searchProduct(search, page, pageSize,"sD");
-        }else {
+            mPresenter.searchProduct(search, page, pageSize, "sD");
+        } else {
 
         }
 
@@ -122,7 +127,7 @@ public class SearchActivity extends BaseActivity<SearchPresenter> implements Sea
                 page = 1;
                 mDates.clear();
                 adapter.notifyDataSetChanged();
-                mPresenter.searchProduct(s.toString(), page, pageSize,"");
+                mPresenter.searchProduct(s.toString(), page, pageSize, "");
             }
         });
 
@@ -131,18 +136,16 @@ public class SearchActivity extends BaseActivity<SearchPresenter> implements Sea
 
             public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
 
-                if (actionId == EditorInfo.IME_ACTION_SEND || (event != null && event.getKeyCode() == KeyEvent.KEYCODE_ENTER))
-
-                {
-
+                if (actionId == EditorInfo.IME_ACTION_SEND || (event != null && event.getKeyCode() == KeyEvent.KEYCODE_ENTER)) {
                     if ((mEdSearch.getText().toString().trim()).equals("")) {
                         return false;
+                    } else {
+                        page = 1;
+                        mDates.clear();
+                        adapter.notifyDataSetChanged();
+                        mPresenter.searchProduct(mEdSearch.getText().toString().trim(), page, pageSize, "ss");
+                        return false;
                     }
-                    page = 1;
-                    mDates.clear();
-                    adapter.notifyDataSetChanged();
-                    mPresenter.searchProduct(mEdSearch.getText().toString().trim(), page, pageSize,"ss");
-                    return true;
 
                 }
 
@@ -169,15 +172,15 @@ public class SearchActivity extends BaseActivity<SearchPresenter> implements Sea
         mRvSearch.setLoadingListener(new XRecyclerView.LoadingListener() {
             @Override
             public void onRefresh() {
-                page=1;
+                page = 1;
 
-                mPresenter.searchProduct(mEdSearch.getText().toString().trim(), page, pageSize,"");
+                mPresenter.searchProduct(mEdSearch.getText().toString().trim(), page, pageSize, "");
             }
 
             @Override
             public void onLoadMore() {
                 page++;
-                mPresenter.searchProduct(mEdSearch.getText().toString().trim(), page, pageSize,"");
+                mPresenter.searchProduct(mEdSearch.getText().toString().trim(), page, pageSize, "");
             }
         });
 
@@ -206,7 +209,7 @@ public class SearchActivity extends BaseActivity<SearchPresenter> implements Sea
 
             @Override
             public void onAddClicked(int pos) {
-                if (!hastoken){
+                if (!hastoken) {
                     goToLogin();
                     return;
                 }
@@ -218,7 +221,7 @@ public class SearchActivity extends BaseActivity<SearchPresenter> implements Sea
 
             @Override
             public void onMutiSizeClicked(int pos) {
-                if (!hastoken){
+                if (!hastoken) {
                     goToLogin();
                     return;
                 }
@@ -241,10 +244,10 @@ public class SearchActivity extends BaseActivity<SearchPresenter> implements Sea
     @Override
     public void showErrorMsg(String msg, String type) {
         showErrorToast(msg);
-        if (mRvSearch!=null){
-            if (page==1){
+        if (mRvSearch != null) {
+            if (page == 1) {
                 mRvSearch.refreshComplete();
-            }else {
+            } else {
                 mRvSearch.loadMoreComplete();
             }
         }
@@ -253,19 +256,28 @@ public class SearchActivity extends BaseActivity<SearchPresenter> implements Sea
     @Override
     public void getSearchResult(List<ProductBean> productList) {
         if (productList == null) {
-            if (page==1){
+            if (page == 1) {
                 mLLNoDate.setVisibility(View.VISIBLE);
             }
             return;
-        }else {
+        } else {
             mLLNoDate.setVisibility(View.GONE);
         }
 
-        if (page==1){
+        if (productList.size() == 0) {
+            if (page == 1) {
+                mLLNoDate.setVisibility(View.VISIBLE);
+            }
+            return;
+        } else {
+            mLLNoDate.setVisibility(View.GONE);
+        }
+
+        if (page == 1) {
             mRvSearch.refreshComplete();
             mDates.clear();
             mDates.addAll(productList);
-        }else {
+        } else {
             mDates.addAll(productList);
             mRvSearch.loadMoreComplete();
         }
@@ -273,7 +285,7 @@ public class SearchActivity extends BaseActivity<SearchPresenter> implements Sea
 
         page++;
 //        mDates.clear();
-        mDates.addAll(productList);
+//        mDates.addAll(productList);
         adapter.notifyDataSetChanged();
     }
 
@@ -334,7 +346,7 @@ public class SearchActivity extends BaseActivity<SearchPresenter> implements Sea
         ImageLoaders.displayImage(mImg_productImg, image);
         mTxt_productName.setText(name);
         mTxt_productMsg.setText(memo);
-        mTxt_price.setText("¥" + unitPrice + "/"+unit);
+        mTxt_price.setText("¥" + unitPrice + "/" + unit);
         mTxt_package.setText(packaging);
         mTxt_productPrice.setText("" + price + "");
 
@@ -452,4 +464,16 @@ public class SearchActivity extends BaseActivity<SearchPresenter> implements Sea
         });
     }
 
+
+    @OnClick(R.id.mTxt_search)
+    public void onViewClicked() {
+        if ((mEdSearch.getText().toString().trim()).equals("")) {
+            ToastUtils.show(mContext, "请输入搜索内容");
+            return;
+        }
+        page = 1;
+//        mDates.clear();
+//        adapter.notifyDataSetChanged();
+        mPresenter.searchProduct(mEdSearch.getText().toString().trim(), page, pageSize, "ss");
+    }
 }

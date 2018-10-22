@@ -12,30 +12,53 @@
         layout="@layout/layout_toolbar" />
 
     <LinearLayout
-        android:background="@drawable/shape_lunkuo_circle"
-        android:layout_margin="@dimen/dimen_10dp"
         android:gravity="center_vertical"
         android:orientation="horizontal"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
-        <ImageView
-            android:layout_marginLeft="@dimen/dimen_10dp"
-            android:src="@mipmap/fangdajing"
+        <LinearLayout
+            android:background="@drawable/shape_lunkuo_circle"
+            android:layout_margin="@dimen/dimen_10dp"
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            android:layout_weight="1"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content">
+
+            <ImageView
+                android:layout_marginLeft="@dimen/dimen_10dp"
+                android:src="@mipmap/fangdajing"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+            <com.dodo.marcket.wedget.ClearEditText
+                android:id="@+id/mEd_search"
+                android:inputType="text"
+                android:imeOptions="actionSearch"
+                android:layout_marginLeft="@dimen/dimen_5dp"
+                android:background="@drawable/shape_lunkuo_circle"
+                android:hint="输入搜索内容"
+                android:textColor="@color/black_333333"
+                android:textSize="@dimen/dimen_15dp"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/dimen_40dp" />
+        </LinearLayout>
+
+        <TextView
+            android:elevation="@dimen/dimen_2dp"
+            android:id="@+id/mTxt_search"
+            android:gravity="center"
+            android:text="搜索"
+            android:textColor="@color/white"
+            android:textSize="@dimen/dimen_12sp"
+            android:paddingRight="@dimen/dimen_15dp"
+            android:paddingLeft="@dimen/dimen_15dp"
+            android:background="@drawable/shape_lunkuo_circlecar3"
+            android:layout_marginRight="@dimen/dimen_10dp"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
-        <com.dodo.marcket.wedget.ClearEditText
-            android:id="@+id/mEd_search"
-            android:imeActionLabel="搜索"
-            android:imeOptions="actionSearch"
-            android:layout_marginLeft="@dimen/dimen_5dp"
-           android:background="@drawable/shape_lunkuo_circle"
-            android:hint="输入搜索内容"
-            android:textColor="@color/black_333333"
-            android:textSize="@dimen/dimen_15dp"
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/dimen_40dp" />
+            android:layout_height="30dp" />
     </LinearLayout>
+
 
 
     <LinearLayout

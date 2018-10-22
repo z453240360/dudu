@@ -134,6 +134,19 @@ public class OrderDetailBean {
         private int qty;
         private double realPrice;
         private double realWeight;
+        private String orderStatus;
+
+        public void setRealWeight(double realWeight) {
+            this.realWeight = realWeight;
+        }
+
+        public String getOrderStatus() {
+            return orderStatus;
+        }
+
+        public void setOrderStatus(String orderStatus) {
+            this.orderStatus = orderStatus;
+        }
 
         public double getOrderPrice() {
             return orderPrice;

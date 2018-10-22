@@ -12,7 +12,6 @@ import android.widget.TextView;
 import com.dodo.marcket.R;
 import com.dodo.marcket.bean.OrderDetailBean;
 import com.dodo.marcket.utils.ImageLoaders;
-import com.dodo.marcket.wedget.CircleImageView;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -74,21 +73,38 @@ public class OrderDetailAdapter extends RecyclerView.Adapter<OrderDetailAdapter.
         }
 
         holder.mTxtProductPrice.setText(productBean.getPrice() + "");//销售价格
-        if (productBean.getPackaging().equals("")){
+        if (productBean.getPackaging().equals("")) {
             holder.mTxtPackage.setVisibility(View.GONE);
-        }else {
+        } else {
             holder.mTxtPackage.setVisibility(View.VISIBLE);
             holder.mTxtPackage.setText(productBean.getPackaging());//包装
         }
-      
+        holder.mTxtPackageWe.setText("约" + productBean.getWeight() + " " + productBean.getUnit());
         ImageLoaders.displayImage(holder.mImgProductImg, productBean.getImage());
-        holder.mTxtNumber.setText(" x " + productBean.getCartNumber());
+        holder.mTxtNumber.setText(" x " + productBean1.getQty());
 
         if (position == mDatas.size() - 1) {
             holder.mTxtLine.setVisibility(View.GONE);
         } else {
             holder.mTxtLine.setVisibility(View.VISIBLE);
         }
+
+        double orderWeight = productBean1.getOrderWeight();//应发货
+        double orderPrice = productBean1.getOrderPrice();//应收
+        double realPrice = productBean1.getRealPrice();//实收
+        double realWeight = productBean1.getRealWeight();//实发货
+        String ow = "应发货：" + orderWeight + " " + productBean.getUnit();
+        String rw = "   实发货：" + realWeight + " " + productBean.getUnit();
+        String op = "   实付款：" + realPrice + " " + " 元";
+        String rp = "   应收款：" + orderPrice + " " + " 元";
+
+        if (mDatas.get(position).getOrderStatus().equals("配送中")||mDatas.get(position).getOrderStatus().equals("已完成")){
+            holder.mLLPayMsg.setVisibility(View.VISIBLE);
+            holder.mTxtPayMsg.setText(ow + rw + rp + op);
+        }else {
+            holder.mLLPayMsg.setVisibility(View.GONE);
+        }
+
     }
 
 
@@ -107,6 +123,8 @@ public class OrderDetailAdapter extends RecyclerView.Adapter<OrderDetailAdapter.
         TextView mTxtProductMsg;
         @BindView(R.id.mTxt_package)
         TextView mTxtPackage;
+        @BindView(R.id.mTxt_packageWe)
+        TextView mTxtPackageWe;
         @BindView(R.id.ll_boxs)
         LinearLayout llBoxs;
         @BindView(R.id.mTxt_price)
@@ -123,6 +141,10 @@ public class OrderDetailAdapter extends RecyclerView.Adapter<OrderDetailAdapter.
         ImageView mImgJia;
         @BindView(R.id.mTxt_Number)
         TextView mTxtNumber;
+        @BindView(R.id.mTxt_payMsg)
+        TextView mTxtPayMsg;
+        @BindView(R.id.mLL_payMsg)
+        LinearLayout mLLPayMsg;
         @BindView(R.id.mLL_main)
         LinearLayout mLLMain;
         @BindView(R.id.mTxt_line)

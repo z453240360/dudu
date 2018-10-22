@@ -1,6 +1,7 @@
 package com.dodo.marcket.business.mine.adapter;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -57,25 +58,40 @@ public class DisCountAdapter extends RecyclerView.Adapter<DisCountAdapter.MyView
         String endDate = disCountBean.getEndDate();
         holder.mTxtDiscountPrice.setText(amount + "");
         holder.mTxtDiscountDec.setText("满" + disCountBean.getLowLimit() + "可用");
-        holder.mTxtDiscountTime.setText(startDate + "至" + endDate);
-        holder.mTxtDiscountName.setText(anHaoType);
+        holder.mTxtDiscountTime.setText(startDate + " 至 " + endDate);
 
-        if (anHaoStatus.equals("NEW")) {
+        String status = disCountBean.getStatus();//0 表示可用，其他不可用
+
+        if (status.equals("0")) {//可用
             holder.mTxtDiscountUse.setClickable(true);
+            holder.mTxtDiscountUse.setEnabled(true);
             holder.mLL_0.setBackgroundResource(R.mipmap.discount);
             holder.mTxtDiscountStatus.setBackgroundResource(R.drawable.shape_lunkuo_paint);
             holder.mTxtDiscountUse.setText("立即使用");
-        } else if (anHaoStatus.equals("USERD")){
+            holder.mTxtDiscountUse.setTextColor(Color.parseColor("#20d994"));
+            holder.mTxtDiscountUse.setBackgroundResource(R.drawable.shape_lunkuo_line);
+        } else {
             holder.mTxtDiscountUse.setClickable(false);
-            holder.mLL_0.setBackgroundResource(R.mipmap.discount2);
-            holder.mTxtDiscountStatus.setBackgroundResource(R.drawable.shape_lunkuo_line4);
-            holder.mTxtDiscountUse.setText("已使用");
-        }else {
-            holder.mTxtDiscountUse.setClickable(false);
+            holder.mTxtDiscountUse.setEnabled(false);
             holder.mLL_0.setBackgroundResource(R.mipmap.discount2);
             holder.mTxtDiscountStatus.setBackgroundResource(R.drawable.shape_lunkuo_paint4);
-            holder.mTxtDiscountUse.setText("已过期");
+            holder.mTxtDiscountUse.setBackgroundResource(R.drawable.shape_lunkuo_line3);
+            if (anHaoStatus.equals("USED")) {
+                holder.mTxtDiscountUse.setText("已使用");
+            }else {
+                holder.mTxtDiscountUse.setText("已过期");
+            }
+            holder.mTxtDiscountUse.setTextColor(Color.parseColor("#cccccc"));
         }
+
+        if (anHaoType.equals("ALL_SHOP")){
+            holder.mTxtDiscountStatus.setText("全场满减");
+            holder.mTxtDiscountName.setText("满" + disCountBean.getLowLimit() + "减"+amount);
+        }else {
+            holder.mTxtDiscountStatus.setText("代金券");
+            holder.mTxtDiscountName.setText(amount + " 元券");
+        }
+
 
         holder.mTxtDiscountUse.setOnClickListener(new View.OnClickListener() {
             @Override

@@ -5,6 +5,9 @@ package com.dodo.marcket.bean;
  */
 public class AreaParamBean {
     private long id;
+    private String consignee;
+
+
 
     public AreaParamBean() {
     }

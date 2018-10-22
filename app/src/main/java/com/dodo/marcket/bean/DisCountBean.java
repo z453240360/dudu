@@ -26,6 +26,15 @@ public class DisCountBean {
     private String no; 	//
     private String startDate;//开始日期
     private boolean isSelected;
+    private String status;//优惠券状态，0 表示可用，其他表示不能用；
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
 
     public boolean isSelected() {
         return isSelected;

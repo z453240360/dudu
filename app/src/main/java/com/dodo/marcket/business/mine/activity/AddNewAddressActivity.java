@@ -61,9 +61,13 @@ public class AddNewAddressActivity extends BaseActivity<AddNewAddressPresenter> 
     TextView mTxt_deleteAddress;
 
     private List<ChildAddressBean> mDatas = new ArrayList<>();
+    private List<ChildAddressBean> mDatas2 = new ArrayList<>();
+    private List<ChildAddressBean> mDatas3 = new ArrayList<>();
     private PopupWindow popupWindow;
     private View pickVIew;
     private RecyclerView mRv_addAddress;
+    private RecyclerView mRv_addAddress2;
+    private RecyclerView mRv_addAddress3;
     private View view_pop;
     private ChildAddressAdapter addressAdapter;
     private LinearLayoutManager manager;
@@ -71,6 +75,17 @@ public class AddNewAddressActivity extends BaseActivity<AddNewAddressPresenter> 
     private boolean checked = false;
     private MyAddressBean myAddressBean;
     private String fromWhere;
+    private ChildAddressAdapter addressAdapter2;
+    private LinearLayoutManager manager2;
+    private ChildAddressAdapter addressAdapter3;
+    private LinearLayoutManager manager3;
+
+    private String province = "";//省
+    private String city = "";//城市
+    private String district = "";//区
+    private TextView mCancel;
+    private TextView mSure;
+
 
     @Override
     public int getLayoutId() {
@@ -94,14 +109,14 @@ public class AddNewAddressActivity extends BaseActivity<AddNewAddressPresenter> 
             mTxt_deleteAddress.setVisibility(View.VISIBLE);
 
             myAddressBean = (MyAddressBean) extras.getSerializable("addressBean");
-            addressId = myAddressBean.getAreaInfo().getId();
+            addressId = myAddressBean.getId();
 
-            mEdMyAddress.setText(myAddressBean.getAreaInfo().getName());
+            mEdMyAddress.setText(myAddressBean.getProvince() + " " + myAddressBean.getCity() + " " + myAddressBean.getDistrict());
             mEdMyDoor.setText(myAddressBean.getAddress());
             mEdMyName.setText(myAddressBean.getConsignee());
             mEdMyPhone.setText(myAddressBean.getPhone());
             mCheckBox.setChecked(myAddressBean.isDefaultX());
-            
+
         } else {
             mTxt_deleteAddress.setVisibility(View.GONE);
             mTitle.setTitle("新增地址");
@@ -109,6 +124,8 @@ public class AddNewAddressActivity extends BaseActivity<AddNewAddressPresenter> 
 
 
         initPickView();
+
+//        mPresenter.getFirstArea();
     }
 
     @Override
@@ -128,29 +145,66 @@ public class AddNewAddressActivity extends BaseActivity<AddNewAddressPresenter> 
 
     //添加会员地址
     @Override
-    public void addAddress(boolean myAddressBeanList) {
-        if (myAddressBeanList) {
-            finish();
-        } else {
-            Toasty.info(mContext, "添加地址失败").show();
-        }
+    public void addAddress(Object myAddressBeanList) {
+
+        finish();
+//        if (myAddressBeanList) {
+//        } else {
+//            Toasty.info(mContext, "添加地址失败").show();
+//        }
     }
 
-    //获取子区域的地址
+    //获取一级区域地址
     @Override
-    public void getlistChildArea(List<ChildAddressBean> childAddressBeans) {
+    public void getFirstArea(List<ChildAddressBean> childAddressBeans) {
         if (childAddressBeans == null || childAddressBeans.size() == 0) {
             Toasty.error(mContext, "获取区域失败", 5, false).show();
             return;
         } else {
             mDatas.clear();
             mDatas.addAll(childAddressBeans);
+            mDatas.get(0).setSelect(true);
+            mPresenter.getlistChildArea(mDatas.get(0).getId());
+            province = mDatas.get(0).getName();
             addressAdapter.notifyDataSetChanged();
+
             shoePOP();
+        }
+    }
+
+    //获取子区域的地址（二级区域）
+    @Override
+    public void getlistChildArea(List<ChildAddressBean> childAddressBeans) {
+        if (childAddressBeans == null || childAddressBeans.size() == 0) {
+            Toasty.error(mContext, "获取区域失败", 5, false).show();
+            return;
+        } else {
+            mDatas2.clear();
+            mDatas2.addAll(childAddressBeans);
+            mDatas2.get(0).setSelect(true);
+            city = mDatas2.get(0).getName();
+            mPresenter.getlistChildArea2(mDatas2.get(0).getId());
+            addressAdapter2.notifyDataSetChanged();
         }
 
 
     }
+
+    //获取子区域的地址（三级区域）
+    @Override
+    public void getlistChildArea2(List<ChildAddressBean> childAddressBeans) {
+        if (childAddressBeans == null || childAddressBeans.size() == 0) {
+            Toasty.error(mContext, "获取区域失败", 5, false).show();
+            return;
+        } else {
+            mDatas3.clear();
+            mDatas3.addAll(childAddressBeans);
+            mDatas3.get(0).setSelect(true);
+            district = mDatas3.get(0).getName();
+            addressAdapter3.notifyDataSetChanged();
+        }
+    }
+
 
     //删除会员地址结果
     @Override
@@ -168,7 +222,8 @@ public class AddNewAddressActivity extends BaseActivity<AddNewAddressPresenter> 
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.mEd_myAddress:
-                mPresenter.getlistChildArea(792);
+//                mPresenter.getlistChildArea(792);
+                mPresenter.getFirstArea();
                 break;
             case R.id.mTxt_keep:
                 String name = mEdMyName.getText().toString().trim();
@@ -190,10 +245,10 @@ public class AddNewAddressActivity extends BaseActivity<AddNewAddressPresenter> 
                     return;
                 }
 
-                if (fromWhere.equals("1")){
-                    mPresenter.upDateAddress(0, name, phone, doorAddress, mCheckBox.isChecked(), "上海市", new AreaParamBean(addressId));
-                }else {
-                    mPresenter.addAddress(0, name, phone, doorAddress, mCheckBox.isChecked(), "上海市", new AreaParamBean(addressId));
+                if (fromWhere.equals("1")) {
+                    mPresenter.upDateAddress(addressId, name, phone, doorAddress, mCheckBox.isChecked(), province, city, district, new AreaParamBean(addressId));
+                } else {
+                    mPresenter.addAddress(0, name, phone, doorAddress, mCheckBox.isChecked(), province, city, district, new AreaParamBean(addressId));
                 }
 
                 break;
@@ -233,25 +288,83 @@ public class AddNewAddressActivity extends BaseActivity<AddNewAddressPresenter> 
         popupWindow = PopupWindowHelper.createPopupWindow(pickVIew, ViewGroup.LayoutParams.MATCH_PARENT, ScreenUtil.dip2px(mContext, 300));
         popupWindow.setAnimationStyle(R.style.slide_up_in_down_out);
 
+        mCancel = (TextView) pickVIew.findViewById(R.id.mTxt_cancel);
+        mSure = (TextView) pickVIew.findViewById(R.id.mTxt_sure);
+
         view_pop = pickVIew.findViewById(R.id.view_pop);
         mRv_addAddress = pickVIew.findViewById(R.id.mRv_addAddress);
+        mRv_addAddress2 = pickVIew.findViewById(R.id.mRv_addAddress2);
+        mRv_addAddress3 = pickVIew.findViewById(R.id.mRv_addAddress3);
+
+
         addressAdapter = new ChildAddressAdapter(mContext, mDatas);
         manager = new LinearLayoutManager(mContext);
         mRv_addAddress.setAdapter(addressAdapter);
         mRv_addAddress.setLayoutManager(manager);
+
+        addressAdapter2 = new ChildAddressAdapter(mContext, mDatas2);
+        manager2 = new LinearLayoutManager(mContext);
+        mRv_addAddress2.setAdapter(addressAdapter2);
+        mRv_addAddress2.setLayoutManager(manager2);
+
+        addressAdapter3 = new ChildAddressAdapter(mContext, mDatas3);
+        manager3 = new LinearLayoutManager(mContext);
+        mRv_addAddress3.setAdapter(addressAdapter3);
+        mRv_addAddress3.setLayoutManager(manager3);
+
+
+        //一级区域
         addressAdapter.setOnItemClickListener(new ChildAddressAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(int parentPos, long id, String name) {
+                province = name;
+                mPresenter.getlistChildArea(id);
+                addressAdapter.setItem(parentPos);
+            }
+        });
+
+        //二级区域
+        addressAdapter2.setOnItemClickListener(new ChildAddressAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClick(int parentPos, long id, String name) {
                 mEdMyAddress.setText(name);
-                addressId = id;
-                popupWindow.dismiss();
+                city = name;
+                mPresenter.getlistChildArea2(id);
+                addressAdapter2.setItem(parentPos);
 
             }
         });
 
+        //三级区域
+        addressAdapter3.setOnItemClickListener(new ChildAddressAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClick(int parentPos, long id, String name) {
+                mEdMyAddress.setText(name);
+                district = name;
+                addressAdapter3.setItem(parentPos);
+
+            }
+        });
 
         //点击空白地方
         view_pop.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                popupWindow.dismiss();
+            }
+        });
+
+        //点击确定
+        mSure.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mEdMyAddress.setText(province + " " + city + " " + district);
+                popupWindow.dismiss();
+            }
+        });
+
+        //点击取消
+        mCancel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 popupWindow.dismiss();

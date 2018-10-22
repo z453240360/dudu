@@ -29,7 +29,7 @@ public class AddNewAddressPresenter extends BasePresenter<AddNewAddressActivity>
      * @param areaParam 区域ID
      */
     @Override
-    public void addAddress(int id, String consignee, String phone, String address, boolean isDefault, String province, AreaParamBean areaParam) {
+    public void addAddress(int id, String consignee, String phone, String address, boolean isDefault, String province,String city, String district,AreaParamBean areaParam) {
         PhoneBean phoneBean = new PhoneBean();
         phoneBean.setConsignee(consignee);
         phoneBean.setPhone(phone);
@@ -37,12 +37,14 @@ public class AddNewAddressPresenter extends BasePresenter<AddNewAddressActivity>
         phoneBean.setDefault(isDefault);
         phoneBean.setProvince(province);
         phoneBean.setAreaParam(areaParam);
+        phoneBean.setCity(city);
+        phoneBean.setDistrict(district);
 
         String name = "member.addReceiver";
-        addSubscription(apiModel.addNewAddress(ParamsUtils.getParams(phoneBean,name,mToken)), new ResponseSubscriber<Boolean>(mContext) {
+        addSubscription(apiModel.addNewAddress(ParamsUtils.getParams(phoneBean,name,mToken)), new ResponseSubscriber<Object>(mContext) {
 
             @Override
-            public void apiSuccess(Boolean s) {
+            public void apiSuccess(Object s) {
                 mView.addAddress(s);
             }
 
@@ -52,23 +54,28 @@ public class AddNewAddressPresenter extends BasePresenter<AddNewAddressActivity>
             }
         });
     }
+
+
 
     //编辑
     @Override
-    public void upDateAddress(int id, String consignee, String phone, String address, boolean isDefault, String province, AreaParamBean areaParam) {
+    public void upDateAddress(long id, String consignee, String phone, String address, boolean isDefault, String province,String city, String district, AreaParamBean areaParam) {
         PhoneBean phoneBean = new PhoneBean();
         phoneBean.setConsignee(consignee);
+        phoneBean.setId(id);
         phoneBean.setPhone(phone);
         phoneBean.setAddress(address);
         phoneBean.setDefault(isDefault);
         phoneBean.setProvince(province);
         phoneBean.setAreaParam(areaParam);
+        phoneBean.setCity(city);
+        phoneBean.setDistrict(district);
 
         String name = "member.updateReceiver";
-        addSubscription(apiModel.addNewAddress(ParamsUtils.getParams(phoneBean,name,mToken)), new ResponseSubscriber<Boolean>(mContext) {
+        addSubscription(apiModel.addNewAddress(ParamsUtils.getParams(phoneBean,name,mToken)), new ResponseSubscriber<Object>(mContext) {
 
             @Override
-            public void apiSuccess(Boolean s) {
+            public void apiSuccess(Object s) {
                 mView.addAddress(s);
             }
 
@@ -79,17 +86,37 @@ public class AddNewAddressPresenter extends BasePresenter<AddNewAddressActivity>
         });
     }
 
-    //根据id获取该地区的子区域,上海的id=792
+    //根据id获取该地区的子区域,上海的id=792（二级区域）
     @Override
     public void getlistChildArea(long id) {
         PhoneBean phoneBean = new PhoneBean();
         phoneBean.setId(id);
         String name = "area.listChildArea";
-        addSubscription(apiModel.getListChildArea(ParamsUtils.getParams(phoneBean,name,mToken)), new ResponseSubscriber<List<ChildAddressBean>>(mContext,"sdasd") {
+        addSubscription(apiModel.getListChildArea(ParamsUtils.getParams(phoneBean,name,mToken)), new ResponseSubscriber<List<ChildAddressBean>>(mContext,"") {
 
             @Override
             public void apiSuccess(List<ChildAddressBean> s) {
                 mView.getlistChildArea(s);
+            }
+
+            @Override
+            public void apiError(APIException e) {
+                mView.showErrorMsg(e.getMessage(),e.code);
+            }
+        });
+    }
+
+    //根据id获取该地区的子区域,上海的id=792(三级区域)
+    @Override
+    public void getlistChildArea2(long id) {
+        PhoneBean phoneBean = new PhoneBean();
+        phoneBean.setId(id);
+        String name = "area.listChildArea";
+        addSubscription(apiModel.getListChildArea(ParamsUtils.getParams(phoneBean,name,mToken)), new ResponseSubscriber<List<ChildAddressBean>>(mContext,"") {
+
+            @Override
+            public void apiSuccess(List<ChildAddressBean> s) {
+                mView.getlistChildArea2(s);
             }
 
             @Override
@@ -113,6 +140,26 @@ public class AddNewAddressPresenter extends BasePresenter<AddNewAddressActivity>
             @Override
             public void apiSuccess(Boolean s) {
                 mView.deleteAddress(s);
+            }
+
+            @Override
+            public void apiError(APIException e) {
+                mView.showErrorMsg(e.getMessage(),e.code);
+            }
+        });
+    }
+
+    //获取一级区域
+    @Override
+    public void getFirstArea() {
+        PhoneBean phoneBean = new PhoneBean();
+
+        String name = "area.listroots";
+        addSubscription(apiModel.getListChildArea(ParamsUtils.getParams(phoneBean,name,mToken)), new ResponseSubscriber<List<ChildAddressBean>>(mContext,"sdasd") {
+
+            @Override
+            public void apiSuccess(List<ChildAddressBean> s) {
+                mView.getFirstArea(s);
             }
 
             @Override

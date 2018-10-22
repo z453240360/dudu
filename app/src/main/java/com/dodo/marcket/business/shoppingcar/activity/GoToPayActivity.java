@@ -390,8 +390,8 @@ public class GoToPayActivity extends BaseActivity<GoToPayPresenter> implements G
             String phone = defaultAddress.getPhone();
             String province = defaultAddress.getProvince();
 
-            MyAddressBean.AreaInfoBean areaInfo = defaultAddress.getAreaInfo();
-            mTxtGoToPayAddress.setText(areaInfo.getName() + address);
+//            MyAddressBean.AreaInfoBean areaInfo = defaultAddress.getAreaInfo();
+            mTxtGoToPayAddress.setText(defaultAddress.getProvince() + defaultAddress.getCity() + defaultAddress.getDistrict() + address);
             mTxtGoToPayAddressName.setText(consignee);
             mTxtGoToPayAddressPhone.setText(phone);
         }
@@ -417,8 +417,8 @@ public class GoToPayActivity extends BaseActivity<GoToPayPresenter> implements G
                 String address = receiverInfo.getAddress();
                 String consignee = receiverInfo.getConsignee();
                 String phone = receiverInfo.getPhone();
-                MyAddressBean.AreaInfoBean areaInfo = receiverInfo.getAreaInfo();
-                mTxtGoToPayAddress.setText(areaInfo.getName() + address);
+//                MyAddressBean.AreaInfoBean areaInfo = receiverInfo.getAreaInfo();
+                mTxtGoToPayAddress.setText(receiverInfo.getProvince() + receiverInfo.getCity() + receiverInfo.getDistrict() + address);
                 mTxtGoToPayAddressName.setText(consignee);
                 mTxtGoToPayAddressPhone.setText(phone);
 
@@ -805,12 +805,12 @@ public class GoToPayActivity extends BaseActivity<GoToPayPresenter> implements G
         double v = afterDiscountAmount + boxAmount + freight - onLineMoney - pointMoney - dicCount;
         if (v == productAmount) {
             mLLRealPrice.setVisibility(View.GONE);
-            mTxtFinalMony.setText("¥ " + MathUtils.round(v,2) + "");
+            mTxtFinalMony.setText("¥ " + MathUtils.round(v, 2) + "");
         } else {
-            mLLRealPrice.setVisibility(View.VISIBLE);
-            mTxtFinalMony.setText("¥ " +  MathUtils.round(v,2) + "");
+            mLLRealPrice.setVisibility(View.GONE);
+            mTxtFinalMony.setText("¥ " + MathUtils.round(v, 2) + "");
         }
-
+        mTxtFinalMony.setText("¥ " + MathUtils.round(v, 2) + "");
     }
 
     //初始化时间选择弹框
@@ -957,14 +957,17 @@ public class GoToPayActivity extends BaseActivity<GoToPayPresenter> implements G
                 case 100:
                     MyAddressBean receiverInfo = (MyAddressBean) data.getSerializableExtra("address");
 
+                    if (receiverInfo == null) {
+                        return;
+                    }
                     mLLShowAddress1.setVisibility(View.GONE);
                     mLLShowAddress2.setVisibility(View.VISIBLE);
                     try {
                         String address = receiverInfo.getAddress();
                         String consignee = receiverInfo.getConsignee();
                         String phone = receiverInfo.getPhone();
-                        MyAddressBean.AreaInfoBean areaInfo = receiverInfo.getAreaInfo();
-                        mTxtGoToPayAddress.setText(areaInfo.getName() + address);
+//                        MyAddressBean.AreaInfoBean areaInfo = receiverInfo.getAreaInfo();
+                        mTxtGoToPayAddress.setText(receiverInfo.getProvince() + receiverInfo.getCity() + receiverInfo.getDistrict() + address);
                         mTxtGoToPayAddressName.setText(consignee);
                         mTxtGoToPayAddressPhone.setText(phone);
 

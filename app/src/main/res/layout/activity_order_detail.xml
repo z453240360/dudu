@@ -188,7 +188,7 @@
                             android:layout_height="wrap_content"
                             android:layout_marginLeft="@dimen/dimen_10dp"
                             android:layout_weight="1"
-                            android:text="￥ 99"
+                            tools:text="￥ 99"
                             android:textColor="#f4b43a"
                             android:textSize="18sp" />
                     </LinearLayout>
@@ -404,7 +404,7 @@
                             android:layout_height="wrap_content"
                             android:layout_marginLeft="@dimen/dimen_10dp"
                             android:layout_weight="1"
-                            android:text="￥ 99"
+                            tools:text="￥ 99"
                             android:textColor="#f4b43a"
                             android:textSize="18sp" />
                     </LinearLayout>
@@ -428,7 +428,7 @@
                             android:id="@+id/mTxt_order4"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="￥100"
+                            tools:text="￥100"
                             android:textColor="#666666"
                             android:textSize="@dimen/dimen_14sp" />
 
@@ -445,7 +445,7 @@
                             android:id="@+id/mTxt_orderPayReal4"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="￥100"
+                            tools:text="￥100"
                             android:textColor="#666666"
                             android:textSize="@dimen/dimen_14sp" />
                     </LinearLayout>

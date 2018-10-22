@@ -1,41 +1,108 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    android:orientation="vertical"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
     android:gravity="bottom"
-    xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:orientation="vertical">
 
     <View
-        android:layout_weight="1"
         android:id="@+id/view_pop"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"/>
+        android:layout_height="wrap_content"
+        android:layout_weight="1" />
+
     <LinearLayout
-        android:orientation="vertical"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="250dp"
+        android:background="@color/white"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:layout_marginLeft="@dimen/dimen_10dp"
+                android:id="@+id/mTxt_cancel"
+                android:layout_width="wrap_content"
+                android:layout_height="50dp"
+                android:background="@color/white"
+                android:gravity="center"
+                android:text="取消"
+                android:textColor="@color/black_333333"
+                android:textSize="@dimen/dimen_14sp"
+                 />
+
+            <TextView
+                android:layout_weight="1"
+                android:layout_width="0dp"
+                android:layout_height="50dp"
+                android:background="@color/white"
+                android:gravity="center"
+                android:text="请选择区域"
+                android:textColor="@color/basicColor"
+                android:textSize="@dimen/dimen_18sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:layout_marginRight="@dimen/dimen_10dp"
+                android:id="@+id/mTxt_sure"
+                android:layout_width="wrap_content"
+                android:layout_height="50dp"
+                android:background="@color/white"
+                android:gravity="center"
+                android:text="确定"
+                android:textColor="@color/black_333333"
+                android:textSize="@dimen/dimen_14sp"
+                 />
+        </LinearLayout>
+
 
         <TextView
-            android:background="@color/white"
-            android:gravity="center"
-            android:textStyle="bold"
-            android:textSize="@dimen/dimen_18sp"
-            android:textColor="@color/basicColor"
-            android:text="请选择区域"
             android:layout_width="match_parent"
-            android:layout_height="50dp" />
-        <TextView
-            android:background="@color/lineColor"
+            android:layout_height="0.5dp"
+            android:background="@color/lineColor" />
+
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="0.5dp" />
-        <android.support.v7.widget.RecyclerView
-            android:background="@color/white"
+            android:layout_height="match_parent"
             android:layout_weight="1"
-            android:id="@+id/mRv_addAddress"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"/>
-    </LinearLayout>
+            android:orientation="horizontal">
 
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/mRv_addAddress"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:background="@color/white" />
+
+            <TextView
+                android:layout_width="0.5dp"
+                android:layout_height="match_parent"
+                android:background="@color/lineColor" />
+
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/mRv_addAddress2"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:background="@color/white" />
+
+            <TextView
+                android:layout_width="0.5dp"
+                android:layout_height="match_parent"
+                android:background="@color/lineColor" />
+
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/mRv_addAddress3"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:background="@color/white" />
+        </LinearLayout>
+
+    </LinearLayout>
 
 
 </LinearLayout>

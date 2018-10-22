@@ -152,6 +152,8 @@ public class ShoppingCartAdapter extends RecyclerView.Adapter<ShoppingCartAdapte
             holder.mTxtPackage.setText(productBean.getPackaging());//包装
         }
 
+        holder.mTxt_packageWe.setText("约"+productBean.getWeight()+" "+productBean.getUnit());
+
         holder.mTxtNum.setText(cartItemsBean.getQuantity()+"");
         ImageLoaders.displayImage(holder.mImgProductImg, productBean.getImage());
         if (isCanBuy){
@@ -194,6 +196,10 @@ public class ShoppingCartAdapter extends RecyclerView.Adapter<ShoppingCartAdapte
         TextView mTxtPrice;
         @BindView(R.id.mTxt_productPriceName)
         TextView mTxtProductPriceName;
+
+        @BindView(R.id.mTxt_packageWe)
+        TextView mTxt_packageWe;
+
         @BindView(R.id.mTxt_productPrice)
         TextView mTxtProductPrice;
         @BindView(R.id.mImg_jian)

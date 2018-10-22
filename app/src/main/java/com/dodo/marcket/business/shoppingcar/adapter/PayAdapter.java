@@ -117,7 +117,7 @@ public class PayAdapter extends RecyclerView.Adapter<PayAdapter.MyViewHolder> {
         holder.mTxtPrice.setText("¥" + productBean.getUnitPrice() + "/" + productBean.getUnit());//单价
         holder.mTxtProductMsg.setText(productBean.getMemo());//描述
         holder.mTxtProductPrice.setText(productBean.getPrice() + "");//销售价格
-
+        holder.mTxt_packageWe.setText("约"+productBean.getWeight()+" "+productBean.getUnit());
         if (productBean.getPackaging().equals("")){
             holder.mTxtPackage.setVisibility(View.GONE);
         }else {
@@ -155,6 +155,9 @@ public class PayAdapter extends RecyclerView.Adapter<PayAdapter.MyViewHolder> {
         LinearLayout llBoxs;
         @BindView(R.id.mTxt_price)
         TextView mTxtPrice;
+        @BindView(R.id.mTxt_packageWe)
+        TextView mTxt_packageWe;
+
         @BindView(R.id.mTxt_productPriceName)
         TextView mTxtProductPriceName;
         @BindView(R.id.mTxt_productPrice)

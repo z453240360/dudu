@@ -10,6 +10,7 @@
 
 
     <TextView
+        android:visibility="gone"
         android:id="@+id/mTxt_countTime"
         android:textSize="@dimen/dimen_12sp"
         android:textColor="@color/white"
@@ -24,6 +25,7 @@
         android:layout_height="25dp" />
 
     <TextView
+        android:visibility="gone"
         android:textSize="@dimen/dimen_16sp"
         android:textColor="@color/black_333333"
         android:gravity="center"

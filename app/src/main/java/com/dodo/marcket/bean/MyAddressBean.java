@@ -20,13 +20,32 @@ public class MyAddressBean implements Serializable{
      */
 
     private String address;
-    private AreaInfoBean areaInfo;
+//    private AreaInfoBean areaInfo;
     private String consignee;
     @SerializedName("default")
     private boolean defaultX;
     private int id;
     private String phone;
     private String province;
+    private String city;
+    private String district;
+
+
+    public String getCity() {
+        return city;
+    }
+
+    public void setCity(String city) {
+        this.city = city;
+    }
+
+    public String getDistrict() {
+        return district;
+    }
+
+    public void setDistrict(String district) {
+        this.district = district;
+    }
 
     public String getAddress() {
         return address;
@@ -36,13 +55,13 @@ public class MyAddressBean implements Serializable{
         this.address = address;
     }
 
-    public AreaInfoBean getAreaInfo() {
-        return areaInfo;
-    }
-
-    public void setAreaInfo(AreaInfoBean areaInfo) {
-        this.areaInfo = areaInfo;
-    }
+//    public AreaInfoBean getAreaInfo() {
+//        return areaInfo;
+//    }
+//
+//    public void setAreaInfo(AreaInfoBean areaInfo) {
+//        this.areaInfo = areaInfo;
+//    }
 
     public String getConsignee() {
         return consignee;
@@ -91,7 +110,7 @@ public class MyAddressBean implements Serializable{
          */
 
         private int id;
-        private String name;
+        private String name="";
 
         public int getId() {
             return id;

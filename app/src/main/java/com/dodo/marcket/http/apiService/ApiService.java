@@ -100,7 +100,7 @@ public interface ApiService {
 
     //个人中心---新增个人地址信息
     @POST(Api.url)
-    Observable<BResponse<Boolean>> addNewAddress(@Body RequestBody verifyCode);
+    Observable<BResponse<Object>> addNewAddress(@Body RequestBody verifyCode);
 
 
     //个人中心---获取个人地址

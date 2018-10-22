@@ -204,6 +204,7 @@
 
 
         <TextView
+            android:visibility="gone"
             android:id="@+id/mTxt_orderCancel"
             android:layout_width="wrap_content"
             android:layout_height="35dp"
