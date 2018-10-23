@@ -11,6 +11,8 @@ import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 
+import com.dodo.marcket.R;
+
 public class MyWebView extends WebView{
     public MyWebView(Context context) {
         this(context,null);
@@ -45,6 +47,10 @@ public class MyWebView extends WebView{
         webSettings.setSupportZoom(true);
         webSettings.setBuiltInZoomControls(true);
         webSettings.setDisplayZoomControls(false);
+
+        //设置默认字体大小
+//        int fontSize = (int) getResources().getDimension(R.dimen.dimen_14sp);
+//        webSettings.setDefaultFontSize(fontSize);
     }
 
 

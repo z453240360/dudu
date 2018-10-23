@@ -176,6 +176,19 @@ public class Product2Adapter extends RecyclerView.Adapter<Product2Adapter.MyView
             holder.mImgAdd.setVisibility(View.GONE);
             holder.mImgSalesOut.setVisibility(View.VISIBLE);
         }
+
+
+        if (productBean.getStock() == null) {
+            isCanBuy = true;
+            holder.mTxtStock.setText("库存：9999");
+        } else if (productBean.getStock() == 0) {
+            isCanBuy = false;
+            holder.mTxtStock.setText("库存：0");
+        } else if (productBean.getStock() > 0){
+            isCanBuy = true;
+            holder.mTxtStock.setText("库存："+productBean.getStock());
+        }
+
         holder.mTxtPackageWe.setText(productBean.getWeight()+" "+productBean.getUnit());
     }
 
@@ -220,7 +233,8 @@ public class Product2Adapter extends RecyclerView.Adapter<Product2Adapter.MyView
         FrameLayout mFrame;
         @BindView(R.id.mTxt_packageWe)
         TextView mTxtPackageWe;
-
+        @BindView(R.id.mTxt_stock)
+        TextView mTxtStock;
 
         public MyViewHolder(View itemView) {
             super(itemView);

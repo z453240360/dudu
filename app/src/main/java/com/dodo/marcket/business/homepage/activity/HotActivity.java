@@ -145,7 +145,10 @@ public class HotActivity extends BaseActivity<HotPresenter> implements HotContra
 
         String introduction = hotBean.getIntroduction();
         if (!introduction.equals("")){
-            mWeb.loadData(introduction, "text/html", "UTF-8");
+
+            introduction = introduction.replace("<img", "<img style=\"width:100%\"");
+//            mWeb.loadData(introduction, "text/html", "UTF-8");
+            mWeb.loadDataWithBaseURL(null, introduction, "text/html", "utf-8", null);
         }
 
 

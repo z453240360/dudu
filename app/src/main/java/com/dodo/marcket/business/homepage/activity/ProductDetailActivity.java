@@ -29,6 +29,7 @@ import com.dodo.marcket.business.homepage.constrant.ProductDetailContract;
 import com.dodo.marcket.business.homepage.presenter.ProductDetailPresenter;
 import com.dodo.marcket.http.constant.Constant;
 import com.dodo.marcket.utils.GlideImageLoader;
+import com.dodo.marcket.utils.ScreenUtil;
 import com.dodo.marcket.utils.SharedPreferencesUtil;
 import com.dodo.marcket.utils.ToastUtils;
 import com.youth.banner.Banner;
@@ -261,7 +262,7 @@ public class ProductDetailActivity extends BaseActivity<ProductDetailPresenter> 
             return;
         }
 
-        if (productBean.getPrice()==0d||productBean.getName()==null||productBean.getName().equals("")){
+        if (productBean.getPrice() == 0d || productBean.getName() == null || productBean.getName().equals("")) {
             mLLNoDate.setVisibility(View.VISIBLE);
             return;
         }
@@ -334,12 +335,12 @@ public class ProductDetailActivity extends BaseActivity<ProductDetailPresenter> 
         }
 
 
-        mWebView.loadData(introduction, "text/html", "UTF-8");
         mWebView.setWebChromeClient(webChromeClient);
         mWebView.setWebViewClient(webViewClient);
 
         WebSettings webSettings = mWebView.getSettings();
         webSettings.setJavaScriptEnabled(true);//允许使用js
+
 
         /**
          * LOAD_CACHE_ONLY: 不使用网络，只读取本地缓存数据
@@ -354,6 +355,14 @@ public class ProductDetailActivity extends BaseActivity<ProductDetailPresenter> 
         webSettings.setSupportZoom(true);
         webSettings.setBuiltInZoomControls(true);
         webSettings.setDisplayZoomControls(false);
+        int screenWidth = ScreenUtil.getScreenWidth(mContext);
+        introduction = introduction.replace("<img", "<img style=\"width:100%\"");
+//        introduction="<img style=\"width:100%\" src = \"http://cdn.duoduofresh.com/upload/image/201810/8072dad4-23ad-4078-b653-d17495618d3c.gif\" alt = \"\" >\n" +
+//                "<img style=\"width:100%\" src = \"http://cdn.duoduofresh.com/upload/image/201810/776ecd13-5ed2-410c-bd33-6999d9a8c7c2.jpg\" alt = \"\">\n" +
+//                "<img style=\"width:100%\" src = \"http://cdn.duoduofresh.com/upload/image/201810/1a63dceb-4f82-4733-86b0-c02097d9e39b.jpg\"\n" +
+//                "alt = \"\" >";
+//        mWebView.loadData(introduction, "text/html", "UTF-8");
+        mWebView.loadDataWithBaseURL(null, introduction, "text/html", "utf-8", null);
         if (specifications == null || specifications.size() == 0) {
 //            carId = mId;
             mRvSize.setVisibility(View.GONE);

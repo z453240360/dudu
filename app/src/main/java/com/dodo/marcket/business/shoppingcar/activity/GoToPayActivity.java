@@ -337,16 +337,21 @@ public class GoToPayActivity extends BaseActivity<GoToPayPresenter> implements G
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 if (isChecked) {
                     if (userPoint == 0d) {
-                        mTxtPointMoney.setText("- ¥ " + 0);
+                        mTxtPointMoney.setText("- ¥ " + 0.0);
 //                        showErrorToast("没有可用积分");
                         return;
                     }
-                    pointMoney = userPoint / 100;
+
+                    if (pointRmb<=0){
+                        showErrorToast("积分换算比例异常");
+                        return;
+                    }
+                    pointMoney = userPoint / pointRmb;
 
                     initTotalPrice();
 
                 } else {
-                    mTxtPointMoney.setText("- ¥ " + 0);
+                    mTxtPointMoney.setText("- ¥ " + 0.0);
                     pointMoney = 0;
                     goToPayParamsBean.setUsePoint(0d);
                     initTotalPrice();
@@ -789,13 +794,13 @@ public class GoToPayActivity extends BaseActivity<GoToPayPresenter> implements G
 
         if (totalPrice <= pointMoney) {
             pointMoney = totalPrice;
-            mTxtPointMoney.setText("- ¥ " + pointMoney);
+            mTxtPointMoney.setText("- ¥ " + MathUtils.round(pointMoney,2));
             goToPayParamsBean.setUsePoint(pointMoney * pointRmb);
 
 //            mTxtPoint.setText("(" + (userPoint + "-" + pointMoney * 100) + "） 积分");
         } else {
             goToPayParamsBean.setUsePoint(pointMoney * pointRmb);
-            mTxtPointMoney.setText("- ¥ " + pointMoney);
+            mTxtPointMoney.setText("- ¥ " + MathUtils.round(pointMoney,2));
 //            mTxtPoint.setText("(" + (userPoint  +"-" + pointMoney * 100) + "） 积分");
         }
 
