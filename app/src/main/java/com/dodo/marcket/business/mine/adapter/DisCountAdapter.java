@@ -76,7 +76,7 @@ public class DisCountAdapter extends RecyclerView.Adapter<DisCountAdapter.MyView
             holder.mLL_0.setBackgroundResource(R.mipmap.discount2);
             holder.mTxtDiscountStatus.setBackgroundResource(R.drawable.shape_lunkuo_paint4);
             holder.mTxtDiscountUse.setBackgroundResource(R.drawable.shape_lunkuo_line3);
-            if (anHaoStatus.equals("USED")) {
+            if (anHaoStatus.equals("USERD")) {
                 holder.mTxtDiscountUse.setText("已使用");
             }else {
                 holder.mTxtDiscountUse.setText("已过期");

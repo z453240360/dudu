@@ -1,48 +1,62 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    android:orientation="vertical"
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
     tools:context=".business.homepage.activity.HotActivity">
+
     <include
         android:id="@+id/toolbar"
         layout="@layout/layout_toolbar" />
+
     <ImageView
-        android:visibility="gone"
         android:id="@+id/mImg_hot"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/dimen_100dp" />
+        android:layout_height="@dimen/dimen_100dp"
+        android:visibility="gone" />
 
-   <com.dodo.marcket.wedget.MyWebView
-       android:id="@+id/mWeb"
-       android:layout_width="match_parent"
-       android:layout_height="wrap_content"/>
-    <LinearLayout
-        android:visibility="gone"
-        android:orientation="vertical"
-        android:id="@+id/mLL_noDate"
-        android:gravity="center"
+    <android.support.v4.widget.NestedScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <ImageView
-            android:src="@mipmap/no_date"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
 
-        <TextView
-            android:layout_marginTop="@dimen/dimen_10dp"
-            android:textSize="@dimen/dimen_16sp"
-            android:textColor="@color/black_333333"
-            android:text="没有商品信息"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
-    </LinearLayout>
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/mRv_hot"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"/>
+            <com.dodo.marcket.wedget.MyWebView
+                android:id="@+id/mWeb"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
+            <LinearLayout
+                android:id="@+id/mLL_noDate"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:orientation="vertical"
+                android:visibility="gone">
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@mipmap/no_date" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/dimen_10dp"
+                    android:text="没有商品信息"
+                    android:textColor="@color/black_333333"
+                    android:textSize="@dimen/dimen_16sp" />
+            </LinearLayout>
+
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/mRv_hot"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+        </LinearLayout>
+    </android.support.v4.widget.NestedScrollView>
 </LinearLayout>

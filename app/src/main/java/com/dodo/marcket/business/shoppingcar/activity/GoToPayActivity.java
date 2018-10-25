@@ -414,7 +414,7 @@ public class GoToPayActivity extends BaseActivity<GoToPayPresenter> implements G
         if (receiverInfo == null) {
             mLLShowAddress1.setVisibility(View.VISIBLE);
             mLLShowAddress2.setVisibility(View.GONE);
-            return;
+//            return;
         } else {
             mLLShowAddress1.setVisibility(View.GONE);
             mLLShowAddress2.setVisibility(View.VISIBLE);
@@ -514,10 +514,14 @@ public class GoToPayActivity extends BaseActivity<GoToPayPresenter> implements G
         //用户积分
         userPoint = payBean.getUserPoint();
 
+        if(userPoint<=0){
+            userPoint = 0d;
+        }
+
         //积分换算比例
         pointRmb = payBean.getPointRmb();
 
-        if (userPoint == 0D) {
+        if (userPoint <= 0D) {
             mCheckBox.setChecked(false);
             mCheckBox.setFocusable(false);
         } else {
