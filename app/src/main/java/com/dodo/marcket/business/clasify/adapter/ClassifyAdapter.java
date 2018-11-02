@@ -74,9 +74,10 @@ public class ClassifyAdapter extends RecyclerView.Adapter<ClassifyAdapter.MyView
 
         LinearLayoutManager manager = new LinearLayoutManager(mContext);
         ClassifyChildAdapter adapter = new ClassifyChildAdapter(mContext, subProductCategory);
-        holder.mRv_list.setAdapter(adapter);
-        holder.mRv_list.setLayoutManager(manager);
-
+        if (subProductCategory.size()!=0) {
+            holder.mRv_list.setAdapter(adapter);
+            holder.mRv_list.setLayoutManager(manager);
+        }
         adapter.setOnItemClickListener(new ClassifyChildAdapter.OnChildItemClickListener() {
 
             @Override

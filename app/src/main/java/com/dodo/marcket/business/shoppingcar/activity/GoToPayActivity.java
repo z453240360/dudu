@@ -1006,6 +1006,7 @@ public class GoToPayActivity extends BaseActivity<GoToPayPresenter> implements G
 
     private static final int SDK_PAY_FLAG = 1;
     private static final int SDK_AUTH_FLAG = 2;
+
     @SuppressLint("HandlerLeak")
     private Handler mHandler = new Handler() {
         @SuppressWarnings("unused")

@@ -91,6 +91,8 @@ public class ClassifyFragment extends BaseFragment<ClassifyFragmentPresenter> im
     LinearLayout mLLBottomView;
     @BindView(R.id.mTxt_carNum)
     TextView mTxtCarNum;
+    @BindView(R.id.mTxt_noGoods)
+    TextView mTxtNoGoods;
     @BindView(R.id.mTxt_afterFinalMony)
     TextView mTxtAfterFinalMony;
     @BindView(R.id.mLL_realPrice)
@@ -186,6 +188,11 @@ public class ClassifyFragment extends BaseFragment<ClassifyFragmentPresenter> im
         firstAdapter.setOnItemClickListener(new ClassifyAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(int pos, int id) {
+                if (mDates.get(pos).getSubProductCategory().size()==0){
+                    mTxtNoGoods.setVisibility(View.VISIBLE);
+                    return;
+                }
+                mTxtNoGoods.setVisibility(View.GONE);
                 fragmentManager.beginTransaction().hide(lastFragment).commit();
                 if (fragmentList.get(pos).isAdded()) {
                     fragmentManager.beginTransaction().show(fragmentList.get(pos)).commit();
@@ -231,6 +238,11 @@ public class ClassifyFragment extends BaseFragment<ClassifyFragmentPresenter> im
         mDates.get(0).setShowList(false);
         List<FirstClassfyBean.SubProductCategoryBean> subProductCategory = mDates.get(0).getSubProductCategory();
 
+        if (subProductCategory.size()==0){
+            mTxtNoGoods.setVisibility(View.VISIBLE);
+        }else {
+            mTxtNoGoods.setVisibility(View.GONE);
+        }
         if (subProductCategory.size() > 0) {
             subProductCategory.get(0).setSelected(true);
         }
@@ -267,6 +279,10 @@ public class ClassifyFragment extends BaseFragment<ClassifyFragmentPresenter> im
 
     //初始化二级商品列表
     public void initSecondClassfy(List<FirstClassfyBean> firstClassfyList) {
+
+        if (firstClassfyList.size()==0){
+            return;
+        }
         for (int i = 0; i < firstClassfyList.size(); i++) {
 
             List<FirstClassfyBean.SubProductCategoryBean> subProductCategory = firstClassfyList.get(i).getSubProductCategory();
@@ -281,6 +297,9 @@ public class ClassifyFragment extends BaseFragment<ClassifyFragmentPresenter> im
 
         }
 
+        if (fragmentList.size()==0){
+            return;
+        }
         fragmentManager = mActivity.getSupportFragmentManager();
 
         lastFragment = fragmentList.get(0);
