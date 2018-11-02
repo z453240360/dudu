@@ -233,6 +233,7 @@ public class ClassifyFragment extends BaseFragment<ClassifyFragmentPresenter> im
 
 
         mDates.clear();
+
         mDates.addAll(firstClassfyBeanList);
         mDates.get(0).setFirstSelected(true);
         mDates.get(0).setShowList(false);
