@@ -222,6 +222,8 @@
                     />
 
                 <LinearLayout
+                    android:focusable="true"
+                    android:focusableInTouchMode="true"
                     android:layout_marginRight="@dimen/dimen_10dp"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
@@ -235,7 +237,9 @@
                         android:layout_height="match_parent"
                         android:src="@mipmap/jian" />
 
-                    <TextView
+                    <EditText
+                        android:background="@color/white"
+                        android:inputType="number"
                         android:paddingLeft="@dimen/dimen_10dp"
                         android:paddingRight="@dimen/dimen_10dp"
                         android:textColor="@color/basicColor"

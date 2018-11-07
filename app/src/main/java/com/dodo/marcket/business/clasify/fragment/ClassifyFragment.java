@@ -188,10 +188,10 @@ public class ClassifyFragment extends BaseFragment<ClassifyFragmentPresenter> im
         firstAdapter.setOnItemClickListener(new ClassifyAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(int pos, int id) {
-                if (mDates.get(pos).getSubProductCategory().size()==0){
-                    mTxtNoGoods.setVisibility(View.VISIBLE);
-                    return;
-                }
+//                if (mDates.get(pos).getSubProductCategory().size() == 0) {
+//                    mTxtNoGoods.setVisibility(View.VISIBLE);
+//                    return;
+//                }
                 mTxtNoGoods.setVisibility(View.GONE);
                 fragmentManager.beginTransaction().hide(lastFragment).commit();
                 if (fragmentList.get(pos).isAdded()) {
@@ -224,12 +224,12 @@ public class ClassifyFragment extends BaseFragment<ClassifyFragmentPresenter> im
         }
 
 
-        for (int i = 0; i < firstClassfyBeanList.size(); i++) {
-            List<FirstClassfyBean.SubProductCategoryBean> subProductCategory = firstClassfyBeanList.get(i).getSubProductCategory();
-            if (subProductCategory == null || subProductCategory.size() == 0) {
-                firstClassfyBeanList.remove(i);
-            }
-        }
+//        for (int i = 0; i < firstClassfyBeanList.size(); i++) {
+//            List<FirstClassfyBean.SubProductCategoryBean> subProductCategory = firstClassfyBeanList.get(i).getSubProductCategory();
+//            if (subProductCategory == null || subProductCategory.size() == 0) {
+//                firstClassfyBeanList.remove(i);
+//            }
+//        }
 
 
         mDates.clear();
@@ -239,9 +239,9 @@ public class ClassifyFragment extends BaseFragment<ClassifyFragmentPresenter> im
         mDates.get(0).setShowList(false);
         List<FirstClassfyBean.SubProductCategoryBean> subProductCategory = mDates.get(0).getSubProductCategory();
 
-        if (subProductCategory.size()==0){
+        if (subProductCategory.size() == 0) {
             mTxtNoGoods.setVisibility(View.VISIBLE);
-        }else {
+        } else {
             mTxtNoGoods.setVisibility(View.GONE);
         }
         if (subProductCategory.size() > 0) {
@@ -281,24 +281,28 @@ public class ClassifyFragment extends BaseFragment<ClassifyFragmentPresenter> im
     //初始化二级商品列表
     public void initSecondClassfy(List<FirstClassfyBean> firstClassfyList) {
 
-        if (firstClassfyList.size()==0){
+        if (firstClassfyList.size() == 0) {
             return;
         }
         for (int i = 0; i < firstClassfyList.size(); i++) {
 
             List<FirstClassfyBean.SubProductCategoryBean> subProductCategory = firstClassfyList.get(i).getSubProductCategory();
-            if (subProductCategory.size() != 0) {
+            if (subProductCategory.size() != 0) {//如果二级列表不为空则显示二级列表的信息
                 for (int j = 0; j < subProductCategory.size(); j++) {
 
                     int id = subProductCategory.get(j).getId();
                     BuyListFragment buyListFragment = new BuyListFragment(this, id);
                     fragmentList.add(buyListFragment);
                 }
+            } else {
+                int id = firstClassfyList.get(i).getId();
+                BuyListFragment buyListFragment = new BuyListFragment(this, id);
+                fragmentList.add(buyListFragment);
             }
 
         }
 
-        if (fragmentList.size()==0){
+        if (fragmentList.size() == 0) {
             return;
         }
         fragmentManager = mActivity.getSupportFragmentManager();
@@ -350,12 +354,12 @@ public class ClassifyFragment extends BaseFragment<ClassifyFragmentPresenter> im
             mTxtPay.setClickable(true);
         }
 
-        if (afterDiscountAmount==productAmount){
+        if (afterDiscountAmount == productAmount) {
             mLLRealPrice.setVisibility(View.GONE);
-        }else {
+        } else {
             mLLRealPrice.setVisibility(View.VISIBLE);
             mTxtAfterFinalMony.getPaint().setFlags(Paint.STRIKE_THRU_TEXT_FLAG | Paint.ANTI_ALIAS_FLAG); // 设置中划线并加清晰
-            mTxtAfterFinalMony.setText("" +productAmount);
+            mTxtAfterFinalMony.setText("" + productAmount);
         }
         mTxtCarTotalMoney.setText("" + afterDiscountAmount);
         mTxtCarBoxMoney.setText("" + boxAmount);
@@ -509,7 +513,7 @@ public class ClassifyFragment extends BaseFragment<ClassifyFragmentPresenter> im
                 break;
             case R.id.ll_img://弹出已经加入购物车弹窗
 //                mPresenter.getProducts();
-                if (carList.size()==0){
+                if (carList.size() == 0) {
                     showErrorMsg("请先选购商品", "");
                     return;
                 }

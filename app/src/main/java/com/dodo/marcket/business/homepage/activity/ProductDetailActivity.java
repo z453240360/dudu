@@ -5,6 +5,7 @@ import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.RecyclerView;
+import android.text.Editable;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
@@ -13,6 +14,7 @@ import android.webkit.WebChromeClient;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -29,6 +31,7 @@ import com.dodo.marcket.business.homepage.constrant.ProductDetailContract;
 import com.dodo.marcket.business.homepage.presenter.ProductDetailPresenter;
 import com.dodo.marcket.http.constant.Constant;
 import com.dodo.marcket.utils.GlideImageLoader;
+import com.dodo.marcket.utils.NumberUtils;
 import com.dodo.marcket.utils.ScreenUtil;
 import com.dodo.marcket.utils.SharedPreferencesUtil;
 import com.dodo.marcket.utils.ToastUtils;
@@ -78,7 +81,7 @@ public class ProductDetailActivity extends BaseActivity<ProductDetailPresenter> 
     @BindView(R.id.mImg_jian)
     ImageView mImgJian;
     @BindView(R.id.mTxt_num)
-    TextView mTxtNum;
+    EditText mTxtNum;
     @BindView(R.id.mImg_jia)
     ImageView mImgJia;
     @BindView(R.id.mLL_guige)
@@ -120,6 +123,7 @@ public class ProductDetailActivity extends BaseActivity<ProductDetailPresenter> 
         Intent intent = getIntent();
         mId = intent.getLongExtra("productId", 0L);
         initBanner();
+        initNumber();
         initRv();
         mTxtNum.setText(cartNumber + "");
 
@@ -129,6 +133,8 @@ public class ProductDetailActivity extends BaseActivity<ProductDetailPresenter> 
             mPresenter.getCarNum();//获取购物车数量
         }
     }
+
+
 
     @Override
     public void showLoading(String content) {
@@ -159,6 +165,12 @@ public class ProductDetailActivity extends BaseActivity<ProductDetailPresenter> 
         if (hastoken) {
             mPresenter.getCarNum();//获取购物车数量
         }
+    }
+
+
+    //初始化输入数量
+    private void initNumber() {
+
     }
 
     private void initRv() {
@@ -201,6 +213,10 @@ public class ProductDetailActivity extends BaseActivity<ProductDetailPresenter> 
                     return;
                 }
 
+                String textNum = mTxtNum.getText().toString().trim();
+
+                cartNumber = NumberUtils.string2Int(textNum);
+
                 if (cartNumber < canBuyNumber) {
                     cartNumber++;
                     mTxtNum.setText(cartNumber + "");
@@ -219,6 +235,11 @@ public class ProductDetailActivity extends BaseActivity<ProductDetailPresenter> 
                 if (!isCanBuy) {
                     return;
                 }
+
+                String textNum2 = mTxtNum.getText().toString().trim();
+
+                cartNumber = NumberUtils.string2Int(textNum2);
+
                 if (cartNumber <= 1) {
                     return;
                 }
@@ -234,6 +255,13 @@ public class ProductDetailActivity extends BaseActivity<ProductDetailPresenter> 
 
 
                 if (!isCanBuy) {
+                    return;
+                }
+                String textNum3 = mTxtNum.getText().toString().trim();
+
+                cartNumber = NumberUtils.string2Int(textNum3);
+                if (cartNumber<=0){
+                    ToastUtils.show(mContext,"数量不能小于0");
                     return;
                 }
                 mPresenter.updateNum(cartNumber, new ProductParmsBean(mId), 1);

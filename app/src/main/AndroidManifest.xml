@@ -31,15 +31,16 @@
         </provider>
 
         <activity android:name=".MainActivity">
+            <!--<intent-filter>-->
+                <!--<action android:name="android.intent.action.MAIN" />-->
 
+                <!--<category android:name="android.intent.category.LAUNCHER" />-->
+            <!--</intent-filter>-->
 
         </activity>
         <activity
             android:name=".business.HomeActivity"
-            android:launchMode="singleTask">
-
-        </activity>
-
+            android:launchMode="singleTask"></activity>
         <activity android:name=".business.mine.activity.LoginActivity" />
         <activity android:name=".business.shoppingcar.activity.GoToPayActivity" />
         <activity android:name=".business.mine.activity.SalesManActivity" />
@@ -81,15 +82,15 @@
         <activity android:name=".business.mine.activity.CommentOrderActivity" />
         <activity
             android:name=".WelcomeActivity"
-            android:theme="@style/StartTheme"
-            android:screenOrientation="portrait">
-
+            android:screenOrientation="portrait"
+            android:theme="@style/StartTheme">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity android:name=".TestActivity"></activity>
     </application>
 
 </manifest>

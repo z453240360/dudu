@@ -141,8 +141,9 @@ public abstract class BaseActivity<T extends BasePresenter> extends AppCompatAct
 
     public void initStatusBar() {
         //层垫式状态栏
+        StatusBarUtils.StatusBarLightMode(this);
         StatusBarUtils.setColor(this, getResources().getColor(R.color.white), 0);
-        ColorState.StatusBarLightMode(mActivity, false);
+//        ColorState.StatusBarLightMode(mActivity, false);
     }
 
     /**

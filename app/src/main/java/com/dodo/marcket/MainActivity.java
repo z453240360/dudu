@@ -25,11 +25,14 @@ import com.dodo.marcket.bean.AliPayBean;
 import com.dodo.marcket.bean.CommentBean;
 import com.dodo.marcket.bean.OrderItemCommentParamsBean;
 import com.dodo.marcket.bean.OrderList;
+import com.dodo.marcket.bean.ProductBean;
 import com.dodo.marcket.bean.SpecificationValuesBean;
 import com.dodo.marcket.bean.params.CommentParamsBean;
 import com.dodo.marcket.business.HomeActivity;
 import com.dodo.marcket.business.clasify.activity.ClasifyActivity;
 import com.dodo.marcket.business.clasify.activity.SearchActivity;
+import com.dodo.marcket.business.homepage.constrant.MainContract;
+import com.dodo.marcket.business.homepage.presenter.MainPresenter;
 import com.dodo.marcket.business.mine.activity.CommentOrderActivity;
 import com.dodo.marcket.business.mine.activity.LoginActivity;
 import com.dodo.marcket.business.mine.adapter.MineAdapter;
@@ -61,7 +64,7 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import io.reactivex.internal.operators.flowable.FlowableFromIterable;
 
-public class MainActivity extends BaseActivity implements BaseView, PermissionsListener {
+public class MainActivity extends BaseActivity<MainPresenter> implements MainContract.View, PermissionsListener {
 
 
     @BindView(R.id.toolbar)
@@ -91,7 +94,7 @@ public class MainActivity extends BaseActivity implements BaseView, PermissionsL
 
     @Override
     public void initPresenter() {
-//        mPresenter.init(this);
+        mPresenter.init(this);
     }
 
     @Override
@@ -174,7 +177,7 @@ public class MainActivity extends BaseActivity implements BaseView, PermissionsL
             EventBus.getDefault().unregister(this);
     }
 
-    @OnClick({R.id.mBtn_1, R.id.mBtn_2, R.id.mBtn_3, R.id.mBtn_4, R.id.mBtn_5, R.id.mBtn_6, R.id.mBtn_7, R.id.mBtn_8})
+    @OnClick({R.id.mBtn_1, R.id.mBtn_2, R.id.mBtn_3, R.id.mBtn_4, R.id.mBtn_5, R.id.mBtn_6, R.id.mBtn_7, R.id.mBtn_8,R.id.mBtn_9})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.mBtn_1:
@@ -247,6 +250,9 @@ public class MainActivity extends BaseActivity implements BaseView, PermissionsL
                 WeiXinPayUtils.getSign(new HashMap<String, String>());
                 break;
 
+            case R.id.mBtn_9:
+               mPresenter.getProductList(96,1,10,"");
+                break;
         }
     }
 
@@ -384,5 +390,9 @@ public class MainActivity extends BaseActivity implements BaseView, PermissionsL
     }
 
 
-
+    //获取分类商品列表
+    @Override
+    public void getProductList(List<ProductBean> list) {
+        Log.i(TAG, "getProductList: "+list.toString());
+    }
 }
