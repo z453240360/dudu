@@ -21,6 +21,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
@@ -31,6 +32,32 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content" />
 
+            <LinearLayout
+                android:gravity="center"
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="50dp">
+
+                <TextView
+                    android:background="#f39700"
+                    android:layout_width="30dp"
+                    android:layout_height="2dp" />
+
+                <TextView
+                    android:textSize="18sp"
+                    android:textStyle="bold"
+                    android:layout_margin="5dp"
+                    android:text="热销商品"
+                    android:textColor="#f39700"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+
+                <TextView
+                    android:background="#f39700"
+                    android:layout_width="30dp"
+                    android:layout_height="2dp" />
+
+            </LinearLayout>
             <LinearLayout
                 android:id="@+id/mLL_noDate"
                 android:layout_width="match_parent"

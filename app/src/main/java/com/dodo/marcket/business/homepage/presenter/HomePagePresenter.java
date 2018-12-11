@@ -6,6 +6,7 @@ import com.dodo.marcket.base.BasePresenter;
 import com.dodo.marcket.bean.BannerBean;
 import com.dodo.marcket.bean.HomePageActivityBean;
 import com.dodo.marcket.bean.LoginBean;
+import com.dodo.marcket.bean.MiaoShaBean;
 import com.dodo.marcket.bean.ProducHeadBean;
 import com.dodo.marcket.bean.ProductBean;
 import com.dodo.marcket.bean.ProductParmsBean;
@@ -168,6 +169,27 @@ public class HomePagePresenter extends BasePresenter<HomePageFragment> implement
             @Override
             public void apiSuccess(ProductBean s) {
                 mView.getProductDetailById(s);
+            }
+
+            @Override
+            public void apiError(APIException e) {
+                mView.showErrorMsg(e.getMessage(),e.code);
+            }
+        });
+    }
+
+    /**
+     * 获取秒杀数据
+     */
+    @Override
+    public void getMiaoShaDate() {
+        ProductDetailParamsBean phoneBean = new ProductDetailParamsBean();
+        String name = "promotion.getCountdownInfo";
+        addSubscription(apiModel.getCountdownInfo(ParamsUtils.getParams(new Gson().toJson(phoneBean),name)), new ResponseSubscriber<MiaoShaBean>(mContext,"asd") {
+
+            @Override
+            public void apiSuccess(MiaoShaBean s) {
+                mView.getMiaoSha(s);
             }
 
             @Override

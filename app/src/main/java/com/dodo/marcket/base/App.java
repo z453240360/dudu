@@ -16,6 +16,8 @@ import com.scwang.smartrefresh.layout.api.RefreshHeader;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
 import com.scwang.smartrefresh.layout.footer.ClassicsFooter;
 import com.scwang.smartrefresh.layout.header.ClassicsHeader;
+import com.tencent.bugly.Bugly;
+import com.tencent.bugly.crashreport.CrashReport;
 import com.youth.banner.WeakHandler;
 
 import butterknife.ButterKnife;
@@ -64,7 +66,6 @@ public class App extends MultiDexApplication {
             isFirstLoginActivity = true;
             ButterKnife.setDebug(Constant.showDebug);
         }
-
 
     }
 

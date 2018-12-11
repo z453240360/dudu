@@ -12,10 +12,14 @@ import com.dodo.marcket.bean.FirstClassfyBean;
 import com.dodo.marcket.bean.GoToPayBean;
 import com.dodo.marcket.bean.HomePageActivityBean;
 import com.dodo.marcket.bean.HotBean;
+import com.dodo.marcket.bean.KeFuBean;
+import com.dodo.marcket.bean.KeFuBeanSend;
 import com.dodo.marcket.bean.LoginBean;
 import com.dodo.marcket.bean.MakeOrderBean;
+import com.dodo.marcket.bean.MiaoShaBean;
 import com.dodo.marcket.bean.MyAddressBean;
 import com.dodo.marcket.bean.MyBackBoxBean;
+import com.dodo.marcket.bean.MyPointBean;
 import com.dodo.marcket.bean.OrderDetailBean;
 import com.dodo.marcket.bean.OrderList;
 import com.dodo.marcket.bean.PayMethodBean;
@@ -226,5 +230,21 @@ public interface ApiService {
     //订单----获取订单详情
     @POST(Api.url)
     Observable<BResponse<CommentParamsBean>> getDiscussOrder(@Body RequestBody verifyCode);
+
+    //我的积分
+    @POST(Api.url)
+    Observable<BResponse<List<MyPointBean>>> getMyPointList(@Body RequestBody verifyCode);
+
+    //首页倒计时数据
+    @POST(Api.url)
+    Observable<BResponse<MiaoShaBean>> getCountdownInfo(@Body RequestBody verifyCode);
+
+    //客服列表
+    @POST(Api.url)
+    Observable<BResponse<KeFuBean>> consult(@Body RequestBody verifyCode);
+
+    //发送一条信息
+    @POST(Api.url)
+    Observable<BResponse<Object>> consultSend(@Body RequestBody verifyCode);
 
 }

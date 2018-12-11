@@ -18,6 +18,7 @@ import com.dodo.marcket.bean.BannerBean;
 import com.dodo.marcket.bean.basebean.MyMessageEvent;
 import com.dodo.marcket.business.clasify.activity.ClasifyActivity;
 import com.dodo.marcket.business.clasify.fragment.ClassifyFragment;
+import com.dodo.marcket.business.homepage.activity.KeFuActivity;
 import com.dodo.marcket.business.homepage.constrant.HomeContract;
 import com.dodo.marcket.business.homepage.fragment.HomePageFragment;
 import com.dodo.marcket.business.homepage.presenter.HomePresenter;
@@ -28,6 +29,7 @@ import com.dodo.marcket.http.constant.Constant;
 import com.dodo.marcket.utils.SharedPreferencesUtil;
 import com.dodo.marcket.utils.statusbar.StatusBarUtils;
 import com.dodo.marcket.wedget.MyRadioButton;
+import com.tencent.bugly.Bugly;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -57,6 +59,9 @@ public class HomeActivity extends BaseActivity<HomePresenter> implements HomeCon
     MyRadioButton rbMime;
     @BindView(R.id.mTxt_carNum)
     TextView mTxtCarNum;
+    @BindView(R.id.LL_kefu)
+    LinearLayout LLKefu;
+
     private FragmentManager manager;
     private Fragment lastFragment;
 
@@ -83,6 +88,7 @@ public class HomeActivity extends BaseActivity<HomePresenter> implements HomeCon
         EventBus.getDefault().register(this);
         initFragment();
         mPresenter.getBanner(2);
+        Bugly.init(this, Constant.BuglyAPP_ID, true);
     }
 
 
@@ -205,7 +211,7 @@ public class HomeActivity extends BaseActivity<HomePresenter> implements HomeCon
 
     }
 
-    @OnClick({R.id.rb_home, R.id.LL_classify, R.id.rb_buyCar, R.id.rb_mime})
+    @OnClick({R.id.rb_home, R.id.LL_classify, R.id.rb_buyCar, R.id.rb_mime,R.id.LL_kefu})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.rb_home:
@@ -221,6 +227,14 @@ public class HomeActivity extends BaseActivity<HomePresenter> implements HomeCon
             case R.id.rb_mime:
                 if (!hastoken){
                     startActivity(LoginActivity.class);
+                }
+                break;
+
+            case R.id.LL_kefu:
+                if (!hastoken){
+                    startActivity(LoginActivity.class);
+                }else {
+                    startActivity(KeFuActivity.class);
                 }
                 break;
         }

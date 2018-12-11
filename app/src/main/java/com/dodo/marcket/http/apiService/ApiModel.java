@@ -241,5 +241,23 @@ public class ApiModel {
         return RetroUtils.getApi().getDiscussOrder(body).flatMap(FlatProvider.<BResponse>flat());
     }
 
+    //我的积分流水
+    public Observable<BResponse> getMyPointList(RequestBody body) {
+        return RetroUtils.getApi().getMyPointList(body).flatMap(FlatProvider.<BResponse>flat());
+    }
 
+    //首页倒计时数据
+    public Observable<BResponse> getCountdownInfo(RequestBody body) {
+        return RetroUtils.getApi().getCountdownInfo(body).flatMap(FlatProvider.<BResponse>flat());
+    }
+
+    //客服列表
+    public Observable<BResponse> consult(RequestBody body) {
+        return RetroUtils.getApi().consult(body).flatMap(FlatProvider.<BResponse>flat());
+    }
+
+    //发送一条信息
+    public Observable<BResponse> consultSend(RequestBody body) {
+        return RetroUtils.getApi().consultSend(body).flatMap(FlatProvider.<BResponse>flat());
+    }
 }

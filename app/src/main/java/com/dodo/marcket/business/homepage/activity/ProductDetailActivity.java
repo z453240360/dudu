@@ -31,6 +31,7 @@ import com.dodo.marcket.business.homepage.constrant.ProductDetailContract;
 import com.dodo.marcket.business.homepage.presenter.ProductDetailPresenter;
 import com.dodo.marcket.http.constant.Constant;
 import com.dodo.marcket.utils.GlideImageLoader;
+import com.dodo.marcket.utils.MathUtils;
 import com.dodo.marcket.utils.NumberUtils;
 import com.dodo.marcket.utils.ScreenUtil;
 import com.dodo.marcket.utils.SharedPreferencesUtil;
@@ -355,7 +356,7 @@ public class ProductDetailActivity extends BaseActivity<ProductDetailPresenter> 
         mTxtProductPrice.setText(price + "");
         mTxtProductName.setText(name);
         mTxtProductMsg.setText(memo);
-        mTxtUnitPrice.setText("¥ " + productBean.getUnitPrice() + "/" + unit);
+        mTxtUnitPrice.setText("¥ " + MathUtils.round(productBean.getUnitPrice(),2) + "/" + unit);
         if (TextUtils.equals(introduction, "")) {
             mTxtDesc.setText("暂无商品描述");
         } else {

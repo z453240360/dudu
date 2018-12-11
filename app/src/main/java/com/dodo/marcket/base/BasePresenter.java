@@ -9,7 +9,9 @@ import com.dodo.marcket.http.constant.Constant;
 import com.dodo.marcket.http.utils.BResponse;
 import com.dodo.marcket.http.utils.RxHelper;
 import com.dodo.marcket.utils.ActivityLifeCycleEvent;
+import com.dodo.marcket.utils.NetWorkUtils;
 import com.dodo.marcket.utils.SharedPreferencesUtil;
+import com.dodo.marcket.utils.ToastUtils;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -78,6 +80,10 @@ public abstract class BasePresenter<T extends BaseView> {
     }
 
     public void addSubscription(Observable observable, Subscriber subscriber) {
+        if (!NetWorkUtils.isNetworkEnable(mContext)){
+            ToastUtils.show(mContext,"无网络连接");
+            return;
+        }
         //数据预处理
         Observable.Transformer<BResponse<Object>, Object> result = RxHelper.handleResult(ActivityLifeCycleEvent
                 .DESTROY, lifecycleSubject);

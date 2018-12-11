@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/mainbackground"
+    tools:context=".business.homepage.activity.KeFuActivity"
+    android:orientation="vertical">
+
+    <include
+        android:id="@+id/toolbar"
+        layout="@layout/layout_toolbar"
+        app:layout_constraintTop_toTopOf="parent" />
+
+
+    <com.jcodecraeer.xrecyclerview.XRecyclerView
+        android:id="@+id/mRv_keFu"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        />
+    <LinearLayout
+        android:id="@+id/mLL_send"
+        android:layout_width="match_parent"
+        android:layout_height="66dp"
+        android:background="@color/white"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+       >
+
+        <EditText
+            android:id="@+id/mEd_keFuMsg"
+            android:layout_width="@dimen/dimen_0dp"
+            android:layout_height="34dp"
+            android:layout_marginLeft="16dp"
+            android:layout_marginRight="15dp"
+            android:layout_weight="1"
+            android:background="@drawable/et_underline_unselected"
+            android:gravity="center_vertical"
+            android:textColor="#333333"
+            android:textSize="15sp"
+            tools:text="2qweqweqwe" />
+
+        <TextView
+            android:id="@+id/mTxt_keFuSend"
+            android:layout_width="74dp"
+            android:layout_height="34dp"
+            android:layout_marginRight="@dimen/dimen_15dp"
+            android:background="@drawable/shape_lunkuo_paint2"
+            android:gravity="center"
+            android:text="发送"
+            android:textColor="@color/white" />
+
+    </LinearLayout>
+</LinearLayout>

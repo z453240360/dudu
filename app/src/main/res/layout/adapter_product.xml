@@ -66,7 +66,6 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent">
             <TextView
-                android:layout_marginBottom="@dimen/dimen_10dp"
                 android:gravity="center_vertical"
                 android:layout_weight="1"
                 android:id="@+id/mTxt_productName"
@@ -83,7 +82,7 @@
                 />
 
             <TextView
-                android:layout_marginTop="@dimen/dimen_5dp"
+                android:layout_marginTop="@dimen/dimen_3dp"
                 android:layout_weight="1"
                 android:gravity="center_vertical"
                 android:id="@+id/mTxt_productMsg"
@@ -146,112 +145,131 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
 
-                <TextView
-                    android:gravity="center_vertical"
-                    android:id="@+id/mTxt_price"
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:layout_marginLeft="@dimen/dimen_10dp"
-                    android:ellipsize="end"
-                    android:lines="1"
-                    android:text="￥9.9/斤"
-                    android:textColor="#666666"
-                    android:textSize="@dimen/dimen_12sp"/>
-
-                <TextView
-                    android:layout_marginLeft="@dimen/dimen_10dp"
-                    android:id="@+id/mTxt_stock"
-                    android:gravity="center_vertical"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:paddingBottom="2dp"
-                    android:paddingLeft="@dimen/dimen_5dp"
-                    android:paddingRight="@dimen/dimen_5dp"
-                    android:paddingTop="2dp"
-                    tools:text="库存 200"
-                    android:textColor="#666666"
-                    android:textSize="@dimen/dimen_12sp" />
-            </LinearLayout>
-
-
-            <LinearLayout
-                android:layout_weight="1"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="@dimen/dimen_10dp"
-                android:gravity="center_vertical"
-                android:orientation="horizontal"
-                >
-
-                <TextView
-                    android:gravity="bottom"
-                    android:id="@+id/mTxt_productPriceName"
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:ellipsize="end"
-                    android:lines="1"
-                    android:text="价格 ¥ "
-                    android:textColor="#f39700"
-                    android:textSize="@dimen/dimen_12sp" />
-
-
-                <TextView
-                    android:layout_weight="1"
-                    android:gravity="bottom"
-                    android:id="@+id/mTxt_productPrice"
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:ellipsize="end"
-                    android:lines="1"
-                    android:text="99.9"
-                    android:textColor="#f39700"
-                    android:textSize="@dimen/dimen_14sp" />
-
                 <LinearLayout
-                    android:id="@+id/mLL_showNum"
-                    android:visibility="gone"
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:gravity="center_vertical"
-                    android:orientation="horizontal"
-                    >
+                    android:layout_weight="1"
+                    android:orientation="vertical"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content">
+                    <LinearLayout
+                        android:layout_marginTop="5dp"
+                        android:orientation="horizontal"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
 
-                    <ImageView
-                        android:id="@+id/mImg_jian"
-                        android:layout_width="wrap_content"
+                        <TextView
+                            android:gravity="bottom"
+                            android:id="@+id/mTxt_price"
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:layout_marginLeft="@dimen/dimen_10dp"
+                            android:ellipsize="end"
+                            android:lines="1"
+                            android:text="￥9.9/斤"
+                            android:textColor="#666666"
+                            android:textSize="@dimen/dimen_12sp"/>
+
+                        <TextView
+                            android:layout_marginLeft="@dimen/dimen_10dp"
+                            android:id="@+id/mTxt_stock"
+                            android:gravity="bottom"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:paddingLeft="@dimen/dimen_5dp"
+                            android:paddingRight="@dimen/dimen_5dp"
+                            tools:text="库存 200"
+                            android:textColor="#666666"
+                            android:textSize="@dimen/dimen_12sp" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_weight="1"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:src="@mipmap/jian" />
+                        android:layout_marginLeft="@dimen/dimen_10dp"
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal"
+                        >
 
-                    <TextView
-                        android:id="@+id/mTxt_num"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_margin="@dimen/dimen_5dp"
-                        android:text="100" />
+                        <TextView
+                            android:gravity="bottom"
+                            android:id="@+id/mTxt_productPriceName"
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:ellipsize="end"
+                            android:lines="1"
+                            android:text="价格 ¥ "
+                            android:textColor="#f39700"
+                            android:textSize="@dimen/dimen_12sp" />
 
-                    <ImageView
-                        android:id="@+id/mImg_jia"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:src="@mipmap/jia" />
 
+                        <TextView
+                            android:layout_weight="1"
+                            android:gravity="bottom"
+                            android:id="@+id/mTxt_productPrice"
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:ellipsize="end"
+                            android:lines="1"
+                            android:text="99.9"
+                            android:textColor="#f39700"
+                            android:textSize="@dimen/dimen_16sp" />
+
+                        <LinearLayout
+                            android:id="@+id/mLL_showNum"
+                            android:visibility="gone"
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:gravity="center_vertical"
+                            android:orientation="horizontal"
+                            >
+
+                            <ImageView
+                                android:id="@+id/mImg_jian"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:src="@mipmap/jian" />
+
+                            <TextView
+                                android:id="@+id/mTxt_num"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_margin="@dimen/dimen_5dp"
+                                android:text="100" />
+
+                            <ImageView
+                                android:id="@+id/mImg_jia"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:src="@mipmap/jia" />
+
+                        </LinearLayout>
+
+
+
+                    </LinearLayout>
                 </LinearLayout>
 
                 <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
-                    android:gravity="center_vertical"
+                    android:gravity="bottom"
                     android:orientation="horizontal"
                     >
 
                     <ImageView
+                        android:padding="5dp"
                         android:id="@+id/mImg_add"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:src="@mipmap/goumai" />
                 </LinearLayout>
-
             </LinearLayout>
+
+
+
+
+
+
         </LinearLayout>
 
     </LinearLayout>

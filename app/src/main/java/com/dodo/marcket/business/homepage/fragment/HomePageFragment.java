@@ -3,10 +3,10 @@ package com.dodo.marcket.business.homepage.fragment;
 
 import android.content.Context;
 import android.content.Intent;
-import android.os.Bundle;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -21,6 +21,7 @@ import com.dodo.marcket.R;
 import com.dodo.marcket.base.BaseFragment;
 import com.dodo.marcket.bean.BannerBean;
 import com.dodo.marcket.bean.HomePageActivityBean;
+import com.dodo.marcket.bean.MiaoShaBean;
 import com.dodo.marcket.bean.ProducHeadBean;
 import com.dodo.marcket.bean.ProductBean;
 import com.dodo.marcket.bean.ProductParmsBean;
@@ -28,16 +29,17 @@ import com.dodo.marcket.bean.SpecificationsBean;
 import com.dodo.marcket.business.HomeActivity;
 import com.dodo.marcket.business.clasify.activity.ClasifyActivity;
 import com.dodo.marcket.business.clasify.activity.SearchActivity;
-import com.dodo.marcket.business.clasify.adapter.Product2Adapter;
-import com.dodo.marcket.business.clasify.adapter.ProductAdapter;
 import com.dodo.marcket.business.homepage.activity.HotActivity;
 import com.dodo.marcket.business.homepage.activity.ProductDetailActivity;
 import com.dodo.marcket.business.homepage.activity.WebActivity;
 import com.dodo.marcket.business.homepage.adapter.HomeHotAdapter;
+import com.dodo.marcket.business.homepage.adapter.HomeMiaoShaAdapter;
 import com.dodo.marcket.business.homepage.adapter.ProductDetailAdapter;
 import com.dodo.marcket.business.homepage.constrant.HomePageContract;
 import com.dodo.marcket.business.homepage.presenter.HomePagePresenter;
 import com.dodo.marcket.http.constant.Constant;
+import com.dodo.marcket.iCallback.MiaoShaCountdownListener;
+import com.dodo.marcket.utils.BankCountDown;
 import com.dodo.marcket.utils.GlideImageLoader;
 import com.dodo.marcket.utils.ImageLoaders;
 import com.dodo.marcket.utils.NumberUtils;
@@ -79,9 +81,24 @@ public class HomePageFragment extends BaseFragment<HomePagePresenter> implements
     public static HomePageFragment homePageFragment;
     @BindView(R.id.refreshLayout)
     SmartRefreshLayout refreshLayout;
+    @BindView(R.id.mTxt_hour)
+    TextView mTxtHour;
+    @BindView(R.id.mTxt_min)
+    TextView mTxtMin;
+    @BindView(R.id.mTxt_second)
+    TextView mTxtSecond;
+    @BindView(R.id.mRv_miaoshao)
+    RecyclerView mRvMiaoshao;
+    @BindView(R.id.mLL_miaoshao)
+    LinearLayout mLLMiaoshao;
+    Unbinder unbinder1;
 
     private LinearLayoutManager manager;
+    private GridLayoutManager miaoShaManager;
     private HomeHotAdapter adapter;
+    private HomeMiaoShaAdapter miaoShaAdapter;
+
+
     private List<ProductBean> mDates;
     private View pickVIew;
     private ImageView mImg_productImg;
@@ -98,10 +115,12 @@ public class HomePageFragment extends BaseFragment<HomePagePresenter> implements
     private HomeActivity homeActivity;
     private List<SpecificationsBean> specificationsBeanList = new ArrayList<>();
     private List<ProducHeadBean> mDates2 = new ArrayList<>();
+    private List<MiaoShaBean.ProductInfoList> miaoShaBeanList = new ArrayList<>();
     private ProductDetailAdapter productDetailAdapter;
     private Button mBtn_select;
     private boolean isCanBuy;
     private long buyId;
+    private BankCountDown bankCountDown;
 
     public static HomePageFragment getInstance() {
         if (homePageFragment == null)
@@ -125,12 +144,14 @@ public class HomePageFragment extends BaseFragment<HomePagePresenter> implements
         initBanner();
         initRv();
         initPickView();
-
+        initMiaoShaRv();
         initRefresh();
+        mPresenter.getAllPromotion();//首页获取活动模块信息
         mPresenter.getBanner(2);//首页banner
         mPresenter.getHotProduct();//获取热销商品信息
         mPresenter.getAdPosition(1);//弹窗广告
-        mPresenter.getAllPromotion();//首页获取活动模块信息
+
+        mPresenter.getMiaoShaDate();//获取秒杀数据信息
     }
 
 
@@ -157,9 +178,9 @@ public class HomePageFragment extends BaseFragment<HomePagePresenter> implements
         super.onResume();
 
         needToken = (String) SharedPreferencesUtil.get(mContext, Constant.token, "");
-        if (needToken.equals("")){
+        if (needToken.equals("")) {
             hastoken = false;
-        }else {
+        } else {
             hastoken = true;
         }
     }
@@ -197,7 +218,7 @@ public class HomePageFragment extends BaseFragment<HomePagePresenter> implements
     private void initRv() {
         mDates = new ArrayList<>();
         manager = new LinearLayoutManager(mContext);
-        adapter = new HomeHotAdapter(mContext,mDates2);
+        adapter = new HomeHotAdapter(mContext, mDates2);
         mRvMain.setLayoutManager(manager);
         mRvMain.setAdapter(adapter);
         mRvMain.setHasFixedSize(true);
@@ -245,9 +266,19 @@ public class HomePageFragment extends BaseFragment<HomePagePresenter> implements
         });
     }
 
+    /**
+     * 秒杀活动初始化
+     */
+    private void initMiaoShaRv() {
+        miaoShaAdapter = new HomeMiaoShaAdapter(mContext, miaoShaBeanList);
+        miaoShaManager = new GridLayoutManager(mContext, 3);
+        mRvMiaoshao.setLayoutManager(miaoShaManager);
+        mRvMiaoshao.setAdapter(miaoShaAdapter);
+    }
+
     //热销列表
     @Override
-    public void getHotProducts(List<ProductBean> productList,List<ProducHeadBean> type) {
+    public void getHotProducts(List<ProductBean> productList, List<ProducHeadBean> type) {
 
         if (refreshLayout.isRefreshing()) {
             refreshLayout.finishRefresh();
@@ -415,7 +446,7 @@ public class HomePageFragment extends BaseFragment<HomePagePresenter> implements
         ImageLoaders.displayImage(mImg_productImg, image);
         mTxt_productName.setText(name);
         mTxt_productMsg.setText(memo);
-        mTxt_price.setText("¥" + unitPrice + "/"+unit);
+        mTxt_price.setText("¥" + unitPrice + "/" + unit);
         mTxt_package.setText(packaging);
         mTxt_productPrice.setText("" + price + "");
 
@@ -429,6 +460,68 @@ public class HomePageFragment extends BaseFragment<HomePagePresenter> implements
 
         shoePOP();
     }
+
+    /**
+     * 获取秒杀数据
+     *
+     */
+    @Override
+    public void getMiaoSha(MiaoShaBean miaoShaBean) {
+
+        if (miaoShaBean==null){
+            mLLMiaoshao.setVisibility(View.GONE);
+            return;
+        }
+
+        List<MiaoShaBean.ProductInfoList> mList = miaoShaBean.getProductInfoList();
+        if (mList == null || mList.size() == 0) {
+            mLLMiaoshao.setVisibility(View.GONE);
+            return;
+        }
+
+        mLLMiaoshao.setVisibility(View.VISIBLE);
+        miaoShaBeanList.clear();
+        miaoShaBeanList.addAll(mList);
+
+        miaoShaAdapter.notifyDataSetChanged();
+
+        if (bankCountDown != null) {
+            bankCountDown.cancel();
+            bankCountDown = null;
+        }
+        bankCountDown = new BankCountDown(60000000, 1000, new MiaoShaCountdownListener() {
+            @Override
+            public void timeCountdown(String hour, String minute, String scound) {
+
+                if (hour.length() == 1) {
+                    hour = "0" + hour;
+                }
+
+                if (minute.length() == 1) {
+                    minute = "0" + minute;
+                }
+
+                if (scound.length() == 1) {
+                    scound = "0" + scound;
+                }
+
+                mTxtHour.setText(hour);
+                mTxtMin.setText(minute);
+                mTxtSecond.setText(scound);
+            }
+
+            @Override
+            public void timeFinish() {
+                mTxtHour.setText("00");
+                mTxtMin.setText("00");
+                mTxtSecond.setText("00");
+                bankCountDown.cancel();
+            }
+        });
+
+        bankCountDown.start();
+    }
+
 
     private void displayUI(final List<HomePageActivityBean> mDatas, YhFlowLayout yhFlowLayout, final Context context) {
 
@@ -568,4 +661,9 @@ public class HomePageFragment extends BaseFragment<HomePagePresenter> implements
         });
     }
 
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        bankCountDown.cancel();
+    }
 }

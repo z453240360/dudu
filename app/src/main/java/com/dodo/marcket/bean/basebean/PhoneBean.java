@@ -33,6 +33,8 @@ public class PhoneBean {
     private String productId;
     private String specParam;
 
+
+
     public void setCity(String city) {
         this.city = city;
     }

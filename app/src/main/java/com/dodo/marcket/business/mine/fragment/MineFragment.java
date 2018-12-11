@@ -18,6 +18,7 @@ import com.dodo.marcket.business.mine.activity.DisCountActivity;
 import com.dodo.marcket.business.mine.activity.MyAddressActivity;
 import com.dodo.marcket.business.mine.activity.MyBackBoxActivity;
 import com.dodo.marcket.business.mine.activity.MyOrderActivity;
+import com.dodo.marcket.business.mine.activity.MyPointActivity;
 import com.dodo.marcket.business.mine.activity.SalesManActivity;
 import com.dodo.marcket.business.mine.constrant.MineFragmentContract;
 import com.dodo.marcket.business.mine.presenter.MineFragmentPresenter;
@@ -95,6 +96,11 @@ public class MineFragment extends BaseFragment<MineFragmentPresenter> implements
     @BindView(R.id.mRefresh)
     SmartRefreshLayout mRefresh;
     Unbinder unbinder2;
+    @BindView(R.id.mTxt_mine_myPoint)
+    TextView mTxtMineMyPoint;
+    @BindView(R.id.mLL_mine_myPoint)
+    LinearLayout mLLMineMyPoint;
+    private int point;
 
 
     public static MineFragment getInstance() {
@@ -147,7 +153,7 @@ public class MineFragment extends BaseFragment<MineFragmentPresenter> implements
     @Override
     public void showErrorMsg(String msg, String type) {
         showErrorToast(msg);
-        if (mRefresh.isRefreshing()){
+        if (mRefresh.isRefreshing()) {
             mRefresh.finishRefresh();
         }
     }
@@ -161,7 +167,7 @@ public class MineFragment extends BaseFragment<MineFragmentPresenter> implements
     }
 
 
-    @OnClick({R.id.mLL_salesMan, R.id.mLL_postAddress, R.id.mLL_allOrder, R.id.mLL_dealwith, R.id.mLL_send, R.id.mLL_deliver, R.id.mLL_cancel, R.id.mLL_finish, R.id.mLL_discount, R.id.mLL_address, R.id.mLL_backMoney, R.id.mLL_backBox, R.id.mTxt_loginOut})
+    @OnClick({R.id.mLL_salesMan,R.id.mLL_mine_myPoint,R.id.mLL_postAddress, R.id.mLL_allOrder, R.id.mLL_dealwith, R.id.mLL_send, R.id.mLL_deliver, R.id.mLL_cancel, R.id.mLL_finish, R.id.mLL_discount, R.id.mLL_address, R.id.mLL_backMoney, R.id.mLL_backBox, R.id.mTxt_loginOut})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.mLL_salesMan://跳转业务员
@@ -227,24 +233,29 @@ public class MineFragment extends BaseFragment<MineFragmentPresenter> implements
 
 
                 break;
+            case R.id.mLL_mine_myPoint://我的积分
+                Bundle bundle7 = new Bundle();
+                bundle7.putString("myPoint",point+"");
+                startActivity(MyPointActivity.class,bundle7);
+                break;
         }
     }
 
     //获取个人信息
     @Override
     public void getUserMsg(UserInfoBean userInfoBean) {
-        if (mRefresh.isRefreshing()){
+        if (mRefresh.isRefreshing()) {
             mRefresh.finishRefresh();
         }
 
-        if (userInfoBean==null){
-            ToastUtils.show(mContext,"获取个人信息出错");
+        if (userInfoBean == null) {
+            ToastUtils.show(mContext, "获取个人信息出错");
             return;
         }
         String username = userInfoBean.getUsername();
         String memberRank = userInfoBean.getMemberRank();
         boolean isHasSalesman = userInfoBean.isIsHasSalesman();
-        int point = userInfoBean.getPoint();
+        point = userInfoBean.getPoint();
         int noPayOrderNumber = userInfoBean.getNoPayOrderNumber();//待付款订单数量
         int voucherNumber = userInfoBean.getVoucherNumber();//优惠券数量
         int noRecevedOrder = userInfoBean.getNoRecevedOrder();//待收货订单数量

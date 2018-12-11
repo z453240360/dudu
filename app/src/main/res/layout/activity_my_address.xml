@@ -12,6 +12,28 @@
         android:id="@+id/toolbar"
         layout="@layout/layout_toolbar" />
 
+    <LinearLayout
+        android:layout_weight="1"
+        android:visibility="gone"
+        android:orientation="vertical"
+        android:id="@+id/mLL_noDate"
+        android:gravity="center"
+        android:layout_width="match_parent"
+        android:layout_height="0dp">
+
+        <ImageView
+            android:src="@mipmap/no_date"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+        <TextView
+            android:layout_marginTop="@dimen/dimen_10dp"
+            android:textSize="@dimen/dimen_16sp"
+            android:textColor="@color/black_333333"
+            android:text="没有地址"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+    </LinearLayout>
     <android.support.v7.widget.RecyclerView
         android:id="@+id/mRv_address"
         android:layout_weight="1"

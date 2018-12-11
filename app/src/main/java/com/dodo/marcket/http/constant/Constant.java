@@ -15,4 +15,6 @@ public interface Constant {
     public static final String APP_ID="wx50dd81792e10ae50";//微信APPID
     public static final String MCH_ID="1514263511";//商户号
 
+    public static final String BuglyAPP_ID="96bd26675a";//腾讯更新APPID
+
 }

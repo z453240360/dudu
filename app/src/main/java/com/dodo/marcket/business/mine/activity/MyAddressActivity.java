@@ -4,6 +4,8 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.View;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.dodo.marcket.R;
@@ -26,11 +28,13 @@ public class MyAddressActivity extends BaseActivity<MyAddressPresenter> implemen
     TextView mTxtAddNewAddress;
     @BindView(R.id.mRv_address)
     RecyclerView mRvAddress;
+    @BindView(R.id.mLL_noDate)
+    LinearLayout mLLNoDate;
 
     private List<MyAddressBean> mDatas = new ArrayList<>();
     private AddressAdapter addressAdapter;
     private LinearLayoutManager manager;
-    private boolean needBackResult= false;
+    private boolean needBackResult = false;
 
     @Override
     public int getLayoutId() {
@@ -79,21 +83,25 @@ public class MyAddressActivity extends BaseActivity<MyAddressPresenter> implemen
     public void onViewClicked() {
 
         Bundle bundle = new Bundle();
-        bundle.putString("fromWhere","2");//1 说明是从编辑接口过来的，2 表示直接进行编辑
+        bundle.putString("fromWhere", "2");//1 说明是从编辑接口过来的，2 表示直接进行编辑
 
-        startActivity(AddNewAddressActivity.class,bundle);
+        startActivity(AddNewAddressActivity.class, bundle);
     }
 
     //获取会员地址
     @Override
     public void getMyAddress(List<MyAddressBean> myAddressBeanList) {
-        if (myAddressBeanList==null||myAddressBeanList.size()==0){
-
+        if (myAddressBeanList == null || myAddressBeanList.size() == 0) {
+            mLLNoDate.setVisibility(View.VISIBLE);
+            mRvAddress.setVisibility(View.GONE);
             return;
-        }else {
+        } else {
+
             mDatas.clear();
             mDatas.addAll(myAddressBeanList);
             addressAdapter.notifyDataSetChanged();
+            mLLNoDate.setVisibility(View.GONE);
+            mRvAddress.setVisibility(View.VISIBLE);
         }
     }
 
@@ -114,10 +122,10 @@ public class MyAddressActivity extends BaseActivity<MyAddressPresenter> implemen
             public void onItemClick(int pos, MyAddressBean areaId) {//点击编辑地址
 
                 Bundle bundle = new Bundle();
-                bundle.putString("fromWhere","1");//1 说明是从编辑接口过来的，2 表示直接进行编辑
-                bundle.putSerializable("addressBean",areaId);
+                bundle.putString("fromWhere", "1");//1 说明是从编辑接口过来的，2 表示直接进行编辑
+                bundle.putSerializable("addressBean", areaId);
 
-                startActivity(AddNewAddressActivity.class,bundle);
+                startActivity(AddNewAddressActivity.class, bundle);
             }
 
             @Override
