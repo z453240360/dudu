@@ -6,6 +6,6 @@ package com.dodo.marcket.iCallback;
  * 描述：
  */
 public interface MiaoShaCountdownListener {
-    void timeCountdown(String hour,String minute,String scound);
+    void timeCountdown(String day,String hour,String minute,String scound);
     void timeFinish();
 }

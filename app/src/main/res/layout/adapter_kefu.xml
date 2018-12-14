@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="wrap_content"
     android:orientation="vertical">
 
     <!--用户留言-->
@@ -40,19 +40,31 @@
             android:gravity="top"
             android:orientation="horizontal">
 
-            <TextView
-                android:id="@+id/mTxt_myQuestion"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="58dp"
-                android:layout_marginRight="5dp"
+            <LinearLayout
                 android:layout_weight="1"
-                android:background="@drawable/kefu"
-                android:gravity="right|top"
-                android:paddingRight="@dimen/dimen_18dp"
-                android:text="客户留言"
-                android:textColor="#333333"
-                android:textSize="14sp" />
+                android:orientation="horizontal"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content">
+                <TextView
+                    android:layout_weight="1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+                <TextView
+                    android:paddingTop="@dimen/dimen_15dp"
+                    android:paddingBottom="13dp"
+                    android:id="@+id/mTxt_myQuestion"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="58dp"
+                    android:layout_marginRight="5dp"
+                    android:background="@drawable/me"
+                    android:gravity="left|top"
+                    android:paddingRight="@dimen/dimen_18dp"
+                    android:text="客户留言"
+                    android:textColor="#333333"
+                    android:textSize="14sp" />
+            </LinearLayout>
+
 
             <ImageView
                 android:layout_width="40dp"
@@ -104,16 +116,18 @@
                 android:layout_marginRight="5dp"
                 android:src="@mipmap/kefukefu" />
 
+
             <TextView
+                android:paddingTop="@dimen/dimen_15dp"
+                android:paddingBottom="@dimen/dimen_13dp"
+                android:text="地阿"
                 android:id="@+id/mTxt_keFuAnswer"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginRight="58dp"
-                android:background="@drawable/me"
-                android:gravity="top|left"
+                android:background="@drawable/kefu"
+                android:gravity="left"
                 android:paddingLeft="17dp"
-                android:paddingTop="@dimen/dimen_14dp"
-                android:text="客户留言"
                 android:textColor="#333333"
                 android:textSize="14sp" />
 

@@ -94,7 +94,10 @@ public class HomeActivity extends BaseActivity<HomePresenter> implements HomeCon
 
     @Override
     public void initStatusBar() {
-        StatusBarUtils.setTranslucentForImageViewInFragment(this, 0, null);
+        //层垫式状态栏
+        StatusBarUtils.StatusBarLightMode(this);
+        StatusBarUtils.setColor(this, getResources().getColor(R.color.white), 0);
+//        StatusBarUtils.setTranslucentForImageViewInFragment(this, 0, null);
     }
 
     @Override
@@ -131,7 +134,7 @@ public class HomeActivity extends BaseActivity<HomePresenter> implements HomeCon
             @Override
             public void onCheckedChanged(RadioGroup radioGroup, int i) {
 
-                if (!hastoken){
+                if (!hastoken) {
                     selectRg(0);
                     return;
                 }
@@ -155,9 +158,9 @@ public class HomeActivity extends BaseActivity<HomePresenter> implements HomeCon
         super.onResume();
 
         needToken = (String) SharedPreferencesUtil.get(mContext, Constant.token, "");
-        if (needToken.equals("")){
+        if (needToken.equals("")) {
             hastoken = false;
-        }else {
+        } else {
             hastoken = true;
         }
 
@@ -170,9 +173,9 @@ public class HomeActivity extends BaseActivity<HomePresenter> implements HomeCon
     @Override
     protected void onNewIntent(Intent intent) {
         super.onNewIntent(intent);
-        if(intent!=null){
+        if (intent != null) {
             Bundle extras = intent.getExtras();
-            if (extras!=null) {
+            if (extras != null) {
                 fromWhere = extras.getInt("fromWhere", 0);
                 selectRg(fromWhere);
             }
@@ -211,29 +214,35 @@ public class HomeActivity extends BaseActivity<HomePresenter> implements HomeCon
 
     }
 
-    @OnClick({R.id.rb_home, R.id.LL_classify, R.id.rb_buyCar, R.id.rb_mime,R.id.LL_kefu})
+    @OnClick({R.id.rb_home, R.id.LL_classify, R.id.rb_buyCar, R.id.rb_mime, R.id.LL_kefu})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.rb_home:
+                StatusBarUtils.setColor(mActivity, getResources().getColor(R.color.white), 0);
                 break;
             case R.id.LL_classify:
                 startActivity(ClasifyActivity.class);
                 break;
             case R.id.rb_buyCar:
-                if (!hastoken){
+                StatusBarUtils.setColor(mActivity, getResources().getColor(R.color.white), 0);
+                if (!hastoken) {
                     startActivity(LoginActivity.class);
                 }
                 break;
             case R.id.rb_mime:
-                if (!hastoken){
+
+                if (!hastoken) {
                     startActivity(LoginActivity.class);
+                    StatusBarUtils.setColor(mActivity, getResources().getColor(R.color.white), 0);
+                } else {
+                    StatusBarUtils.setColor(mActivity, getResources().getColor(R.color.org_F4B43A), 0);
                 }
                 break;
 
             case R.id.LL_kefu:
-                if (!hastoken){
+                if (!hastoken) {
                     startActivity(LoginActivity.class);
-                }else {
+                } else {
                     startActivity(KeFuActivity.class);
                 }
                 break;
@@ -241,8 +250,8 @@ public class HomeActivity extends BaseActivity<HomePresenter> implements HomeCon
     }
 
     //选中底部便签
-    public void selectRg(int pos){
-        switch (pos){
+    public void selectRg(int pos) {
+        switch (pos) {
             case 0:
                 rbHome.setChecked(true);
                 break;
@@ -259,12 +268,12 @@ public class HomeActivity extends BaseActivity<HomePresenter> implements HomeCon
     }
 
     //
-    public void initHasToken(){
+    public void initHasToken() {
         mTxtCarNum.setVisibility(View.INVISIBLE);
         needToken = (String) SharedPreferencesUtil.get(mContext, Constant.token, "");
-        if (needToken.equals("")){
+        if (needToken.equals("")) {
             hastoken = false;
-        }else {
+        } else {
             hastoken = true;
         }
     }

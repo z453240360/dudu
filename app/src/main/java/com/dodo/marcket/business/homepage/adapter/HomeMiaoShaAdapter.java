@@ -11,6 +11,8 @@ import android.widget.TextView;
 
 import com.dodo.marcket.R;
 import com.dodo.marcket.bean.MiaoShaBean;
+import com.dodo.marcket.utils.ImageLoaders;
+import com.dodo.marcket.utils.MathUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -26,9 +28,9 @@ public class HomeMiaoShaAdapter extends RecyclerView.Adapter<HomeMiaoShaAdapter.
 
     private Context mContext;
     private LayoutInflater mInflater;
-    private List<MiaoShaBean.ProductInfoList> mDatas = new ArrayList<>();
+    private List<MiaoShaBean.ProductInfoListBean> mDatas = new ArrayList<>();
 
-    public HomeMiaoShaAdapter(Context context, List<MiaoShaBean.ProductInfoList> datas) {
+    public HomeMiaoShaAdapter(Context context, List<MiaoShaBean.ProductInfoListBean> datas) {
         this.mInflater = LayoutInflater.from(context);
         mDatas = datas;
         this.mContext = context;
@@ -48,7 +50,22 @@ public class HomeMiaoShaAdapter extends RecyclerView.Adapter<HomeMiaoShaAdapter.
 
     @Override
     public void onBindViewHolder(final MyViewHolder holder, final int position) {
+        final MiaoShaBean.ProductInfoListBean bean = mDatas.get(position);
+        String image = bean.getImage();
+        ImageLoaders.displayImage(holder.mImgMiaoshao,image);
 
+
+        holder.mTxtMiaoshaPrice.setText("¥ "+ bean.getPrice());
+        holder.mTxtMiaoshaRealPrice.setText("¥ "+MathUtils.round(bean.getPromotionPrice(),2));
+
+        holder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (mListener!=null){
+                    mListener.onItemClick(position,bean);
+                }
+            }
+        });
     }
 
 
@@ -71,7 +88,7 @@ public class HomeMiaoShaAdapter extends RecyclerView.Adapter<HomeMiaoShaAdapter.
     }
 
     public interface OnItemClickListener {
-        void onItemClick(int parentPos, int childPos, String status, String villageCode, String villageName);
+        void onItemClick(int pos, MiaoShaBean.ProductInfoListBean productInfoListBean);
     }
 
     private OnItemClickListener mListener;
@@ -88,7 +105,7 @@ public class HomeMiaoShaAdapter extends RecyclerView.Adapter<HomeMiaoShaAdapter.
     }
 
     public interface OnImgClickListener {
-        void onClick(int pos, String villageCode, String villageName);
+        void onClick(int pos, MiaoShaBean.ProductInfoListBean productInfoListBean);
     }
 
 }

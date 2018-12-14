@@ -95,7 +95,10 @@
         </activity>
         <activity android:name=".TestActivity" />
         <activity android:name=".business.mine.activity.MyPointActivity" />
-        <activity android:name=".business.homepage.activity.KeFuActivity"></activity>
+        <activity
+            android:name=".business.homepage.activity.KeFuActivity"
+            android:windowSoftInputMode="adjustPan|stateHidden"
+           ></activity>
     </application>
 
 </manifest>

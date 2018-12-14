@@ -1,9 +1,6 @@
 package com.dodo.marcket.utils;
 
 
-
-
-
 import com.dodo.marcket.bean.basebean.DateBean;
 
 import java.text.ParseException;
@@ -307,6 +304,29 @@ public class DateUtil {
         return dateFormat.format(strtodate);
     }
 
+    /**
+     * 日期转成毫秒
+     *
+     * @throws ParseException
+     */
+    public static long stringToMill(String date) {
+        /**
+         * endDate : 2018-12-31 16:51:12
+         * 先用SimpleDateFormat.parse() 方法将日期字符串转化为Date格式
+         * 通过Date.getTime()方法，将其转化为毫秒数
+         */
+//        String date = "2017-06-27 15-20-00";
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");//24小时制
+//  SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd hh-mm-ss");//12小时制
+        long time = 0;
+        try {
+            time = simpleDateFormat.parse(date).getTime();
+        } catch (ParseException e) {
+            time = -1L;
+        }
+        return time;
+    }
+
 
     public static String getSpecialDate(long specialTime) {
         long current = System.currentTimeMillis();//当前时间毫秒数
@@ -360,9 +380,9 @@ public class DateUtil {
             mDay = String.valueOf(c.get(Calendar.DAY_OF_MONTH) + i);// 获取当前日份的日期号码
             String date = mMonth + "月" + mDay + "日";
             dateBean.setDate(oldDate);
-            if (i==0){
+            if (i == 0) {
                 dateBean.setSelect(true);
-            }else {
+            } else {
                 dateBean.setSelect(false);
             }
             dates.add(dateBean);
@@ -386,9 +406,9 @@ public class DateUtil {
             mDay = String.valueOf(c.get(Calendar.DAY_OF_MONTH) + i);// 获取当前日份的日期号码
             String date = mMonth + "月" + mDay + "日";
             dateBean.setDate(date);
-            if (i==0){
+            if (i == 0) {
                 dateBean.setSelect(true);
-            }else {
+            } else {
                 dateBean.setSelect(false);
             }
             dates.add(dateBean);
@@ -426,13 +446,15 @@ public class DateUtil {
 //        return dates;
 //    }
 
-    /**得到当年当月的最大日期**/
-    public static int MaxDayFromDay_OF_MONTH(int year,int month){
-        Calendar time= Calendar.getInstance();
+    /**
+     * 得到当年当月的最大日期
+     **/
+    public static int MaxDayFromDay_OF_MONTH(int year, int month) {
+        Calendar time = Calendar.getInstance();
         time.clear();
-        time.set(Calendar.YEAR,year);
-        time.set(Calendar.MONTH,month-1);//注意,Calendar对象默认一月为0
-        int day=time.getActualMaximum(Calendar.DAY_OF_MONTH);//本月份的天数
+        time.set(Calendar.YEAR, year);
+        time.set(Calendar.MONTH, month - 1);//注意,Calendar对象默认一月为0
+        int day = time.getActualMaximum(Calendar.DAY_OF_MONTH);//本月份的天数
         return day;
     }
 

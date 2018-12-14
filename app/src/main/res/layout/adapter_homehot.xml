@@ -3,8 +3,43 @@
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="wrap_content">
 
+
+    <LinearLayout
+        android:layout_marginTop="@dimen/dimen_10dp"
+        android:background="@color/white"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingBottom="24dp"
+        android:paddingTop="@dimen/dimen_16dp"
+        android:gravity="center|center_vertical"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="@dimen/dimen_30dp"
+            android:layout_height="1dp"
+            android:background="@color/org_f39700" />
+
+        <TextView
+            android:id="@+id/mTxt_title_hot"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/dimen_10dp"
+            android:layout_marginRight="@dimen/dimen_10dp"
+            android:background="@color/white"
+            android:text="热销商品"
+            android:textColor="@color/org_f39700"
+            android:textSize="@dimen/dimen_18sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:layout_width="@dimen/dimen_30dp"
+            android:layout_height="1dp"
+            android:background="@color/org_f39700" />
+
+    </LinearLayout>
     <android.support.v7.widget.RecyclerView
         android:id="@+id/mRv_homehot"
+        android:background="@color/white"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"></android.support.v7.widget.RecyclerView>
+        android:layout_height="wrap_content"/>
 </LinearLayout>

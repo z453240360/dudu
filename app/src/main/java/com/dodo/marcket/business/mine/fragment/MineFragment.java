@@ -136,7 +136,7 @@ public class MineFragment extends BaseFragment<MineFragmentPresenter> implements
     }
 
     private void initTitle() {
-        mLLStatus.getLayoutParams().height = StatusBarUtils.getStatusBarHeight(mContext);
+//        mLLStatus.getLayoutParams().height = StatusBarUtils.getStatusBarHeight(mContext);
 
     }
 
@@ -156,14 +156,18 @@ public class MineFragment extends BaseFragment<MineFragmentPresenter> implements
         if (mRefresh.isRefreshing()) {
             mRefresh.finishRefresh();
         }
+
+
     }
 
     @Override
     public void onHiddenChanged(boolean hidden) {
         super.onHiddenChanged(hidden);
         if (!hidden) {
+            StatusBarUtils.setColor(mActivity, getResources().getColor(R.color.org_F4B43A), 0);
             mPresenter.getUserMsg();
         }
+
     }
 
 
@@ -308,17 +312,5 @@ public class MineFragment extends BaseFragment<MineFragmentPresenter> implements
 
     }
 
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        // TODO: inflate a fragment view
-        View rootView = super.onCreateView(inflater, container, savedInstanceState);
-        unbinder2 = ButterKnife.bind(this, rootView);
-        return rootView;
-    }
 
-    @Override
-    public void onDestroyView() {
-        super.onDestroyView();
-        unbinder2.unbind();
-    }
 }

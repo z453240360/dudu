@@ -57,14 +57,17 @@ public class HomeHotAdapter extends RecyclerView.Adapter<HomeHotAdapter.MyViewHo
     @Override
     public void onBindViewHolder(final MyViewHolder holder, final int position) {
         ProducHeadBean producHeadBeans = mDatas.get(position);
+        String name = producHeadBeans.getName();
         String showType = producHeadBeans.getShowType();
         List<ProductBean> products = producHeadBeans.getProducts();
-        if (products==null||products.size()==0){
+        if (products == null || products.size() == 0) {
             holder.mRvHomehot.setVisibility(View.GONE);
             return;
-        }else {
+        } else {
             holder.mRvHomehot.setVisibility(View.VISIBLE);
         }
+
+        holder.mTxtTitleHot.setText(name);
 
         if (showType.equals("1")) {//横排显示
             LinearLayoutManager manager = new LinearLayoutManager(mContext);
@@ -178,6 +181,8 @@ public class HomeHotAdapter extends RecyclerView.Adapter<HomeHotAdapter.MyViewHo
     public class MyViewHolder extends RecyclerView.ViewHolder {
         @BindView(R.id.mRv_homehot)
         RecyclerView mRvHomehot;
+        @BindView(R.id.mTxt_title_hot)
+        TextView mTxtTitleHot;
 
         public MyViewHolder(View itemView) {
             super(itemView);

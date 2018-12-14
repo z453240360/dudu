@@ -18,6 +18,25 @@
         <item name="android:listDivider">@drawable/divider_horizontal</item>
     </style>
 
+
+    <!-- Base application theme. -->
+    <style name="AppTheme2" parent="Theme.AppCompat.Light.DarkActionBar">
+        <!-- Customize your theme here. -->
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorAccent">@color/basicColor</item>
+
+        <item name="windowNoTitle">true</item>
+        <!-- 标题字体颜色-->
+        <item name="android:textColorPrimary">@color/textColorPrimary</item>
+        <!-- toolBar高度-->
+        <item name="actionBarSize">@dimen/title_height</item>
+        <!--&lt;!&ndash; 设置输入框不被软键盘遮挡&ndash;&gt;-->
+        <!--<item name="android:windowSoftInputMode">adjustPan</item>-->
+        <!-- 分割线-->
+        <item name="android:listDivider">@drawable/divider_horizontal</item>
+    </style>
+
     <style name="StartTheme" parent="Theme.AppCompat.Light.NoActionBar">
         <item name="android:windowBackground">@mipmap/adv</item>
         <!--<item name="android:windowDisablePreview">true</item>-->

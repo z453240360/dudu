@@ -429,6 +429,8 @@ public class ShoppingCartFragment extends BaseFragment<ShoppingCartFragmentPrese
         super.onHiddenChanged(hidden);
         if (!hidden) {
             mPresenter.getProducts();//获取购物车商品
+
+            StatusBarUtils.setColor(mActivity, getResources().getColor(R.color.white), 0);
         }
     }
 

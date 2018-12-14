@@ -40,6 +40,7 @@ import com.dodo.marcket.business.homepage.presenter.HomePagePresenter;
 import com.dodo.marcket.http.constant.Constant;
 import com.dodo.marcket.iCallback.MiaoShaCountdownListener;
 import com.dodo.marcket.utils.BankCountDown;
+import com.dodo.marcket.utils.DateUtil;
 import com.dodo.marcket.utils.GlideImageLoader;
 import com.dodo.marcket.utils.ImageLoaders;
 import com.dodo.marcket.utils.NumberUtils;
@@ -47,6 +48,7 @@ import com.dodo.marcket.utils.ScreenUtil;
 import com.dodo.marcket.utils.SharedPreferencesUtil;
 import com.dodo.marcket.utils.ToastUtils;
 import com.dodo.marcket.utils.photo.PopupWindowHelper;
+import com.dodo.marcket.utils.statusbar.StatusBarUtils;
 import com.dodo.marcket.wedget.YhFlowLayout;
 import com.dodo.marcket.wedget.dialog.AdDialog;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
@@ -62,6 +64,7 @@ import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 import butterknife.Unbinder;
 
 
@@ -87,12 +90,19 @@ public class HomePageFragment extends BaseFragment<HomePagePresenter> implements
     TextView mTxtMin;
     @BindView(R.id.mTxt_second)
     TextView mTxtSecond;
+    @BindView(R.id.mTxt_day)
+    TextView mTxtDay;
     @BindView(R.id.mRv_miaoshao)
     RecyclerView mRvMiaoshao;
     @BindView(R.id.mLL_miaoshao)
     LinearLayout mLLMiaoshao;
     Unbinder unbinder1;
-
+    @BindView(R.id.mLL_status)
+    LinearLayout mLLStatus;
+    @BindView(R.id.mEd_search)
+    TextView mEdSearch;
+    @BindView(R.id.mLL_search)
+    LinearLayout mLLSearch;
     private LinearLayoutManager manager;
     private GridLayoutManager miaoShaManager;
     private HomeHotAdapter adapter;
@@ -115,10 +125,11 @@ public class HomePageFragment extends BaseFragment<HomePagePresenter> implements
     private HomeActivity homeActivity;
     private List<SpecificationsBean> specificationsBeanList = new ArrayList<>();
     private List<ProducHeadBean> mDates2 = new ArrayList<>();
-    private List<MiaoShaBean.ProductInfoList> miaoShaBeanList = new ArrayList<>();
+    private List<MiaoShaBean.ProductInfoListBean> miaoShaBeanList = new ArrayList<>();
     private ProductDetailAdapter productDetailAdapter;
     private Button mBtn_select;
     private boolean isCanBuy;
+    private boolean isMiaoShaFinished = false;
     private long buyId;
     private BankCountDown bankCountDown;
 
@@ -140,6 +151,7 @@ public class HomePageFragment extends BaseFragment<HomePagePresenter> implements
 
     @Override
     public void loadData() {
+//        mLLStatus.getLayoutParams().height = StatusBarUtils.getStatusBarHeight(mContext);
         homeActivity = (HomeActivity) mActivity;
         initBanner();
         initRv();
@@ -204,7 +216,7 @@ public class HomePageFragment extends BaseFragment<HomePagePresenter> implements
             @Override
             public void onRefresh(RefreshLayout refreshlayout) {
                 mPresenter.getBanner(2);//首页banner
-
+                mPresenter.getMiaoShaDate();//获取秒杀数据信息
 //                mPresenter.getAdPosition(1);//弹窗广告
                 mPresenter.getAllPromotion();//首页获取活动模块信息
                 mPresenter.getHotProduct();//获取热销商品信息
@@ -274,6 +286,23 @@ public class HomePageFragment extends BaseFragment<HomePagePresenter> implements
         miaoShaManager = new GridLayoutManager(mContext, 3);
         mRvMiaoshao.setLayoutManager(miaoShaManager);
         mRvMiaoshao.setAdapter(miaoShaAdapter);
+
+        miaoShaAdapter.setOnItemClickListener(new HomeMiaoShaAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClick(int pos, MiaoShaBean.ProductInfoListBean productInfoListBean) {
+                if (!hastoken) {
+                    goToLogin();
+                    return;
+                }
+
+                if (!isMiaoShaFinished){
+                    showErrorToast("此活动结束");
+                    return;
+                }
+                long id = productInfoListBean.getId();
+                mPresenter.addProduct(1, new ProductParmsBean(id));
+            }
+        });
     }
 
     //热销列表
@@ -463,17 +492,16 @@ public class HomePageFragment extends BaseFragment<HomePagePresenter> implements
 
     /**
      * 获取秒杀数据
-     *
      */
     @Override
     public void getMiaoSha(MiaoShaBean miaoShaBean) {
 
-        if (miaoShaBean==null){
+        if (miaoShaBean == null) {
             mLLMiaoshao.setVisibility(View.GONE);
             return;
         }
 
-        List<MiaoShaBean.ProductInfoList> mList = miaoShaBean.getProductInfoList();
+        List<MiaoShaBean.ProductInfoListBean> mList = miaoShaBean.getProductInfoList();
         if (mList == null || mList.size() == 0) {
             mLLMiaoshao.setVisibility(View.GONE);
             return;
@@ -489,9 +517,29 @@ public class HomePageFragment extends BaseFragment<HomePagePresenter> implements
             bankCountDown.cancel();
             bankCountDown = null;
         }
-        bankCountDown = new BankCountDown(60000000, 1000, new MiaoShaCountdownListener() {
+
+        String endDate = miaoShaBean.getEndDate();
+        long l = DateUtil.stringToMill(endDate);
+        long currentTimeMillis = System.currentTimeMillis();
+        long countDown = 0;
+        if (l <= -1L) {
+            countDown = 1L;
+        } else {
+            countDown = l - currentTimeMillis;
+        }
+        if (countDown <= 0) {
+            isMiaoShaFinished = false;
+            countDown = 1L;
+        }else {
+            isMiaoShaFinished = true;
+        }
+        bankCountDown = new BankCountDown(countDown, 1000, new MiaoShaCountdownListener() {
             @Override
-            public void timeCountdown(String hour, String minute, String scound) {
+            public void timeCountdown(String day,String hour, String minute, String scound) {
+
+                if (day.length() == 1) {
+                    day = "0" + day;
+                }
 
                 if (hour.length() == 1) {
                     hour = "0" + hour;
@@ -504,7 +552,7 @@ public class HomePageFragment extends BaseFragment<HomePagePresenter> implements
                 if (scound.length() == 1) {
                     scound = "0" + scound;
                 }
-
+                mTxtDay.setText(day);
                 mTxtHour.setText(hour);
                 mTxtMin.setText(minute);
                 mTxtSecond.setText(scound);
@@ -512,9 +560,11 @@ public class HomePageFragment extends BaseFragment<HomePagePresenter> implements
 
             @Override
             public void timeFinish() {
+                mTxtDay.setText("00");
                 mTxtHour.setText("00");
                 mTxtMin.setText("00");
                 mTxtSecond.setText("00");
+                isMiaoShaFinished = false;
                 bankCountDown.cancel();
             }
         });
@@ -659,6 +709,23 @@ public class HomePageFragment extends BaseFragment<HomePagePresenter> implements
                 mPresenter.addProduct(i, new ProductParmsBean(buyId));
             }
         });
+    }
+
+    @OnClick({R.id.mLL_search})
+    public void onViewClicked(View view) {
+        switch (view.getId()) {
+            case R.id.mLL_search://跳转搜索页面
+                startActivity(SearchActivity.class);
+                break;
+        }
+    }
+
+    @Override
+    public void onHiddenChanged(boolean hidden) {
+        super.onHiddenChanged(hidden);
+        if (!hidden) {
+            StatusBarUtils.setColor(mActivity, getResources().getColor(R.color.white), 0);
+        }
     }
 
     @Override

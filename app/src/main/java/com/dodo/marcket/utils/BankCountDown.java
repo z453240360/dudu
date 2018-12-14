@@ -28,12 +28,12 @@ public class BankCountDown extends CountDownTimer {
 
     @Override
     public void onTick(long millisUntilFinished) {
-
-        int xiaoshi = (int) (millisUntilFinished/1000/60/60);
+        int tian = (int) (millisUntilFinished/1000/60/60/24);
+        int xiaoshi = (int) (millisUntilFinished/1000/60/60)%60;
         int fenzhong = (int) (millisUntilFinished/1000/60)%60;
         int secound = (int) ((millisUntilFinished/1000)%60);
 
-        mListener.timeCountdown(xiaoshi+"",fenzhong+"",secound+"");
+        mListener.timeCountdown(tian+"",xiaoshi+"",fenzhong+"",secound+"");
     }
 
     @Override
