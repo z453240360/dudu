@@ -37,6 +37,7 @@ import com.dodo.marcket.business.homepage.adapter.HomeMiaoShaAdapter;
 import com.dodo.marcket.business.homepage.adapter.ProductDetailAdapter;
 import com.dodo.marcket.business.homepage.constrant.HomePageContract;
 import com.dodo.marcket.business.homepage.presenter.HomePagePresenter;
+import com.dodo.marcket.business.mine.activity.LoginActivity;
 import com.dodo.marcket.http.constant.Constant;
 import com.dodo.marcket.iCallback.MiaoShaCountdownListener;
 import com.dodo.marcket.utils.BankCountDown;
@@ -290,17 +291,16 @@ public class HomePageFragment extends BaseFragment<HomePagePresenter> implements
         miaoShaAdapter.setOnItemClickListener(new HomeMiaoShaAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(int pos, MiaoShaBean.ProductInfoListBean productInfoListBean) {
-                if (!hastoken) {
-                    goToLogin();
-                    return;
-                }
 
                 if (!isMiaoShaFinished){
                     showErrorToast("此活动结束");
                     return;
                 }
                 long id = productInfoListBean.getId();
-                mPresenter.addProduct(1, new ProductParmsBean(id));
+//                mPresenter.addProduct(1, new ProductParmsBean(id));
+                Intent intent = new Intent(mActivity, ProductDetailActivity.class);
+                intent.putExtra("productId", id);
+                startActivity(intent);
             }
         });
     }
@@ -381,6 +381,15 @@ public class HomePageFragment extends BaseFragment<HomePagePresenter> implements
                             }
                             break;
                         case "weburl"://跳转url页面
+                            if (value.contains("{token}")){
+                                String token = (String) SharedPreferencesUtil.get(mContext, Constant.token, "");
+                                if (token.equals("")){
+                                    startActivity(LoginActivity.class);
+                                    return;
+                                }else {
+                                    value = value.replace("{token}",token);
+                                }
+                            }
                             Intent intentWeb = new Intent(mActivity, WebActivity.class);
                             intentWeb.putExtra("title", bannerBeanList.get(position).getTitle());
                             intentWeb.putExtra("weburl", value);

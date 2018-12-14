@@ -158,7 +158,7 @@ public class Product2Adapter extends RecyclerView.Adapter<Product2Adapter.MyView
         holder.mTxtPrice.setText("¥" + productBean.getUnitPrice() + "/" + productBean.getUnit());//单价
 
         if (productBean.getMemo().equals("")) {
-            holder.mTxtProductMsg.setVisibility(View.GONE);//描述
+            holder.mTxtProductMsg.setVisibility(View.INVISIBLE);//描述
         } else {
             holder.mTxtProductMsg.setVisibility(View.VISIBLE);
             holder.mTxtProductMsg.setText(productBean.getMemo());//描述

@@ -10,6 +10,7 @@ import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
+import android.widget.CheckBox;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -96,6 +97,24 @@ public class OrderDetailActivity extends BaseActivity<OrderDetailPresenter> impl
     LinearLayout mLLNoDate;
     @BindView(R.id.mScroll)
     NestedScrollView mScroll;
+    @BindView(R.id.mTxt_realPay)
+    TextView mTxtRealPay;
+    @BindView(R.id.mTxt_youHuiMoney)
+    TextView mTxtYouHuiMoney;
+    @BindView(R.id.mTxt_postMoney)
+    TextView mTxtPostMoney;
+    @BindView(R.id.mTxt_boxMoney)
+    TextView mTxtBoxMoney;
+    @BindView(R.id.mTxt_discountMoney)
+    TextView mTxtDiscountMoney;
+    @BindView(R.id.mTxt_pointMoney)
+    TextView mTxtPointMoney;
+    @BindView(R.id.mCheckBox)
+    CheckBox mCheckBox;
+    @BindView(R.id.mTxt_payOnlineMoney)
+    TextView mTxtPayOnlineMoney;
+    @BindView(R.id.mLL_money)
+    LinearLayout mLLMoney;
     private String sn;
     private int snId;
     private List<OrderDetailBean.OrderItemsBean> orderItems = new ArrayList<>();
@@ -172,6 +191,20 @@ public class OrderDetailActivity extends BaseActivity<OrderDetailPresenter> impl
         double offsetAmount = od.getOffsetAmount();
         double payAmount = od.getPayAmount();
 
+        double freight = od.getFreight();//运费
+        double boxAmount = od.getBoxAmount();//押金
+        double promotionDiscount = od.getPromotionDiscount();//促销优惠
+        double anhaoAmount = od.getAnhaoAmount();//优惠券
+        double pointAmount = od.getPointAmount();//积分抵扣金额
+        double onlineDiscount = od.getOnlineDiscount();//在线支付金额
+
+        mTxtYouHuiMoney.setText("¥"+promotionDiscount);
+        mTxtPostMoney.setText("¥"+freight);
+        mTxtBoxMoney.setText("¥"+boxAmount);
+        mTxtDiscountMoney.setText("¥"+anhaoAmount);
+        mTxtPointMoney.setText("¥"+pointAmount);
+        mTxtPayOnlineMoney.setText("¥"+onlineDiscount);
+
         //"¥ " + payAmount//实付
         //"¥ " + payAmount + offsetAmount) + "");//实收
         //"¥ " + amount);//应付
@@ -203,7 +236,6 @@ public class OrderDetailActivity extends BaseActivity<OrderDetailPresenter> impl
         } else {
             mRvOrderDetailList.setVisibility(View.GONE);
         }
-
 
 
     }
@@ -287,7 +319,7 @@ public class OrderDetailActivity extends BaseActivity<OrderDetailPresenter> impl
     }
 
 
-    @OnClick({R.id.mTxt_orderCancel1, R.id.mTxt_cancel2, R.id.mTxt_orderPay2,R.id.mTxt_orderAgainOrder3,R.id.mTxt_orderCancel,R.id.mTxt_orderDiscuss3})
+    @OnClick({R.id.mTxt_orderCancel1, R.id.mTxt_cancel2, R.id.mTxt_orderPay2, R.id.mTxt_orderAgainOrder3, R.id.mTxt_orderCancel, R.id.mTxt_orderDiscuss3})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.mTxt_orderCancel1://取消订单
@@ -448,10 +480,4 @@ public class OrderDetailActivity extends BaseActivity<OrderDetailPresenter> impl
         msgApi.sendReq(request);
     }
 
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        // TODO: add setContentView(...) invocation
-        ButterKnife.bind(this);
-    }
 }

@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
+import android.view.KeyEvent;
 import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
@@ -276,5 +277,26 @@ public class HomeActivity extends BaseActivity<HomePresenter> implements HomeCon
         } else {
             hastoken = true;
         }
+    }
+
+    /**
+     * home键功能
+     *
+     * @param keyCode
+     * @param event
+     * @return
+     */
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        //如果是返回键
+        if(keyCode== KeyEvent.KEYCODE_BACK&&event.getRepeatCount() == 0){
+            //重写返回键
+            Intent intent= new Intent(Intent.ACTION_MAIN);
+            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            intent.addCategory(Intent.CATEGORY_HOME);
+            startActivity(intent);
+
+            return true;
+        }
+        return super.onKeyDown(keyCode, event);
     }
 }

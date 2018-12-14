@@ -17,6 +17,18 @@ public class OrderDetailBean {
      * retCode : 0
      * sn : SO20181003192437
      */
+    private double anhaoAmount;
+    private double boxAmount;
+    private String city;
+    private String district;
+    private double freight;
+    private double onlineDiscount;
+    private double pointAmount;
+    private double productPrice;
+    private double promotionDiscount;
+    private String province;
+    private double returnAmount;
+    private double usePoint;
 
     private double amount;
     private String createDate;
@@ -29,6 +41,103 @@ public class OrderDetailBean {
     private int retCode;
     private String sn;
     private List<OrderItemsBean> orderItems;
+
+
+    public double getAnhaoAmount() {
+        return anhaoAmount;
+    }
+
+    public void setAnhaoAmount(double anhaoAmount) {
+        this.anhaoAmount = anhaoAmount;
+    }
+
+    public double getBoxAmount() {
+        return boxAmount;
+    }
+
+    public void setBoxAmount(double boxAmount) {
+        this.boxAmount = boxAmount;
+    }
+
+    public String getCity() {
+        return city;
+    }
+
+    public void setCity(String city) {
+        this.city = city;
+    }
+
+    public String getDistrict() {
+        return district;
+    }
+
+    public void setDistrict(String district) {
+        this.district = district;
+    }
+
+    public double getFreight() {
+        return freight;
+    }
+
+    public void setFreight(double freight) {
+        this.freight = freight;
+    }
+
+    public double getOnlineDiscount() {
+        return onlineDiscount;
+    }
+
+    public void setOnlineDiscount(double onlineDiscount) {
+        this.onlineDiscount = onlineDiscount;
+    }
+
+    public double getPointAmount() {
+        return pointAmount;
+    }
+
+    public void setPointAmount(double pointAmount) {
+        this.pointAmount = pointAmount;
+    }
+
+    public double getProductPrice() {
+        return productPrice;
+    }
+
+    public void setProductPrice(double productPrice) {
+        this.productPrice = productPrice;
+    }
+
+    public double getPromotionDiscount() {
+        return promotionDiscount;
+    }
+
+    public void setPromotionDiscount(double promotionDiscount) {
+        this.promotionDiscount = promotionDiscount;
+    }
+
+    public String getProvince() {
+        return province;
+    }
+
+    public void setProvince(String province) {
+        this.province = province;
+    }
+
+    public double getReturnAmount() {
+        return returnAmount;
+    }
+
+    public void setReturnAmount(double returnAmount) {
+        this.returnAmount = returnAmount;
+    }
+
+    public double getUsePoint() {
+        return usePoint;
+    }
+
+    public void setUsePoint(double usePoint) {
+        this.usePoint = usePoint;
+    }
 
     public double getAmount() {
         return amount;
