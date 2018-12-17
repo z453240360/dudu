@@ -139,7 +139,7 @@ public class ShoppingCartFragment extends BaseFragment<ShoppingCartFragmentPrese
 
 
     private void initStatus() {
-        mLLStatus.getLayoutParams().height = StatusBarUtils.getStatusBarHeight(mContext);
+//        mLLStatus.getLayoutParams().height = StatusBarUtils.getStatusBarHeight(mContext);
     }
 
     private void initBottomView() {

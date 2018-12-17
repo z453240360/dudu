@@ -93,13 +93,14 @@ public class HomeActivity extends BaseActivity<HomePresenter> implements HomeCon
     }
 
 
-    @Override
-    public void initStatusBar() {
-        //层垫式状态栏
-        StatusBarUtils.StatusBarLightMode(this);
-        StatusBarUtils.setColor(this, getResources().getColor(R.color.white), 0);
-//        StatusBarUtils.setTranslucentForImageViewInFragment(this, 0, null);
-    }
+//    @Override
+//    public void initStatusBar() {
+//        //层垫式状态栏
+//
+////        StatusBarUtils.setColor(this, getResources().getColor(R.color.white), 0);
+//////        StatusBarUtils.setTranslucentForImageViewInFragment(this, 0, null);
+////        StatusBarUtils.StatusBarLightModeLight(this);
+//    }
 
     @Override
     public void showLoading(String content) {
@@ -219,12 +220,16 @@ public class HomeActivity extends BaseActivity<HomePresenter> implements HomeCon
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.rb_home:
+//                //层垫式状态栏
+//                StatusBarUtils.StatusBarLightModeLight(this);
                 StatusBarUtils.setColor(mActivity, getResources().getColor(R.color.white), 0);
                 break;
             case R.id.LL_classify:
                 startActivity(ClasifyActivity.class);
                 break;
             case R.id.rb_buyCar:
+                //层垫式状态栏
+//                StatusBarUtils.StatusBarLightModeLight(this);
                 StatusBarUtils.setColor(mActivity, getResources().getColor(R.color.white), 0);
                 if (!hastoken) {
                     startActivity(LoginActivity.class);
@@ -234,8 +239,12 @@ public class HomeActivity extends BaseActivity<HomePresenter> implements HomeCon
 
                 if (!hastoken) {
                     startActivity(LoginActivity.class);
+                    //层垫式状态栏
+//                    StatusBarUtils.StatusBarLightModeLight(this);
                     StatusBarUtils.setColor(mActivity, getResources().getColor(R.color.white), 0);
                 } else {
+                    //层垫式状态栏
+//                    StatusBarUtils.StatusBarLightModeLight(this);
                     StatusBarUtils.setColor(mActivity, getResources().getColor(R.color.org_F4B43A), 0);
                 }
                 break;

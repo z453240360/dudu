@@ -131,7 +131,7 @@ public class MiaoShaBean {
          */
 
         private String boxCode;
-        private int boxPrice;
+        private double boxPrice;
         private int cartNumber;
         private int id;
         private String image;
@@ -139,14 +139,14 @@ public class MiaoShaBean {
         private String memo;
         private String name;
         private String packaging;
-        private int price;
+        private double price;
         private double promotionPrice;
         private int specificationNumber;
         private int stock;
         private String tag;
         private String unit;
         private double unitPrice;
-        private int weight;
+        private double weight;
 
         public String getBoxCode() {
             return boxCode;
@@ -156,11 +156,11 @@ public class MiaoShaBean {
             this.boxCode = boxCode;
         }
 
-        public int getBoxPrice() {
+        public double getBoxPrice() {
             return boxPrice;
         }
 
-        public void setBoxPrice(int boxPrice) {
+        public void setBoxPrice(double boxPrice) {
             this.boxPrice = boxPrice;
         }
 
@@ -220,11 +220,11 @@ public class MiaoShaBean {
             this.packaging = packaging;
         }
 
-        public int getPrice() {
+        public double getPrice() {
             return price;
         }
 
-        public void setPrice(int price) {
+        public void setPrice(double price) {
             this.price = price;
         }
 
@@ -276,11 +276,11 @@ public class MiaoShaBean {
             this.unitPrice = unitPrice;
         }
 
-        public int getWeight() {
+        public double getWeight() {
             return weight;
         }
 
-        public void setWeight(int weight) {
+        public void setWeight(double weight) {
             this.weight = weight;
         }
     }

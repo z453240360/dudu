@@ -18,6 +18,7 @@ import android.text.TextUtils;
 import android.view.MotionEvent;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 
 import com.bigkoo.pickerview.view.TimePickerView;
 import com.dodo.marcket.R;
@@ -141,7 +142,8 @@ public abstract class BaseActivity<T extends BasePresenter> extends AppCompatAct
 
     public void initStatusBar() {
         //层垫式状态栏
-        StatusBarUtils.StatusBarLightMode(this);
+//        StatusBarUtils.StatusBarLightMode(this);
+        ColorState.StatusBarLightMode(mActivity, true);
         StatusBarUtils.setColor(this, getResources().getColor(R.color.white), 0);
 //        ColorState.StatusBarLightMode(mActivity, false);
     }
