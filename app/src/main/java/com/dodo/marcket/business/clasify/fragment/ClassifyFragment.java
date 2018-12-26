@@ -1,6 +1,7 @@
 package com.dodo.marcket.business.clasify.fragment;
 
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.graphics.Paint;
 import android.os.Bundle;
@@ -47,6 +48,7 @@ import butterknife.OnClick;
 import butterknife.Unbinder;
 
 
+@SuppressLint("ValidFragment")
 public class ClassifyFragment extends BaseFragment<ClassifyFragmentPresenter> implements ClassifyFragmentContract.View {
 
 
@@ -101,7 +103,7 @@ public class ClassifyFragment extends BaseFragment<ClassifyFragmentPresenter> im
     LinearLayout mLLCarMsg;
     Unbinder unbinder;
 
-
+    private Long mId = 0L;
     private List<FirstClassfyBean> mDates = new ArrayList<>();
     private List<Fragment> fragmentList = new ArrayList<>();
     private List<CartItemsBean> carList = new ArrayList<>();
@@ -122,6 +124,14 @@ public class ClassifyFragment extends BaseFragment<ClassifyFragmentPresenter> im
         if (classifyFragment == null)
             classifyFragment = new ClassifyFragment();
         return classifyFragment;
+    }
+
+    public ClassifyFragment() {
+    }
+
+    @SuppressLint("ValidFragment")
+    public ClassifyFragment(Long mId) {
+        this.mId = mId;
     }
 
     @Override
@@ -233,12 +243,22 @@ public class ClassifyFragment extends BaseFragment<ClassifyFragmentPresenter> im
 
 
         mDates.clear();
-
+        List<FirstClassfyBean.SubProductCategoryBean> subProductCategory = new ArrayList<>();
         mDates.addAll(firstClassfyBeanList);
-        mDates.get(0).setFirstSelected(true);
-        mDates.get(0).setShowList(false);
-        List<FirstClassfyBean.SubProductCategoryBean> subProductCategory = mDates.get(0).getSubProductCategory();
 
+        if (mId != 0L) {
+            for (int i = 0; i < firstClassfyBeanList.size(); i++) {
+                if (firstClassfyBeanList.get(i).getId() == mId) {
+                    mDates.get(i).setFirstSelected(true);
+                    mDates.get(i).setShowList(false);
+                    subProductCategory = mDates.get(i).getSubProductCategory();
+                }
+            }
+        } else {
+            mDates.get(0).setFirstSelected(true);
+            mDates.get(0).setShowList(false);
+            subProductCategory = mDates.get(0).getSubProductCategory();
+        }
         if (subProductCategory.size() == 0) {
             mTxtNoGoods.setVisibility(View.VISIBLE);
         } else {
@@ -281,6 +301,7 @@ public class ClassifyFragment extends BaseFragment<ClassifyFragmentPresenter> im
     //初始化二级商品列表
     public void initSecondClassfy(List<FirstClassfyBean> firstClassfyList) {
 
+        int lastPostion = 0;
         if (firstClassfyList.size() == 0) {
             return;
         }
@@ -289,7 +310,6 @@ public class ClassifyFragment extends BaseFragment<ClassifyFragmentPresenter> im
             List<FirstClassfyBean.SubProductCategoryBean> subProductCategory = firstClassfyList.get(i).getSubProductCategory();
             if (subProductCategory.size() != 0) {//如果二级列表不为空则显示二级列表的信息
                 for (int j = 0; j < subProductCategory.size(); j++) {
-
                     int id = subProductCategory.get(j).getId();
                     BuyListFragment buyListFragment = new BuyListFragment(this, id);
                     fragmentList.add(buyListFragment);
@@ -298,6 +318,10 @@ public class ClassifyFragment extends BaseFragment<ClassifyFragmentPresenter> im
                 int id = firstClassfyList.get(i).getId();
                 BuyListFragment buyListFragment = new BuyListFragment(this, id);
                 fragmentList.add(buyListFragment);
+
+//                if (firstClassfyList.get(i).isFirstSelected()){
+//                    lastFragment = fragmentList.get(i);
+//                }
             }
 
         }
@@ -307,8 +331,32 @@ public class ClassifyFragment extends BaseFragment<ClassifyFragmentPresenter> im
         }
         fragmentManager = mActivity.getSupportFragmentManager();
 
-        lastFragment = fragmentList.get(0);
-        fragmentManager.beginTransaction().add(R.id.mFrame_second, fragmentList.get(0)).commit();
+        //如果指定默认选中哪个
+        if (mId == 0L) {
+            lastFragment = fragmentList.get(0);
+            fragmentManager.beginTransaction().add(R.id.mFrame_second, fragmentList.get(0)).commit();
+        }else {
+            for (int i = 0; i < firstClassfyList.size(); i++) {
+                List<FirstClassfyBean.SubProductCategoryBean> subProductCategory = firstClassfyList.get(i).getSubProductCategory();
+                if (subProductCategory==null||subProductCategory.size()==0){
+                    if (firstClassfyList.get(i).isFirstSelected()){
+                        lastFragment = fragmentList.get(i);
+                        fragmentManager.beginTransaction().add(R.id.mFrame_second, fragmentList.get(i)).commit();
+                    }
+                }else {
+                    for (int j = 0; j < subProductCategory.size(); j++) {
+                        if (subProductCategory.get(j).isSelected()){
+                            lastFragment = fragmentList.get(i);
+                            fragmentManager.beginTransaction().add(R.id.mFrame_second, fragmentList.get(i)).commit();
+                        }
+                    }
+                }
+
+            }
+        }
+
+
+
     }
 
     //修改购物车数量

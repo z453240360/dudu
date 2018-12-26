@@ -1,5 +1,6 @@
 package com.dodo.marcket.business.homepage.activity;
 
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.http.SslError;
 import android.os.Build;
@@ -17,6 +18,11 @@ import android.widget.Toast;
 
 import com.dodo.marcket.R;
 import com.dodo.marcket.base.BaseActivity;
+import com.dodo.marcket.business.clasify.activity.ClasifyActivity;
+import com.dodo.marcket.business.mine.activity.LoginActivity;
+import com.dodo.marcket.http.constant.Constant;
+import com.dodo.marcket.utils.NumberUtils;
+import com.dodo.marcket.utils.SharedPreferencesUtil;
 
 import butterknife.BindView;
 
@@ -41,6 +47,13 @@ public class WebActivity extends BaseActivity {
         String weburl = getIntent().getStringExtra("weburl");
         String title = getIntent().getStringExtra("title");
 
+        String token = (String) SharedPreferencesUtil.get(mContext, Constant.token, "");
+
+        if (weburl.contains("{token}")) {
+            if (!token.equals("")) {
+                weburl = weburl.replace("{token}", token);
+            }
+        }
         if (weburl != null || !weburl.equals("")) {
             mTitle.setTitle(title);
 
@@ -91,6 +104,66 @@ public class WebActivity extends BaseActivity {
                 Toast.makeText(WebActivity.this, "国内不能访问google,拦截该url", Toast.LENGTH_LONG).show();
                 return true;//表示我已经处理过了
             }
+            //跳转分类页面       duoduo://ProductCategory-87
+            if (url.startsWith("duoduo://ProductCategory-")) {
+                String value = url.replace("duoduo://ProductCategory-", "");
+                if (value == null || value.equals("")) {
+                    return true;
+                }
+
+                long productId = NumberUtils.string2Long(value);
+                if (productId != 0L) {
+                    Intent intentProduct = new Intent(mContext, ClasifyActivity.class);
+                    intentProduct.putExtra("productId", productId);
+                    mContext.startActivity(intentProduct);
+                }
+                return true;
+            }
+
+            //跳转商品详情
+            if (url.startsWith("duoduo://Product-")) {
+                String value = url.replace("duoduo://Product-", "");
+                if (value == null || value.equals("")) {
+                    return true;
+                }
+
+                long productId = NumberUtils.string2Long(value);
+                if (productId != 0L) {
+                    Intent intentProduct = new Intent(mContext, ProductDetailActivity.class);
+                    intentProduct.putExtra("productId", productId);
+                    mContext.startActivity(intentProduct);
+                }
+                return true;
+            }
+
+
+            //跳转促销页面
+            if (url.startsWith("duoduo://Promotion-")) {
+                String value = url.replace("duoduo://Promotion-", "");
+                if (value == null || value.equals("")) {
+                    return true;
+                }
+
+                long productId = NumberUtils.string2Long(value);
+                if (productId != 0L) {
+                    Intent intentProduct = new Intent(mContext, HotActivity.class);
+                    intentProduct.putExtra("mId", productId);
+                    mContext.startActivity(intentProduct);
+                }
+                return true;
+            }
+
+            if (url.contains("{token}")) {
+                String token = (String) SharedPreferencesUtil.get(mContext, Constant.token, "");
+                if (token.equals("")) {
+                    Intent intentProduct = new Intent(mContext, LoginActivity.class);
+                    mContext.startActivity(intentProduct);
+                    return true;
+                } else {
+                    url = url.replace("{token}", token);
+                }
+            }
+
             return super.shouldOverrideUrlLoading(view, url);
         }
 

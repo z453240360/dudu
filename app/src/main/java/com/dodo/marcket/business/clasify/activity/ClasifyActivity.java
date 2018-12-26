@@ -1,5 +1,6 @@
 package com.dodo.marcket.business.clasify.activity;
 
+import android.content.Intent;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -16,6 +17,7 @@ public class ClasifyActivity extends BaseActivity<ClassifyPresenter> implements 
 
     private FragmentManager manager;
     private ClassifyFragment classifyFragment;
+    private long mId;
 
     @Override
     public int getLayoutId() {
@@ -30,9 +32,14 @@ public class ClasifyActivity extends BaseActivity<ClassifyPresenter> implements 
     @Override
     public void loadData() {
         initTitle();
-
+        Intent intent = getIntent();
+        mId = intent.getLongExtra("productId", 0L);
         manager = getSupportFragmentManager();
-        classifyFragment = new ClassifyFragment();
+        if (mId==0L){
+            classifyFragment = new ClassifyFragment();
+        }else {
+            classifyFragment = new ClassifyFragment(mId);
+        }
         manager.beginTransaction().add(R.id.mFrame, classifyFragment).commit();
     }
 

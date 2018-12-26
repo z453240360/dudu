@@ -17,8 +17,11 @@ import com.dodo.marcket.bean.ProductParmsBean;
 import com.dodo.marcket.business.clasify.adapter.ProductAdapter;
 import com.dodo.marcket.business.homepage.constrant.HotContract;
 import com.dodo.marcket.business.homepage.presenter.HotPresenter;
+import com.dodo.marcket.business.mine.activity.LoginActivity;
+import com.dodo.marcket.http.constant.Constant;
 import com.dodo.marcket.utils.ImageLoaders;
 import com.dodo.marcket.utils.ScreenUtil;
+import com.dodo.marcket.utils.SharedPreferencesUtil;
 import com.dodo.marcket.utils.ToastUtils;
 import com.dodo.marcket.wedget.MyWebView;
 
@@ -145,11 +148,18 @@ public class HotActivity extends BaseActivity<HotPresenter> implements HotContra
 
         String introduction = hotBean.getIntroduction();
         if (!introduction.equals("")){
+//            introduction = introduction.replace("<img", "<img style=\"width:100%\"");
+            String token = (String) SharedPreferencesUtil.get(mContext, Constant.token, "");
+            if (token.equals("")){
 
-            introduction = introduction.replace("<img", "<img style=\"width:100%\"");
+            }else {
+                introduction = introduction.replace("{token}",token);
+            }
+
 //            mWeb.loadData(introduction, "text/html", "UTF-8");
             mWeb.loadDataWithBaseURL(null, introduction, "text/html", "utf-8", null);
         }
+
 
 
         if (hotBean.getSize().equals("small")) {

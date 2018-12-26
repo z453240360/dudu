@@ -1,7 +1,9 @@
 package com.dodo.marcket.wedget;
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Bitmap;
+import android.icu.text.UFormat;
 import android.support.v7.app.AlertDialog;
 import android.util.AttributeSet;
 import android.util.Log;
@@ -12,21 +14,30 @@ import android.webkit.WebView;
 import android.webkit.WebViewClient;
 
 import com.dodo.marcket.R;
+import com.dodo.marcket.business.clasify.activity.ClasifyActivity;
+import com.dodo.marcket.business.homepage.activity.HotActivity;
+import com.dodo.marcket.business.homepage.activity.ProductDetailActivity;
+import com.dodo.marcket.business.homepage.activity.WebActivity;
+import com.dodo.marcket.business.mine.activity.LoginActivity;
+import com.dodo.marcket.http.constant.Constant;
+import com.dodo.marcket.utils.NumberUtils;
+import com.dodo.marcket.utils.SharedPreferencesUtil;
 
 public class MyWebView extends WebView{
+    private Context mContext;
     public MyWebView(Context context) {
         this(context,null);
-
+        this.mContext = context;
     }
 
     public MyWebView(Context context, AttributeSet attrs) {
         this(context, attrs,0);
-
+        this.mContext = context;
     }
 
     public MyWebView(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
-
+        this.mContext = context;
 
         setWebChromeClient(webChromeClient);
         setWebViewClient(webViewClient);
@@ -106,6 +117,68 @@ public class MyWebView extends WebView{
             if(url.equals("http://www.google.com/")){
                 return true;//表示我已经处理过了
             }
+
+            //跳转分类页面       duoduo://ProductCategory-87
+            if (url.startsWith("duoduo://ProductCategory-")){
+                String value = url.replace("duoduo://ProductCategory-","");
+                if (value == null || value.equals("")) {
+                    return true;
+                }
+
+                long productId = NumberUtils.string2Long(value);
+                if (productId != 0L) {
+                    Intent intentProduct = new Intent(mContext, ClasifyActivity.class);
+                    intentProduct.putExtra("productId", productId);
+                    mContext.startActivity(intentProduct);
+                }
+                return true;
+            }
+
+            //跳转商品详情
+            if (url.startsWith("duoduo://Product-")){
+                String value = url.replace("duoduo://Product-","");
+                if (value == null || value.equals("")) {
+                    return true;
+                }
+
+                long productId = NumberUtils.string2Long(value);
+                if (productId != 0L) {
+                    Intent intentProduct = new Intent(mContext, ProductDetailActivity.class);
+                    intentProduct.putExtra("productId", productId);
+                    mContext.startActivity(intentProduct);
+                }
+                return true;
+            }
+
+
+            //跳转促销页面
+            if (url.startsWith("duoduo://Promotion-")){
+                String value = url.replace("duoduo://Promotion-","");
+                if (value == null || value.equals("")) {
+                    return true;
+                }
+
+                long productId = NumberUtils.string2Long(value);
+                if (productId != 0L) {
+                    Intent intentProduct = new Intent(mContext, HotActivity.class);
+                    intentProduct.putExtra("mId", productId);
+                    mContext.startActivity(intentProduct);
+                }
+                return true;
+            }
+
+            if (url.contains("{token}")){
+                String token = (String) SharedPreferencesUtil.get(mContext, Constant.token, "");
+                if (token.equals("")){
+                    Intent intentProduct = new Intent(mContext, LoginActivity.class);
+                    mContext.startActivity(intentProduct);
+                    return true;
+                }else {
+                    url = url.replace("{token}",token);
+                }
+            }
+
+
             return super.shouldOverrideUrlLoading(view, url);
         }
 
